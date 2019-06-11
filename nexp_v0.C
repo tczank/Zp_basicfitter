@@ -24,9 +24,6 @@
 
 void nexp_v0() {
 
-  gStyle->SetOptFit(1);
-  gStyle->SetOptStat(1);
-  // gROOT->SetBatch(1);
 
   //## Loading the different CMS E "Theoretical" Cross section Br and det eff
   TFile * br_fil = new TFile("../merging_energies/Zp_BR.root");
@@ -48,29 +45,36 @@ void nexp_v0() {
 
   //Output File //
   TFile *f = new TFile("nexp_merge.root","RECREATE");
-  TH3F *nexp = new TH3F("h_nexp_gp_m", "number of expected events by Z' coupling strength and mass;m_{Z'}[GeV/c^{2}];g';numer of expected events;", 10000,0.0,10.0,10000,0.0001,1.,1000,1e-4,10);
+  TH2F *nexp = new TH2F("h_nexp_gp_m", "number of expected events by Z' coupling strength and mass;m_{Z'}[GeV/c^{2}];g';numer of expected events;", 10000,0.0,9.22,10000,0.0001,0.2);
   // ########################################################## //
 
   // Number of Expected Events Calculation //
-  double_t x = 0.018500; // di muon threshold mass
-  double_t mupdg = 4.*pow(0.1056583745,2);
-  double_t i = sqrt(pow(x,2) + mupdg); //mz
-  double_t j = 0.0001; // gp
+  double_t x = 0.018500; // reduced di muon threshold mass
+  double_t mupdg = 4.*pow(0.1056583745,2); // reduced mass correction to invariant
+  double_t mass = sqrt(pow(x,2) + mupdg); //mz
+  double_t gz = 0.0001; // gp
+  int i = 0;
+  int j = 0;
 
-  while (j < 0.1){
-    while( i < 9.21){
-      cout << " the value of i and j is " << i << " " << j << endl;
-      double brlumdet = gr_mu->Eval(i) * deteff_fit->Eval(i) * ((up1sxs->Eval(i)*1e3*4.77836) +(up3sxs->Eval(i)*1e3*16.89427) + (up4sxs->Eval(i)*1e3*690.555) + (up5sxs->Eval(i)*1e3*123.81655)  );
-      cout << " the deteff mubr and brlumdet are " << gr_mu->Eval(i) << " " << deteff_fit->Eval(i) << " " << brlumdet << endl;
-      double nexp_n = pow(j,2)*brlumdet;
-      cout << " the number of expected events is " << nexp_n << endl;
-      nexp->Fill(i,j,nexp_n);
-      i = i + 0.001;
+  while (gz < 0.2){
+    while( mass < 9.21){
+      //  cout << " the value of i and j is " << i << " " << j << endl;
+      double brlumdet = gr_mu->Eval(mass) * deteff_fit->Eval(mass) * ((up1sxs->Eval(mass)*1e3*4.77836) +(up3sxs->Eval(mass)*1e3*16.89427) + (up4sxs->Eval(mass)*1e3*690.555) + (up5sxs->Eval(mass)*1e3*123.81655)  );
+      //       cout << " the deteff mubr and brlumdet are " << deteff_fit->Eval(mass) << " " << gr_mu->Eval(mass) << " " << brlumdet << endl;
+      double nexp_n = pow(gz,2)*brlumdet;
+      //  cout << " the number of expected events is " << nexp_n << endl;
+      nexp->SetBinContent(i+1,j+1,nexp_n);
+      mass = mass + 0.001;
+      i = i + 1;
     }
-    i = sqrt(pow(x,2) + mupdg);
-    j = j + 0.001;
+    mass = sqrt(pow(x,2) + mupdg);
+    i = 0;
+    gz = gz + 0.001;
+    j = j + 1;
   }
 
+  //  nexp->Draw("contz4");
+  // gPad->SetLogz();
 
   // Saving Output File //
   nexp->SetName("Number_exp_dist");
