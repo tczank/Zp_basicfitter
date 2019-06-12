@@ -49,7 +49,7 @@ void nexp_v0() {
 
   //Output File //
   TFile * f = new TFile("nexp_merge.root","RECREATE");
-  TH2F * nexp = new TH2F("h_nexp_gp_m", "number of expected events by Z' coupling strength and mass;m_{Z'}[GeV/c^{2}];g';number of expected events;", 10000,0.0,9.22,10000,0.0001,0.2);
+  TH2F * nexp = new TH2F("h_nexp_gp_m", "number of expected events by Z' coupling strength and mass;m_{Z'}[GeV/c^{2}];g';number of expected events;", 10000,0.0,10.0,10000,0.0001,1.0);
   TH1F * nexp_x = new TH1F("h_nexp_gp_m_x", "number of expected events by Z' mass Xproject;m_{Z'}[GeV/c^{2}];number of expected events;", 10000,0.0,9.22);
   TH1F * nexp_y = new TH1F("h_nexp_gp_m_y", "number of expected events by Z' coupling strength Yproject;g';number of expected events;", 10000,0.0,0.2);
   // ########################################################## //
@@ -83,14 +83,14 @@ void nexp_v0() {
   i = xbin;
   j = ybin;
 
-    while (gz < 0.2){
+    while (gz < 1.){
     while( mass < 9.21){
       //  cout << " the value of i and j is " << i << " " << j << endl;
       double brlumdet = gr_mu->Eval(mass) * deteff_fit->Eval(mass) * ((up1sxs->Eval(mass)*1e3*4.77836) + (up2sxs->Eval(mass)*1e3*3.5135) + (up3sxs->Eval(mass)*1e3*16.89427) + (up4sxs->Eval(mass)*1e3*690.555) + (up5sxs->Eval(mass)*1e3*123.81655) + continuum_th_lum_all );
       //       cout << " the deteff mubr and brlumdet are " << deteff_fit->Eval(mass) << " " << gr_mu->Eval(mass) << " " << brlumdet << endl;
       double nexp_n = pow(gz,2)*brlumdet;
       //  cout << " the number of expected events is " << nexp_n << endl;
-      nexp->SetBinContent(xbin,ybin,nexp_n);
+      nexp->SetBinContent(i,j,nexp_n);
       mass = mass + 0.001;
       i = i + 1;
     }
@@ -101,7 +101,7 @@ void nexp_v0() {
     }
 
   //  nexp->Draw("contz4");
-  gPad->SetLogz();
+  //   gPad->SetLogz();
 
   // Saving Output File //
   nexp->SetName("Number_exp_dist");
