@@ -50,7 +50,7 @@ void gp_nexp_nobsr_v0() {
   int i = 0;
   int j = 0;
 
-  int xbin = gp->FindBin(0.212);
+  int xbin = gp->FindBin(0.212125);
    int ybin = nexp_y->FindBin(0.0001);
   //  cout << " the bin corresponding to the muon threshold is " << xbin << endl;
 
