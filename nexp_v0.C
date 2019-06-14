@@ -60,13 +60,7 @@ void nexp_v0() {
   double_t continuum_norm[14];
   double_t continuum_th_lum;
   double_t continuum_th_lum_all;
-  for(int l = 0; l < 15; l++){
-    continuum_norm[l] = continuum_entries[l]/continuum_entries[0];
-    continuum_th_lum = 1e3*85.73205*(continuum_norm[l]*sqrs_scale_fit->Eval(continuum_sqrts[l]));
-    continuum_th_lum_all = continuum_th_lum_all + continuum_th_lum;
-    // cout << " the weighted and scaled luminosity is " << continuum_th_lum_all << endl;
-  }
-  //###############################################
+   //###############################################
 
   // Number of Expected Events Calculation //
   double_t x = 0.018500; // reduced di muon threshold mass
@@ -86,6 +80,12 @@ void nexp_v0() {
     while (gz < 1.){
     while( mass < 9.21){
       //  cout << " the value of i and j is " << i << " " << j << endl;
+      for(int l = 0; l < 15; l++){
+        continuum_norm[l] = continuum_entries[l]/continuum_entries[0];
+        continuum_th_lum = 1e3*85.73205*(continuum_norm[l]*up4sxs->Eval(mass));
+        continuum_th_lum_all = continuum_th_lum_all + continuum_th_lum;
+        // cout << " the weighted and scaled luminosity is " << continuum_th_lum_all << endl;
+      }
       double brlumdet = gr_mu->Eval(mass) * deteff_fit->Eval(mass) * ((up1sxs->Eval(mass)*1e3*4.77836) + (up2sxs->Eval(mass)*1e3*3.5135) + (up3sxs->Eval(mass)*1e3*16.89427) + (up4sxs->Eval(mass)*1e3*690.555) + (up5sxs->Eval(mass)*1e3*123.81655) + continuum_th_lum_all );
       //       cout << " the deteff mubr and brlumdet are " << deteff_fit->Eval(mass) << " " << gr_mu->Eval(mass) << " " << brlumdet << endl;
       double nexp_n = pow(gz,2)*brlumdet;
@@ -93,6 +93,8 @@ void nexp_v0() {
       nexp->SetBinContent(i,j,nexp_n);
       mass = mass + 0.001;
       i = i + 1;
+      continuum_th_lum = 0;
+      continuum_th_lum_all = 0;
     }
     mass = sqrt(pow(x,2) + mupdg);
     i = xbin;

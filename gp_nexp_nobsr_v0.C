@@ -26,7 +26,7 @@ void gp_nexp_nobsr_v0() {
 
 
   //## Loading the different CMS E "Theoretical" Cross section Br and det eff
-  TFile * nobs_file = new TFile("../fit_reborn/real_merged_xs_all.root");
+  TFile * nobs_file = new TFile("../fit_reborn/newgp_merged_xs_all.root");
   TFile * nexp_file = new TFile("./nexp_merge.root");
   //#############################################################//
 
@@ -49,26 +49,48 @@ void gp_nexp_nobsr_v0() {
   double_t gz = 0.0001; // gp
   int i = 0;
   int j = 0;
-
+  int k = 0;
+  //int firstobs = nobs->GetPoint(0);
+  double_t vXout, vYout;
+  // nobs->GetPoint(k, vXout, vYout);
+  //  cout << "k= " << k << "  vXout[k]= " << vXout
+  //       << "  vYout[k]= " << vYout << endl;
+  double_t mass_ar[11000];
+  double_t gp_ar[11000];
   int xbin = gp->FindBin(0.212125);
-   int ybin = nexp_y->FindBin(0.0001);
+  int ybin = nexp_y->FindBin(0.0001);
   //  cout << " the bin corresponding to the muon threshold is " << xbin << endl;
 
   i = xbin;
   j = ybin;
+  int nlines = 0;
 
-    while (gz < 1.){
+  double_t gp_val;
+
+  while (gz < 1.){
     while( mass < 9.21){
-      double gp_val = nobs->Eval(mass)/nexp->GetBinContent(i,j);
-      if(gp_val < 1.){gp->SetBinContent(i,gp_val);}
+      nobs->GetPoint(k,vXout,vYout);
+      gp_val = nexp->GetBinContent(i,j)/vYout;
+      if(gp_val > 1.){
+        gp->SetBinContent(i,gp_val);
+        mass_ar[nlines] = mass;
+        gp_ar[nlines] = gp_val;
+        nlines++;
+      }
       mass = mass + 0.001;
       i = i + 1;
+      k = k + 1;
     }
     mass = sqrt(pow(x,2) + mupdg);
+    k = 0;
     i = xbin;
     gz = gz + 0.001;
     j = j + 1;
     }
+
+       TGraph * gr_gp = new TGraph(nlines,mass_ar,gp_ar);
+       gr_gp->SetTitle("g' limit by mz';M[GeV/c^{2}];g';");
+       gr_gp->SetName("gr_gp");
 
   //  nexp->Draw("contz4");
   //   gPad->SetLogz();
@@ -76,6 +98,7 @@ void gp_nexp_nobsr_v0() {
   // Saving Output File //
   gp->SetName("Nexp_Nobs_ratio_g_dist");
   gp->Write();
+  gr_gp->Write();
   f->Write();
   f->Close();
 }
