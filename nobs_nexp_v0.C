@@ -51,9 +51,9 @@ void nobs_nexp_v0() {
 
   //Output File //
   TFile * f = new TFile("nexp_nobs_merge.root","RECREATE");
-  TH2F * nexp = new TH2F("h_nexp_gp_m", "number of expected events by Z' coupling strength and mass;m_{Z'}[GeV/c^{2}];g';number of expected events;", 10000,0.0,10.0,10000,0.0001,1.0);
-  TH1F * nexp_x = new TH1F("h_nexp_gp_m_x", "number of expected events by Z' mass Xproject;m_{Z'}[GeV/c^{2}];number of expected events;", 10000,0.0,9.22);
-  TH1F * nexp_y = new TH1F("h_nexp_gp_m_y", "number of expected events by Z' coupling strength Yproject;g';number of expected events;", 10000,0.0,0.2);
+  TH2D * nexp = new TH2D("h_nexp_gp_m", "number of expected events by Z' coupling strength and mass;m_{Z'}[GeV/c^{2}];g';number of expected events;", 10000,0.0,10.0,10000,0.00001,0.1);
+  TH1F * nexp_x = new TH1F("h_nexp_gp_m_x", "number of expected events by Z' mass Xproject;m_{Z'}[GeV/c^{2}];number of expected events;", 10000,0.0,10.0);
+  TH1F * nexp_y = new TH1F("h_nexp_gp_m_y", "number of expected events by Z' coupling strength Yproject;g';number of expected events;", 10000,0.0,0.);
   TH1F * gp = new TH1F("h_gp_m_gz", "Z' coupling strength by mass and g'z;m_{Z'}[GeV/c^{2}];g';", 10000,0.0,10.0);
   // ########################################################## //
 
@@ -82,25 +82,25 @@ void nobs_nexp_v0() {
   i = xbin;
   j = ybin;
 
-    while (gz < 1.){
+    while (gz < 0.1){
     while( mass < 9.21){
       //  cout << " the value of i and j is " << i << " " << j << endl;
       for(int l = 0; l < 15; l++){
         continuum_norm[l] = continuum_entries[l]/continuum_entries[0];
-        continuum_th_lum = 1e3*85.73205*(continuum_norm[l]*up4sxs->Eval(mass));
+        continuum_th_lum = 1e-3*85.73205*(continuum_norm[l]*up4sxs->Eval(mass));
         continuum_th_lum_all = continuum_th_lum_all + continuum_th_lum;
         // cout << " the weighted and scaled luminosity is " << continuum_th_lum_all << endl;
       }
-      double brlumdet = gr_mu->Eval(mass) * deteff_fit->Eval(mass) * ((up1sxs->Eval(mass)*1e3*4.77836) + (up2sxs->Eval(mass)*1e3*3.5135) + (up3sxs->Eval(mass)*1e3*16.89427) + (up4sxs->Eval(mass)*1e3*690.555) + (up5sxs->Eval(mass)*1e3*123.81655) + continuum_th_lum_all );
+      double brlumdet = gr_mu->Eval(mass) * deteff_fit->Eval(mass) * ((up1sxs->Eval(mass)*1e-3*4.77836) + (up2sxs->Eval(mass)*1e-3*3.5135) + (up3sxs->Eval(mass)*1e-3*16.89427) + (up4sxs->Eval(mass)*1e-3*690.555) + (up5sxs->Eval(mass)*1e-3*123.81655) + continuum_th_lum_all );
       //       cout << " the deteff mubr and brlumdet are " << deteff_fit->Eval(mass) << " " << gr_mu->Eval(mass) << " " << brlumdet << endl;
       nobs->GetPoint(k,vXout,vYout);
-      double nexp_n = pow(gz,2)*brlumdet;
+      double nexp_n = pow(gz,2)*(brlumdet/pow(0.1,2));
       double gp_val = nexp_n/vYout;
       if(gp_val > 1.){
-        gp->SetBinContent(i,gp_val);
+        gp->SetBinContent(i+1,gp_val);
       }
       //  cout << " the number of expected events is " << nexp_n << endl;
-      nexp->SetBinContent(i,j,nexp_n);
+      nexp->SetBinContent(i+1,j+1,nexp_n);
       mass = mass + 0.001;
       i = i + 1;
       k = k + 1;
