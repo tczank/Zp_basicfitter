@@ -32,7 +32,8 @@ void nexp_v0() {
   TFile * up3s_xs = new TFile("/home/tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_3s.root");
   TFile * up4s_xs = new TFile("/home/tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/madgraphxs_nodecaymode.root");
   TFile * up5s_xs = new TFile("/home/tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_5s.root");
-  TFile * deteff_plot = new TFile("../fit_reborn/detefffit.root");
+  //  TFile * deteff_plot = new TFile("../fit_reborn/detefffit.root"); // Different file structure for the ryzen 1800x
+    TFile * deteff_plot = new TFile("../fit_reborn/db_parfits_new/detefffit.root");
   TFile * sqrs_scale = new TFile("./sqrts_scalefit.root");
   //#############################################################//
 
@@ -49,9 +50,9 @@ void nexp_v0() {
 
   //Output File //
   TFile * f = new TFile("nexp_merge.root","RECREATE");
-  TH2F * nexp = new TH2F("h_nexp_gp_m", "number of expected events by Z' coupling strength and mass;m_{Z'}[GeV/c^{2}];g';number of expected events;", 10000,0.0,10.0,10000,0.0,0.1);
-  TH1F * nexp_x = new TH1F("h_nexp_gp_m_x", "number of expected events by Z' mass Xproject;m_{Z'}[GeV/c^{2}];number of expected events;", 10000,0.0,10.);
-  TH1F * nexp_y = new TH1F("h_nexp_gp_m_y", "number of expected events by Z' coupling strength Yproject;g';number of expected events;", 10000,0.0,0.1);
+  TH2D * nexp = new TH2D("h_nexp_gp_m", "number of expected events by Z' coupling strength and mass;m_{Z'}[GeV/c^{2}];g';number of expected events;", 10000,0.0,10.0,10000,0.0,0.1);
+  TH1D * nexp_x = new TH1D("h_nexp_gp_m_x", "number of expected events by Z' mass Xproject;m_{Z'}[GeV/c^{2}];number of expected events;", 10000,0.0,10.);
+  TH1D * nexp_y = new TH1D("h_nexp_gp_m_y", "number of expected events by Z' coupling strength Yproject;g';number of expected events;", 10000,0.0,0.1);
   // ########################################################## //
 
   // Continuum sample theoretical cross section scaling//
@@ -71,13 +72,13 @@ void nexp_v0() {
   int j = 0;
 
   int xbin = nexp_x->FindBin(0.212125);
-  int ybin = nexp_y->FindBin(0.);
+  int ybin = nexp_y->FindBin(0.0001);
   //  cout << " the bin corresponding to the muon threshold is " << xbin << endl;
 
   i = xbin;
   j = ybin;
 
-    while (gz < 0.1){
+    while (gz < 0.11){
     while( mass < 9.21){
       //  cout << " the value of i and j is " << i << " " << j << endl;
       for(int l = 0; l < 15; l++){
@@ -90,7 +91,7 @@ void nexp_v0() {
       //       cout << " the deteff mubr and brlumdet are " << deteff_fit->Eval(mass) << " " << gr_mu->Eval(mass) << " " << brlumdet << endl;
       double nexp_n = pow(gz,2)*(brlumdet/0.01);
       //  cout << " the number of expected events is " << nexp_n << endl;
-      nexp->SetBinContent(i,j,nexp_n);
+      nexp->SetBinContent(i+1,j+1,nexp_n);
       mass = mass + 0.001;
       i = i + 1;
       continuum_th_lum = 0;
@@ -102,12 +103,18 @@ void nexp_v0() {
     j = j + 1;
     }
 
-  //  nexp->Draw("contz4");
+
+    TCanvas * C7 = new TCanvas("nexp"," ",10,10,800,800);
+    C7->SetLogz();
+    C7->SetLogy();
+    nexp->GetYaxis()->SetRangeUser(1e-3,1e-1);
+    nexp->Draw("contz4");
+
   //   gPad->SetLogz();
 
   // Saving Output File //
-  nexp->SetName("Number_exp_dist");
-  nexp->Write();
-  f->Write();
-  f->Close();
+    // nexp->SetName("Number_exp_dist");
+    //  nexp->Write();
+    /// f->Write();
+    // f->Close();
 }
