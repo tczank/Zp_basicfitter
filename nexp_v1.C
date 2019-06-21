@@ -50,9 +50,9 @@ void nexp_v1() {
 
   //Output File //
   TFile * f = new TFile("nexp_merge.root","RECREATE");
-  TH2F * nexp = new TH2F("h_nexp_gp_m", "number of expected events by Z' coupling strength and mass;m_{Z'}[GeV/c^{2}];g';number of expected events;", 10000,0.0,10.0,1000,0.0,1.0);
+  TH2F * nexp = new TH2F("h_nexp_gp_m", "number of expected events by Z' coupling strength and mass;m_{Z'}[GeV/c^{2}];g';number of expected events;", 10000,0.0,10.0,10000,0.0,1.0);
   TH1F * nexp_x = new TH1F("h_nexp_gp_m_x", "number of expected events by Z' mass Xproject;m_{Z'}[GeV/c^{2}];number of expected events;", 10000,0.0,10.);
-  TH1F * nexp_y = new TH1F("h_nexp_gp_m_y", "number of expected events by Z' coupling strength Yproject;g';number of expected events;", 1000,0.0,1.0);
+  TH1F * nexp_y = new TH1F("h_nexp_gp_m_y", "number of expected events by Z' coupling strength Yproject;g';number of expected events;", 10000,0.0,1.0);
   // ########################################################## //
 
   // Continuum sample theoretical cross section scaling//
@@ -75,8 +75,8 @@ void nexp_v1() {
   j = ybin;
 
   //while (nexp_y->GetBinCenter(j) < ){
-  for(i;i<9210;i++){
-    for(j;j<1001;j++){
+  for(j;j<9210;j++){
+    for(i;i<1001;i++){
     //while( nexp_x->GetBinCenter(i) < 9.21){
       //  cout << " the value of i and j is " << i << " " << j << endl;
       double_t mass = nexp_x->GetBinCenter(i);
@@ -102,18 +102,18 @@ void nexp_v1() {
     }
 
 
-     TCanvas * C7 = new TCanvas("nexp"," ",10,10,800,800);
+  /*     TCanvas * C7 = new TCanvas("nexp"," ",10,10,800,800);
     C7->SetLogz();
     C7->SetLogy();
     nexp->GetYaxis()->SetRangeUser(1e-3,0);
     nexp->GetXaxis()->SetRangeUser(0.,9.);
-    nexp->Draw("contz4");
+    nexp->Draw("contz4");*/
 
   //   gPad->SetLogz();
 
   // Saving Output File //
-    // nexp->SetName("Number_exp_dist");
-    //  nexp->Write();
-    /// f->Write();
-    // f->Close();
+     nexp->SetName("Number_exp_dist");
+     nexp->Write();
+    f->Write();
+    f->Close();
 }
