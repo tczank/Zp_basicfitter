@@ -27,11 +27,14 @@ void nexp_v1() {
 
   //## Loading the different CMS E "Theoretical" Cross section Br and det eff
   TFile * br_fil = new TFile("../merging_energies/Zp_BR.root");
-  TFile * up1s_xs = new TFile("/home/tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_1s.root");
-  TFile * up2s_xs = new TFile("/home/tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_2s.root");
-  TFile * up3s_xs = new TFile("/home/tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_3s.root");
-  TFile * up4s_xs = new TFile("/home/tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/madgraphxs_nodecaymode.root");
-  TFile * up5s_xs = new TFile("/home/tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_5s.root");
+
+  TFile * up1s_xs = new TFile("/home/thczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_1s.root");
+  TFile * up2s_xs = new TFile("/home/thczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_2s.root");
+  TFile * up3s_xs = new TFile("/home/thczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_3s.root");
+  TFile * up4s_xs = new TFile("/home/thczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/madgraphxs_nodecaymode.root");
+  TFile * up5s_xs = new TFile("/home/thczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_5s.root");
+  // thczank or tczank get your cd pwd first
+
   //  TFile * deteff_plot = new TFile("../fit_reborn/detefffit.root"); // Different file structure for the ryzen 1800x
     TFile * deteff_plot = new TFile("../fit_reborn/db_parfits_new/detefffit.root");
   TFile * sqrs_scale = new TFile("./sqrts_scalefit.root");
@@ -68,14 +71,14 @@ void nexp_v1() {
   int j = 0;
 
   int xbin = nexp_x->FindBin(0.212125);
-  int ybin = nexp_y->FindBin(0.0001);
+  int ybin = nexp_y->FindBin(0.000);
   //  cout << " the bin corresponding to the muon threshold is " << xbin << endl;
 
   i = xbin;
   j = ybin;
 
   //while (nexp_y->GetBinCenter(j) < ){
-  for(j;j<2210;j++){
+  for(j;j<10000;j++){
     for(i;i<9210;i++){
     //while( nexp_x->GetBinCenter(i) < 9.21){
       //  cout << " the value of i and j is " << i << " " << j << endl;
@@ -98,16 +101,16 @@ void nexp_v1() {
       continuum_th_lum_all = 0;
     }
     i = xbin;
-    j = j + 5;
+    j = j + 1.;
     }
 
 
-       TCanvas * C7 = new TCanvas("nexp"," ",10,10,800,800);
+  /*       TCanvas * C7 = new TCanvas("nexp"," ",10,10,800,800);
     C7->SetLogz();
     C7->SetLogy();
     nexp->GetYaxis()->SetRangeUser(1e-3,1.);
     nexp->GetXaxis()->SetRangeUser(0.,9.);
-    nexp->Draw("contz");
+    nexp->Draw("contz");*/
 
   //   gPad->SetLogz();
 
