@@ -75,8 +75,8 @@ void nexp_v1() {
   j = ybin;
 
   //while (nexp_y->GetBinCenter(j) < ){
-  for(j;j<9210;j++){
-    for(i;i<1001;i++){
+  for(j;j<2210;j++){
+    for(i;i<9210;i++){
     //while( nexp_x->GetBinCenter(i) < 9.21){
       //  cout << " the value of i and j is " << i << " " << j << endl;
       double_t mass = nexp_x->GetBinCenter(i);
@@ -98,16 +98,16 @@ void nexp_v1() {
       continuum_th_lum_all = 0;
     }
     i = xbin;
-    j = j + 1;
+    j = j + 5;
     }
 
 
-  /*     TCanvas * C7 = new TCanvas("nexp"," ",10,10,800,800);
+       TCanvas * C7 = new TCanvas("nexp"," ",10,10,800,800);
     C7->SetLogz();
     C7->SetLogy();
-    nexp->GetYaxis()->SetRangeUser(1e-3,0);
+    nexp->GetYaxis()->SetRangeUser(1e-3,1.);
     nexp->GetXaxis()->SetRangeUser(0.,9.);
-    nexp->Draw("contz4");*/
+    nexp->Draw("contz");
 
   //   gPad->SetLogz();
 
