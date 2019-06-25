@@ -28,12 +28,16 @@ void nobs_nexp_v0() {
   //## Loading the different CMS E "Theoretical" Cross section Br and det eff
   TFile * br_fil = new TFile("../merging_energies/Zp_BR.root");
   TFile * nobs_file = new TFile("../fit_reborn/newgp_merged_xs_all.root");
-  TFile * up1s_xs = new TFile("/home/tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_1s.root");
-  TFile * up2s_xs = new TFile("/home/tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_2s.root");
-  TFile * up3s_xs = new TFile("/home/tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_3s.root");
-  TFile * up4s_xs = new TFile("/home/tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/madgraphxs_nodecaymode.root");
-  TFile * up5s_xs = new TFile("/home/tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_5s.root");
-  TFile * deteff_plot = new TFile("../fit_reborn/detefffit.root");
+  TFile * up1s_xs = new TFile("/home/thczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_1s.root");
+  TFile * up2s_xs = new TFile("/home/thczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_2s.root");
+  TFile * up3s_xs = new TFile("/home/thczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_3s.root");
+  TFile * up4s_xs = new TFile("/home/thczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/madgraphxs_nodecaymode.root");
+  TFile * up5s_xs = new TFile("/home/thczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_5s.root");
+  // thczank or tczank get your cd pwd first
+
+  TFile * deteff_plot = new TFile("../fit_reborn/db_parfits_new/detefffit.root");
+  // path for detefffit might include a folder or not
+
   TFile * sqrs_scale = new TFile("./sqrts_scalefit.root");
   //#############################################################//
 
@@ -51,10 +55,10 @@ void nobs_nexp_v0() {
 
   //Output File //
   TFile * f = new TFile("nexp_nobs_merge.root","RECREATE");
-  TH2D * nexp = new TH2D("h_nexp_gp_m", "number of expected events by Z' coupling strength and mass;m_{Z'}[GeV/c^{2}];g';number of expected events;", 10000,0.0,10.0,10000,0.00001,0.1);
+  TH2D * nexp = new TH2D("h_nexp_gp_m", "number of expected events by Z' coupling strength and mass;m_{Z'}[GeV/c^{2}];g';number of expected events;", 10000,0.0,10.0,10000,0.0,1.0);
   TH1F * nexp_x = new TH1F("h_nexp_gp_m_x", "number of expected events by Z' mass Xproject;m_{Z'}[GeV/c^{2}];number of expected events;", 10000,0.0,10.0);
-  TH1F * nexp_y = new TH1F("h_nexp_gp_m_y", "number of expected events by Z' coupling strength Yproject;g';number of expected events;", 10000,0.0,0.);
-  TH1F * gp = new TH1F("h_gp_m_gz", "Z' coupling strength by mass and g'z;m_{Z'}[GeV/c^{2}];g';", 10000,0.0,10.0);
+  TH1F * nexp_y = new TH1F("h_nexp_gp_m_y", "number of expected events by Z' coupling strength Yproject;g';number of expected events;", 10000,0.0,1.);
+  TH2D * gp = new TH2D("h_gp_m_gz", "g' coupling strength by mass and g'z;m_{Z'}[GeV/c^{2}];g';", 10000,0.0,10.0,10000,0.0,1.0);
   // ########################################################## //
 
   // Continuum sample theoretical cross section scaling//
@@ -76,15 +80,19 @@ void nobs_nexp_v0() {
   int k = 0;
 
   int xbin = nexp_x->FindBin(0.212125);
-  int ybin = nexp_y->FindBin(0.0001);
+  int ybin = nexp_y->FindBin(0.0000);
   //  cout << " the bin corresponding to the muon threshold is " << xbin << endl;
 
   i = xbin;
   j = ybin;
 
-    while (gz < 0.1){
-    while( mass < 9.21){
-      //  cout << " the value of i and j is " << i << " " << j << endl;
+  // while (gz < 0.1){
+  for(j;j<10000;j++){
+    //while( mass < 9.21){
+    for(i;i<9210;i++){
+      double_t mass = nexp_x->GetBinCenter(i);
+      double_t gz = nexp_y->GetBinCenter(j);
+    //  cout << " the value of i and j is " << i << " " << j << endl;
       for(int l = 0; l < 15; l++){
         continuum_norm[l] = continuum_entries[l]/continuum_entries[0];
         continuum_th_lum = 1e-3*85.73205*(continuum_norm[l]*up4sxs->Eval(mass));
@@ -97,20 +105,17 @@ void nobs_nexp_v0() {
       double nexp_n = pow(gz,2)*(brlumdet/pow(0.1,2));
       double gp_val = nexp_n/vYout;
       if(gp_val > 1.){
-        gp->SetBinContent(i+1,gp_val);
+        gp->SetBinContent(i+1,j+1,gp_val);
       }
       //  cout << " the number of expected events is " << nexp_n << endl;
       nexp->SetBinContent(i+1,j+1,nexp_n);
-      mass = mass + 0.001;
       i = i + 1;
       k = k + 1;
       continuum_th_lum = 0;
       continuum_th_lum_all = 0;
     }
-    mass = sqrt(pow(x,2) + mupdg);
     i = xbin;
     k = 0;
-    gz = gz + 0.001;
     j = j + 1;
     }
 
