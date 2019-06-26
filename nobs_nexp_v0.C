@@ -55,10 +55,10 @@ void nobs_nexp_v0() {
 
   //Output File //
   TFile * f = new TFile("nexp_nobs_merge.root","RECREATE");
-  TH2D * nexp = new TH2D("h_nexp_gp_m", "number of expected events by Z' coupling strength and mass;m_{Z'}[GeV/c^{2}];g';number of expected events;", 10000,0.0,10.0,10000,0.0,1.0);
+  TH2D * nexp = new TH2D("h_nexp_gp_m", "number of expected events by Z' coupling strength and mass;m_{Z'}[GeV/c^{2}];g';number of expected events;", 10000,0.0,10.0,10000,-5.,1.0);
   TH1F * nexp_x = new TH1F("h_nexp_gp_m_x", "number of expected events by Z' mass Xproject;m_{Z'}[GeV/c^{2}];number of expected events;", 10000,0.0,10.0);
-  TH1F * nexp_y = new TH1F("h_nexp_gp_m_y", "number of expected events by Z' coupling strength Yproject;g';number of expected events;", 10000,0.0,1.);
-  TH2D * gp = new TH2D("h_gp_m_gz", "g' coupling strength by mass and g'z;m_{Z'}[GeV/c^{2}];g';", 10000,0.0,10.0,10000,0.0,1.0);
+  TH1F * nexp_y = new TH1F("h_nexp_gp_m_y", "number of expected events by Z' coupling strength Yproject;g';number of expected events;", 10000,-5.,1.);
+  TH2D * gp = new TH2D("h_gp_m_gz", "g' coupling strength by mass and g'z;m_{Z'}[GeV/c^{2}];g';", 10000,0.0,10.0,10000,-5.,1.0);
   // ########################################################## //
 
   // Continuum sample theoretical cross section scaling//
@@ -89,9 +89,9 @@ void nobs_nexp_v0() {
   // while (gz < 0.1){
   for(j;j<10000;j++){
     //while( mass < 9.21){
-    for(i;i<9210;i++){
-      double_t mass = nexp_x->GetBinCenter(i);
-      double_t gz = nexp_y->GetBinCenter(j);
+    for(int i = 0;i<10000;i++){
+      double_t mass = nexp_x->GetBinCenter(i+1);
+      double_t gz = nexp_y->GetBinCenter(j+1);
     //  cout << " the value of i and j is " << i << " " << j << endl;
       for(int l = 0; l < 15; l++){
         continuum_norm[l] = continuum_entries[l]/continuum_entries[0];
@@ -109,14 +109,9 @@ void nobs_nexp_v0() {
       }
       //  cout << " the number of expected events is " << nexp_n << endl;
       nexp->SetBinContent(i+1,j+1,nexp_n);
-      i = i + 1;
-      k = k + 1;
       continuum_th_lum = 0;
       continuum_th_lum_all = 0;
     }
-    i = xbin;
-    k = 0;
-    j = j + 1;
     }
 
   //  nexp->Draw("contz4");

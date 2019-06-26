@@ -32,8 +32,8 @@ void nexp_v0() {
   TFile * up3s_xs = new TFile("/home/tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_3s.root");
   TFile * up4s_xs = new TFile("/home/tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/madgraphxs_nodecaymode.root");
   TFile * up5s_xs = new TFile("/home/tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_5s.root");
-  //  TFile * deteff_plot = new TFile("../fit_reborn/detefffit.root"); // Different file structure for the ryzen 1800x
-    TFile * deteff_plot = new TFile("../fit_reborn/db_parfits_new/detefffit.root");
+  TFile * deteff_plot = new TFile("../fit_reborn/detefffit.root"); // Different file structure for the ryzen 1800x
+  // TFile * deteff_plot = new TFile("../fit_reborn/db_parfits_new/detefffit.root");
   TFile * sqrs_scale = new TFile("./sqrts_scalefit.root");
   //#############################################################//
 
