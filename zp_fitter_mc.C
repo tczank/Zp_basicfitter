@@ -559,7 +559,6 @@ void zp_fitter_mc(TString signalfilename, TString backfilename, TString backpsim
 
 
    //cout << " the number of observed events from 0 to infinity is " << Nobspdff->Integral(0,100*Nobser) << endl;
-                                                                                                          
     double B = (pol3n[i]->Integral(singpartripgaus[i]->GetParameter(1)-3*tripww,singpartripgaus[i]->GetParameter(1)+3*tripww));
     double Ber= (pol3n[i]->IntegralError(singpartripgaus[i]->GetParameter(1)-3*tripww,singpartripgaus[i]->GetParameter(1)+3*tripww,normpol3->GetParams(), normpol3->GetCovarianceMatrix().GetMatrixArray()));
 
