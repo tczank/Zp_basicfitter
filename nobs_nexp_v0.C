@@ -75,21 +75,12 @@ void nobs_nexp_v0() {
   double_t mass = sqrt(pow(x,2) + mupdg); //mz
   double_t gz = 0.0001; // gp
   double_t vXout, vYout, deteff;
-  int i = 0;
-  int j = 0;
-  int k = 0;
 
   int xbin = nexp_x->FindBin(0.212125);
   int ybin = nexp_y->FindBin(0.0000);
   //  cout << " the bin corresponding to the muon threshold is " << xbin << endl;
 
-
-  i = xbin;
-  j = ybin;
-
-  // while (gz < 0.1){
-  for(j;j<10000;j++){
-    //while( mass < 9.21){
+  for(int j = 0;j<10000;j++){
     for(int i = 0;i<10000;i++){
       if(nexp_x->GetBinCenter(i+1) >= 0.212125){
       double_t mass = nexp_x->GetBinCenter(i+1);
