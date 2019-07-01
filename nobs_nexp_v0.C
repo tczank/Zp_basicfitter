@@ -74,7 +74,7 @@ void nobs_nexp_v0() {
   double_t mupdg = 4.*pow(0.1056583745,2); // reduced mass correction to invariant
   double_t mass = sqrt(pow(x,2) + mupdg); //mz
   double_t gz = 0.0001; // gp
-  double_t vXout, vYout;
+  double_t vXout, vYout, deteff;
   int i = 0;
   int j = 0;
   int k = 0;
@@ -83,6 +83,7 @@ void nobs_nexp_v0() {
   int ybin = nexp_y->FindBin(0.0000);
   //  cout << " the bin corresponding to the muon threshold is " << xbin << endl;
 
+
   i = xbin;
   j = ybin;
 
@@ -90,7 +91,7 @@ void nobs_nexp_v0() {
   for(j;j<10000;j++){
     //while( mass < 9.21){
     for(int i = 0;i<10000;i++){
-      if(nexp_x->GetBinCenter(i+1) >= 0.212){
+      if(nexp_x->GetBinCenter(i+1) >= 0.212125){
       double_t mass = nexp_x->GetBinCenter(i+1);
       double_t gz = nexp_y->GetBinCenter(j+1);
     //  cout << " the value of i and j is " << i << " " << j << endl;
@@ -100,12 +101,14 @@ void nobs_nexp_v0() {
         continuum_th_lum_all = continuum_th_lum_all + continuum_th_lum;
         // cout << " the weighted and scaled luminosity is " << continuum_th_lum_all << endl;
       }
-      double brlumdet = gr_mu->Eval(mass) * deteff_fit->Eval(mass) * ((up1sxs->Eval(mass)*1e-3*4.77836) + (up2sxs->Eval(mass)*1e-3*3.5135) + (up3sxs->Eval(mass)*1e-3*16.89427) + (up4sxs->Eval(mass)*1e-3*690.555) + (up5sxs->Eval(mass)*1e-3*123.81655) + continuum_th_lum_all );
+      deteff = deteff_fit->Eval(mass);
+      if(deteff < 0){ deteff = 0;}
+      double brlumdet = gr_mu->Eval(mass) * deteff * ((up1sxs->Eval(mass)*1e-3*4.77836) + (up2sxs->Eval(mass)*1e-3*3.5135) + (up3sxs->Eval(mass)*1e-3*16.89427) + (up4sxs->Eval(mass)*1e-3*690.555) + (up5sxs->Eval(mass)*1e-3*123.81655) + continuum_th_lum_all );
       //       cout << " the deteff mubr and brlumdet are " << deteff_fit->Eval(mass) << " " << gr_mu->Eval(mass) << " " << brlumdet << endl;
-      nobs->GetPoint(i-212-1,vXout,vYout);
+      nobs->GetPoint(i-213,vXout,vYout);
       double nexp_n = pow(gz,2)*(brlumdet/pow(0.1,2));
       double gp_val = nexp_n/vYout;
-      if(gp_val > 1.){
+      if(gp_val >= 1.){
         gp->SetBinContent(i+1,j+1,gp_val);
       }
       //  cout << " the number of expected events is " << nexp_n << endl;
