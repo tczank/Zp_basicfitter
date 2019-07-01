@@ -85,7 +85,7 @@ void nobs_nexp_v0() {
       if(nexp_x->GetBinCenter(i+1) >= 0.212125){
       double_t mass = nexp_x->GetBinCenter(i+1);
       double_t gz = nexp_y->GetBinCenter(j+1);
-    //  cout << " the value of i and j is " << i << " " << j << endl;
+      cout << " the value of i and j is " << i << " " << j << endl;
       for(int l = 0; l < 15; l++){
         continuum_norm[l] = continuum_entries[l]/continuum_entries[0];
         continuum_th_lum = 1e-3*85.73205*(continuum_norm[l]*up4sxs->Eval(mass));
