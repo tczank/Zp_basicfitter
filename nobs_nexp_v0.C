@@ -28,14 +28,14 @@ void nobs_nexp_v0() {
   //## Loading the different CMS E "Theoretical" Cross section Br and det eff
   TFile * br_fil = new TFile("../merging_energies/Zp_BR.root");
   TFile * nobs_file = new TFile("../fit_reborn/newgp_merged_xs_all.root");
-  TFile * up1s_xs = new TFile("/home/thczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_1s.root");
-  TFile * up2s_xs = new TFile("/home/thczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_2s.root");
-  TFile * up3s_xs = new TFile("/home/thczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_3s.root");
-  TFile * up4s_xs = new TFile("/home/thczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/madgraphxs_nodecaymode.root");
-  TFile * up5s_xs = new TFile("/home/thczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_5s.root");
+  TFile * up1s_xs = new TFile("/home/tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_1s.root");
+  TFile * up2s_xs = new TFile("/home/tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_2s.root");
+  TFile * up3s_xs = new TFile("/home/tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_3s.root");
+  TFile * up4s_xs = new TFile("/home/tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/madgraphxs_nodecaymode.root");
+  TFile * up5s_xs = new TFile("/home/tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_5s.root");
   // thczank or tczank get your cd pwd first
 
-  TFile * deteff_plot = new TFile("../fit_reborn/db_parfits_new/detefffit.root");
+  TFile * deteff_plot = new TFile("../fit_reborn/detefffit.root");
   // path for detefffit might include a folder or not
 
   TFile * sqrs_scale = new TFile("./sqrts_scalefit.root");
@@ -80,12 +80,12 @@ void nobs_nexp_v0() {
   int ybin = nexp_y->FindBin(0.0000);
   //  cout << " the bin corresponding to the muon threshold is " << xbin << endl;
 
-  for(int j = 0;j<100;j++){
+  for(int j = 0;j<10000;j++){
     for(int i = 0;i<10000;i++){
       if(nexp_x->GetBinCenter(i+1) >= 0.212125){
       double_t mass = nexp_x->GetBinCenter(i+1);
-      double_t gz = nexp_y->GetBinCenter(j+1);
-           cout << " the value of i and j is " << i << " " << j << endl;
+      double_t gz = exp(nexp_y->GetBinCenter(j+1)*log(10));
+      //      cout << " the value of i and j is " << i << " " << j << endl;
       for(int l = 0; l < 15; l++){
         continuum_norm[l] = continuum_entries[l]/continuum_entries[0];
         continuum_th_lum = 1e-3*85.73205*(continuum_norm[l]*up4sxs->Eval(mass));
