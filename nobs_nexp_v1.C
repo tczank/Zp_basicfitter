@@ -80,12 +80,12 @@ void nobs_nexp_v1() {
   int ybin = nexp_y->FindBin(0.0000);
   //  cout << " the bin corresponding to the muon threshold is " << xbin << endl;
 
-  for(int j = 0;j<100;j++){
+  for(int j = 0;j<10000;j++){
     for(int i = 0;i<10000;i++){
       if(nexp_x->GetBinCenter(i+1) >= 0.212125){
       double_t mass = nexp_x->GetBinCenter(i+1);
-      double_t gz = nexp_y->GetBinCenter(j+1);
-           cout << " the value of i and j is " << i << " " << j << endl;
+      double_t gz = exp(nexp_y->GetBinCenter(j+1)*log(10));
+      //  cout << " the value of i and j is " << i << " " << j << endl;
       for(int l = 0; l < 15; l++){
         continuum_norm[l] = continuum_entries[l]/continuum_entries[0];
         continuum_th_lum = 1e-3*85.73205*(continuum_norm[l]*up4sxs->Eval(mass));
