@@ -76,6 +76,10 @@ void nobs_nexp_v1() {
 
   //  cout << " the bin corresponding to the muon threshold is " << xbin << endl;
 
+  TGHProgressBar * progress = new TGHProgressBar;
+  progress->DoRedraw();
+
+
   for(int j = 0;j<10000;j++){
     for(int i = 0;i<10000;i++){
       if(nexp_x->GetBinCenter(i+1) >= 0.212125){
