@@ -72,12 +72,8 @@ void nobs_nexp_v1() {
   // Number of Expected Events Calculation //
   double_t x = 0.018500; // reduced di muon threshold mass
   double_t mupdg = 4.*pow(0.1056583745,2); // reduced mass correction to invariant
-  double_t mass = sqrt(pow(x,2) + mupdg); //mz
-  double_t gz = 0.0001; // gp
   double_t vXout, vYout, deteff;
 
-  int xbin = nexp_x->FindBin(0.212125);
-  int ybin = nexp_y->FindBin(0.0000);
   //  cout << " the bin corresponding to the muon threshold is " << xbin << endl;
 
   for(int j = 0;j<10000;j++){
@@ -87,7 +83,7 @@ void nobs_nexp_v1() {
       double_t gz = exp(nexp_y->GetBinCenter(j+1)*log(10));
       //  cout << " the value of i and j is " << i << " " << j << endl;
       for(int l = 0; l < 15; l++){
-        continuum_norm[l] = continuum_entries[l]/continuum_entries[0];
+        continuum_norm[l] = continuum_entries[l]/(continuum_entries[0]+continuum_entries[1]+continuum_entries[2]+continuum_entries[3]+continuum_entries[4]+continuum_entries[5]+continuum_entries[6]+continuum_entries[7]+continuum_entries[8]+continuum_entries[9]+continuum_entries[10]+continuum_entries[11]+continuum_entries[12]+continuum_entries[13]+continuum_entries[14]) ;
         continuum_th_lum = 1e-3*85.73205*(continuum_norm[l]*up4sxs->Eval(mass));
         continuum_th_lum_all = continuum_th_lum_all + continuum_th_lum;
         // cout << " the weighted and scaled luminosity is " << continuum_th_lum_all << endl;
@@ -97,7 +93,7 @@ void nobs_nexp_v1() {
       double brlumdet = gr_mu->Eval(mass) * deteff * ((up1sxs->Eval(mass)*1e-3*4.77836) + (up2sxs->Eval(mass)*1e-3*3.5135) + (up3sxs->Eval(mass)*1e-3*16.89427) + (up4sxs->Eval(mass)*1e-3*690.555) + (up5sxs->Eval(mass)*1e-3*123.81655) + continuum_th_lum_all );
       //       cout << " the deteff mubr and brlumdet are " << deteff_fit->Eval(mass) << " " << gr_mu->Eval(mass) << " " << brlumdet << endl;
       nobs->GetPoint(i-213,vXout,vYout);
-      double nexp_n = pow(gz,2)*(brlumdet/pow(0.1,2));
+      double nexp_n = (brlumdet * pow(gz,2))/pow(0.1,2);
       double gp_val = nexp_n/vYout;
       if(gp_val >= 1.){
         gp->SetBinContent(i+1,j+1,gp_val);
