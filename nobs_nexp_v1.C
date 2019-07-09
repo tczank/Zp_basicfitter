@@ -55,10 +55,10 @@ void nobs_nexp_v1() {
 
   //Output File //
   TFile * f = new TFile("cor_nexp_nobs_merge_test.root","RECREATE");
-  TH2D * nexp = new TH2D("h_nexp_gp_m", "number of expected events by Z' coupling strength and mass;m_{Z'}[GeV/c^{2}];g';number of expected events;", 10000,0.0,10.0,10000,-5.,1.0);
+  TH2D * nexp = new TH2D("h_nexp_gp_m", "number of expected events by Z' coupling strength and mass;m_{Z'}[GeV/c^{2}];g';number of expected events;", 10000,0.0,10.0,10000,-5.,0.0);
   TH1F * nexp_x = new TH1F("h_nexp_gp_m_x", "number of expected events by Z' mass Xproject;m_{Z'}[GeV/c^{2}];number of expected events;", 10000,0.0,10.0);
-  TH1F * nexp_y = new TH1F("h_nexp_gp_m_y", "number of expected events by Z' coupling strength Yproject;g';number of expected events;", 10000,-5.,1.);
-  TH2D * gp = new TH2D("h_gp_m_gz", "g' coupling strength by mass and g'z;m_{Z'}[GeV/c^{2}];g';", 10000,0.0,10.0,10000,-5.,1.0);
+  TH1F * nexp_y = new TH1F("h_nexp_gp_m_y", "number of expected events by Z' coupling strength Yproject;g';number of expected events;", 10000,-5.,0.);
+  TH2D * gp = new TH2D("h_gp_m_gz", "g' coupling strength by mass and g'z;m_{Z'}[GeV/c^{2}];g';", 10000,0.0,10.0,10000,-5.,0.0);
   // ########################################################## //
 
   // Continuum sample theoretical cross section scaling//
@@ -80,8 +80,8 @@ void nobs_nexp_v1() {
     for(int i = 0;i<10000;i++){
       if(nexp_x->GetBinCenter(i+1) >= 0.212125){
       double_t mass = nexp_x->GetBinCenter(i+1);
-      double_t gz = exp(nexp_y->GetBinCenter(j+1)*log(10));
-      //  cout << " the value of i and j is " << i << " " << j << endl;
+      double_t gz = pow(10.,nexp_y->GetBinCenter(j+1));
+      //      cout << " the value of i and j is " << i << " " << j << " nexp_y bin center " << nexp_y->GetBinCenter(j+1) << " nexp_x bin center " << nexp_x->GetBinCenter(i+1) << endl;
       for(int l = 0; l < 15; l++){
         continuum_norm[l] = continuum_entries[l]/(continuum_entries[0]+continuum_entries[1]+continuum_entries[2]+continuum_entries[3]+continuum_entries[4]+continuum_entries[5]+continuum_entries[6]+continuum_entries[7]+continuum_entries[8]+continuum_entries[9]+continuum_entries[10]+continuum_entries[11]+continuum_entries[12]+continuum_entries[13]+continuum_entries[14]) ;
         continuum_th_lum = 1e-3*85.73205*(continuum_norm[l]*up4sxs->Eval(mass));
@@ -94,10 +94,11 @@ void nobs_nexp_v1() {
       //       cout << " the deteff mubr and brlumdet are " << deteff_fit->Eval(mass) << " " << gr_mu->Eval(mass) << " " << brlumdet << endl;
       nobs->GetPoint(i-213,vXout,vYout);
       double nexp_n = (brlumdet * pow(gz,2))/pow(0.1,2);
+      //   cout << " mass " << mass << " gz " << gz << " nexp_n " << nexp_n << endl;
       double gp_val = nexp_n/vYout;
-      if(gp_val >= 1.){
+      //   if(gp_val >= 1.){
         gp->SetBinContent(i+1,j+1,gp_val);
-      }
+        //  }
       //  cout << " the number of expected events is " << nexp_n << endl;
       nexp->SetBinContent(i+1,j+1,nexp_n);
       continuum_th_lum = 0;
