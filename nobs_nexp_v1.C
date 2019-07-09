@@ -90,10 +90,11 @@ void nobs_nexp_v1() {
       }
       deteff = deteff_fit->Eval(mass);
       if(deteff < 0){ deteff = 0;}
-      double brlumdet = gr_mu->Eval(mass) * deteff * ((up1sxs->Eval(mass)*1e-3*4.77836) + (up2sxs->Eval(mass)*1e-3*3.5135) + (up3sxs->Eval(mass)*1e-3*16.89427) + (up4sxs->Eval(mass)*1e-3*690.555) + (up5sxs->Eval(mass)*1e-3*123.81655) + continuum_th_lum_all );
+      double brlumdet = gr_mu->Eval(mass) * deteff * 0.1 * ((up1sxs->Eval(mass)*1e-3*4.77836) + (up2sxs->Eval(mass)*1e-3*3.5135) + (up3sxs->Eval(mass)*1e-3*16.89427) + (up4sxs->Eval(mass)*1e-3*690.555) + (up5sxs->Eval(mass)*1e-3*123.81655) + continuum_th_lum_all );
       //       cout << " the deteff mubr and brlumdet are " << deteff_fit->Eval(mass) << " " << gr_mu->Eval(mass) << " " << brlumdet << endl;
       nobs->GetPoint(i-213,vXout,vYout);
-      double nexp_n = (brlumdet * pow(gz,2))/pow(0.1,2);
+      //     double nexp_n = (brlumdet * pow(gz,2))/pow(0.1,2); THIS MIGHT BE WRONG
+      double nexp_n = (brlumdet * pow(gz,2));
       //   cout << " mass " << mass << " gz " << gz << " nexp_n " << nexp_n << endl;
       double gp_val = nexp_n/vYout;
       //   if(gp_val >= 1.){
