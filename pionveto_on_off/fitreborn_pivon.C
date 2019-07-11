@@ -15,7 +15,7 @@
 void fitreborn_pivon(TString signalfilename) {
 
   TFile * br_fil = new TFile("../../merging_energies/Zp_BR.root");
-  TFile * genid_isr_w = new TFile("../../signal_mc_dist_reader/all_4mu_redmu_cor_isr.root");
+  TFile * genid_isr_w = new TFile("./all_4mu_redmu_cor_isr_pvon.root");
 
   TGraph *gr_mu = new TGraph();
   TGraph *gr_isr_w = new TGraph();
@@ -432,18 +432,11 @@ void fitreborn_pivon(TString signalfilename) {
     double scount = (dpinvmasslm->Integral(binxl,binxh));
 
 
-       //triple gaussian parametrization model dependent OBSOLETE
-    //cout << tripSeff << " " << tripSeffer << " " << gr_mu->Eval(singpartripgaus->GetParameter(1)) << " " << 0.005 << " " <<  bcountfit/(dpinvmasslm->GetBinWidth(0)) << " " << bcountfiter/(dpinvmasslm->GetBinWidth(0)) << " " << intestep << " " << (intestep)/(0.711*(gr_mu->Eval(singpartripgaus->GetParameter(1)))*tripSeff) << " " << intesteper/(0.711*(gr_mu->Eval(singpartripgaus->GetParameter(1)))*tripSeff) << " " << significance << " " << normtripg[0] << " " << normtripg[1] << " " << normtripg[2] << " " << singpartripgaus->GetParameter(2) << " " << singpartripgaus->GetParameter(4) << " " << singpartripgaus->GetParameter(5) << endl;
-
     //double crystalball trial
 
-        cout << hist_mean << " " << dbw << " " << dbw_er << " " << dbfrac_1 << " " << dbfrac_1_er << " " << dbfrac_2 << " " << dbfrac_2_er << " " << tripSeff << " " << tripSeffer << " " << intestep << " " << intestep/(0.690555*(gr_mu->Eval(hist_mean)*tripSeff)) << " " << significance << endl;
+        cout << hist_mean << " " << dbw << " " << dbw_er << " " << dbfrac_1 << " " << dbfrac_1_er << " " << dbfrac_2 << " " << dbfrac_2_er << " " << fitfeff << " " << fitfeffer << " " << intestep << " " << intestep/(0.690555*(gr_mu->Eval(hist_mean)*tripSeff)) << " " << significance << endl;
 
     // cout << hist_mean << " " << dbw << " " << dbw_er << " " << dbfrac_1 << " " << dbfrac_1_er << " " << dbfrac_2 << " " << dbfrac_2_er << " " << tripSeff << " " << tripSeffer << " " << intestep << " " << intestep/(0.690555*(gr_mu->Eval(hist_mean)*tripSeff)) << " " << significance << " " << double_crystalball->GetParameter(2) << " " << double_crystalball->GetParError(2) << " " << double_crystalball->GetParameter(3) << " " << double_crystalball->GetParError(3) << " " << double_crystalball->GetParameter(4) << " " << double_crystalball->GetParError(4) << " " << double_crystalball->GetParameter(7) << " " << double_crystalball->GetParError(7) << " " << double_crystalball->GetParameter(8) << " " << double_crystalball->GetParError(8) << " " << double_crystalball->GetParameter(9) << " " << double_crystalball->GetParError(9) << endl;
-
-
-    //model independent OBSOLETE
-    // cout << tripSeff << " " << tripSeffer << " " << gr_mu->Eval(singpartripgaus->GetParameter(1)) << " " << 0.005 << " " <<  bcountfit/(dpinvmasslm->GetBinWidth(0)) << " " << bcountfiter/(dpinvmasslm->GetBinWidth(0)) << " " << intestep << " " << (intestep)/(0.977*tripSeff) << " " << intesteper/(0.977*tripSeff) << " " << dbw << " " << triperww << " " << significance << endl;
 
 
     //    cout << hist_mean << " " << tripSeff << " " << tripSeffer << " " << fitfeff << " " << fitfeffer << endl;
