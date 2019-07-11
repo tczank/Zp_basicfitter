@@ -26,7 +26,7 @@ void sigmc_dreader_pvon () {
     //cout << " for the file " << isr_name[i] << " number " << i << " the zp resonance is in the reduced mass of " << redmu_isr[i]->GetBinCenter(redmu_isr[i]->GetMaximumBin()) << endl;
     redmass_isr[i] = redmu_isr[i]->GetBinCenter(redmu_isr[i]->GetMaximumBin());
     redmass_isr_width[i] = redmu_isr[i]->GetStdDev();
-    deteff_genid[i] = redmu_isr[i]->GetEntries/100000;
+    deteff_genid[i] = redmu_isr[i]->GetEntries()/100000;
 
     redmass_isr_4mu[i] = redmu_isr_4mu[i]->GetBinCenter(redmu_isr_4mu[i]->GetMaximumBin());
     redmass_isr_width_4mu[i] = redmu_isr_4mu[i]->GetStdDev();
