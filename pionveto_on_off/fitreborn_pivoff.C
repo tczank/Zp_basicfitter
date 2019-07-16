@@ -83,6 +83,8 @@ void fitreborn_pivoff(TString signalfilename) {
     double higherfit = hist_mean + 50*peakwidth;
     if(higherfit > 10.0){higherfit = 10.;}
 
+
+
     double_crystalball = new TF1("double_crystalball", "crystalball(0) + crystalball(5) ", hist_mean - 100*peakwidth , hist_mean + 100*peakwidth);
 
     double_crystalball->SetParName(0,"Constant_1");
@@ -112,6 +114,7 @@ void fitreborn_pivoff(TString signalfilename) {
 
     double_crystalball->SetLineColor(4);
     double_crystalball->SetRange(lowerfit,  higherfit);
+    if(hist_mean >= 8.212){double_crystalball->SetRange(hist_mean - 1, hist_mean +1);}
 
       pol3n = new TF1("norm pol3", "[0]*([1]+ [2]*x +[3]*x*x +[4]*x*x*x)", hist_mean -50*peakwidth, hist_mean + 50*peakwidth);
       pol3n->SetRange(lowerfit,higherfit);
