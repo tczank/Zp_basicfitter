@@ -81,7 +81,7 @@ void fitreborn_pivoff(TString signalfilename) {
     double lowerfit = hist_mean -40*peakwidth;
     if(lowerfit < 0){lowerfit =0;}
     double higherfit = hist_mean + 50*peakwidth;
-    if(higherfit > 10.0){higherfit = 10.;}
+    if(higherfit > 10.5){higherfit = 10.5;}
 
 
 
