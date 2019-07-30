@@ -35,7 +35,7 @@ void nobs_nexp_v0() {
   TFile * up5s_xs = new TFile("/home/tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_5s.root");
   // thczank or tczank get your cd pwd first
 
-  TFile * deteff_plot = new TFile("../fit_reborn/detefffit.root");
+  TFile * deteff_plot = new TFile("../fit_reborn/db_parfits_new/detefffit.root");
   // path for detefffit might include a folder or not
 
   TFile * sqrs_scale = new TFile("./sqrts_scalefit.root");
