@@ -41,9 +41,12 @@ void fitreborn_pivoff(TString signalfilename) {
   TF1 * dbwidth = new TF1("dbwidth_evol", "pol3", 0,10);
   dbwidth->SetParameters(0.003697,0.001426,-0.0001015,-7.062e-06);
 
-   dpinvmasslm = (TH1F*)signal->Get(TString::Format("h_mycombitrigeff_3"));
+  //dpinvmasslm = (TH1F*)signal->Get(TString::Format("h_mycombitrigeff_3"));
     bginvmasslm = (TH1F*)bg->Get(TString::Format("h_mycombitrigeff_3"));
     genid_invmass = (TH1F*)signal->Get("h_genidredmu_0");
+
+    //Considering Ishikawa-san's correction on getting signal shape parameters based on truth tagged
+    dpinvmasslm = genid_invmass;
 
   TCanvas *C1 = new TCanvas("C1", "", 100, 100, 1400, 1400);
      dpinvmasslm->SetLineColor(1);
@@ -78,9 +81,9 @@ void fitreborn_pivoff(TString signalfilename) {
   rms = dpinvmasslm->GetBinWidth(1);
   std_dev = dpinvmasslm->GetStdDev(1);
 
-    double lowerfit = hist_mean -40*peakwidth;
+    double lowerfit = hist_mean -50*peakwidth;
     if(lowerfit < 0){lowerfit =0;}
-    double higherfit = hist_mean + 50*peakwidth;
+    double higherfit = hist_mean + 60*peakwidth;
     if(higherfit > 10.5){higherfit = 10.5;}
 
 
