@@ -41,7 +41,7 @@ void fitreborn_pivoff(TString signalfilename) {
   TF1 * dbwidth = new TF1("dbwidth_evol", "pol3", 0,10);
   dbwidth->SetParameters(0.003697,0.001426,-0.0001015,-7.062e-06);
 
-  //dpinvmasslm = (TH1F*)signal->Get(TString::Format("h_mycombitrigeff_3"));
+  dpinvmasslm = (TH1F*)signal->Get(TString::Format("h_mycombitrigeff_3"));
     bginvmasslm = (TH1F*)bg->Get(TString::Format("h_mycombitrigeff_3"));
     genid_invmass = (TH1F*)signal->Get("h_genidredmu_0");
 
