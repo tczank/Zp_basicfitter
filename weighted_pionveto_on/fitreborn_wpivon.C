@@ -43,7 +43,10 @@ void fitreborn_wpivon(TString signalfilename) {
 
   //   dpinvmasslm = (TH1F*)signal->Get(TString::Format("h_mycombitrigeffw_3"));
     bginvmasslm = (TH1F*)bg->Get(TString::Format("h_mycombitrigeffw_3"));
-    genid_invmass = (TH1F*)signal->Get("h_mycombitrigeffw_0");
+    // genid_invmass = (TH1F*)signal->Get("h_mycombitrigeffw_0");
+
+    // for the pion veto on without the weighting factor case
+       genid_invmass = (TH1F*)signal->Get("h_genidredmu_0");
 
     //Considering Ishikawa-san's correction on getting signal shape parameters based on truth tagged
     dpinvmasslm = genid_invmass;
@@ -81,9 +84,9 @@ void fitreborn_wpivon(TString signalfilename) {
   rms = dpinvmasslm->GetBinWidth(1);
   std_dev = dpinvmasslm->GetStdDev(1);
 
-    double lowerfit = hist_mean -40*peakwidth;
+    double lowerfit = hist_mean -60*peakwidth;
     if(lowerfit < 0){lowerfit =0;}
-    double higherfit = hist_mean + 50*peakwidth;
+    double higherfit = hist_mean + 70*peakwidth;
     if(higherfit > 10.0){higherfit = 10.;}
 
     double_crystalball = new TF1("double_crystalball", "crystalball(0) + crystalball(5) ", hist_mean - 100*peakwidth , hist_mean + 100*peakwidth);
@@ -437,9 +440,12 @@ void fitreborn_wpivon(TString signalfilename) {
 
     //double crystalball trial
 
-        cout << hist_mean << " " << dbw << " " << dbw_er << " " << dbfrac_1 << " " << dbfrac_1_er << " " << dbfrac_2 << " " << dbfrac_2_er << " " << fitfeff << " " << fitfeffer << " " << intestep << " " << intestep/(0.690555*(gr_mu->Eval(hist_mean)*tripSeff)) << " " << significance << endl;
+    //    cout << hist_mean << " " << dbw << " " << dbw_er << " " << dbfrac_1 << " " << dbfrac_1_er << " " << dbfrac_2 << " " << dbfrac_2_er << " " << fitfeff << " " << fitfeffer << " " << intestep << " " << intestep/(0.690555*(gr_mu->Eval(hist_mean)*tripSeff)) << " " << significance << endl;
 
-    // cout << hist_mean << " " << dbw << " " << dbw_er << " " << dbfrac_1 << " " << dbfrac_1_er << " " << dbfrac_2 << " " << dbfrac_2_er << " " << tripSeff << " " << tripSeffer << " " << intestep << " " << intestep/(0.690555*(gr_mu->Eval(hist_mean)*tripSeff)) << " " << significance << " " << double_crystalball->GetParameter(2) << " " << double_crystalball->GetParError(2) << " " << double_crystalball->GetParameter(3) << " " << double_crystalball->GetParError(3) << " " << double_crystalball->GetParameter(4) << " " << double_crystalball->GetParError(4) << " " << double_crystalball->GetParameter(7) << " " << double_crystalball->GetParError(7) << " " << double_crystalball->GetParameter(8) << " " << double_crystalball->GetParError(8) << " " << double_crystalball->GetParameter(9) << " " << double_crystalball->GetParError(9) << endl;
+
+    //to parametrize the double gaussian completely
+
+     cout << hist_mean << " " << dbw << " " << dbw_er << " " << dbfrac_1 << " " << dbfrac_1_er << " " << dbfrac_2 << " " << dbfrac_2_er << " " << tripSeff << " " << tripSeffer << " " << intestep << " " << intestep/(0.690555*(gr_mu->Eval(hist_mean)*tripSeff)) << " " << significance << " " << double_crystalball->GetParameter(2) << " " << double_crystalball->GetParError(2) << " " << double_crystalball->GetParameter(3) << " " << double_crystalball->GetParError(3) << " " << double_crystalball->GetParameter(4) << " " << double_crystalball->GetParError(4) << " " << double_crystalball->GetParameter(7) << " " << double_crystalball->GetParError(7) << " " << double_crystalball->GetParameter(8) << " " << double_crystalball->GetParError(8) << " " << double_crystalball->GetParameter(9) << " " << double_crystalball->GetParError(9) << endl;
 
 
     //    cout << hist_mean << " " << tripSeff << " " << tripSeffer << " " << fitfeff << " " << fitfeffer << endl;

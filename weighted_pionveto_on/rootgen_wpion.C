@@ -2,7 +2,7 @@
 
 void rootgen_wpion() {
   ifstream in;
-  in.open(Form("./wpion_eff_all.dat"));
+  in.open(Form("./pion_eff_all.dat"));
 
   Float_t x,z,ez,f1,ef1,f2,ef2,y,ey,o,xs,s;
 
@@ -26,7 +26,7 @@ void rootgen_wpion() {
   double_t significance[18];
 
   Int_t nlines = 0;
-   TFile *f = new TFile("wpioneff_all.root","RECREATE");
+   TFile *f = new TFile("pioneff_all.root","RECREATE");
    TNtuple *ntuple = new TNtuple("ntuple","data from parameters_all","x:z:ez:f1:ef1:f2:ef2:y:ey:o:xs:s");
 
    while (1) {
