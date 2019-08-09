@@ -1,47 +1,47 @@
 #include "Riostream.h"
 
-void rootgen_wpion_pars() {
+void rootgen_pioff_pars() {
   ifstream in;
-  in.open(Form("pioffeff_all.dat"));
+  in.open(Form("pioff_eff_all.dat"));
 
   Float_t x,z,ez,f1,ef1,f2,ef2,y,ey,o,xs,s, fw, fw_er, fal, fal_er, fn, fn_er, sw, sw_er, sal, sal_er, sn, sn_er;
 
-  double_t m[19];
-  Double_t ex[19] = {0};
+  double_t m[21];
+  Double_t ex[21] = {0};
 
-  double_t ww[19];
-  double_t ww_er[19];
+  double_t ww[21];
+  double_t ww_er[21];
 
-  double_t db_f1[19];
-  double_t e_db_f1[19];
+  double_t db_f1[21];
+  double_t e_db_f1[21];
 
-  double_t db_f2[19];
-  double_t e_db_f2[19];
+  double_t db_f2[21];
+  double_t e_db_f2[21];
 
-  Double_t deteff[19];
-  Double_t deteffer[19];
+  Double_t deteff[21];
+  Double_t deteffer[21];
 
-  double_t nobs[19];
-  double_t cross[19];
-  double_t significance[19];
+  double_t nobs[21];
+  double_t cross[21];
+  double_t significance[21];
 
-  double_t w1[19];
-  double_t w1_er[19];
+  double_t w1[21];
+  double_t w1_er[21];
 
-  double_t al1[19];
-  double_t al1_er[19];
+  double_t al1[21];
+  double_t al1_er[21];
 
-  double_t n1[19];
-  double_t n1_er[19];
+  double_t n1[21];
+  double_t n1_er[21];
 
-  double_t w2[19];
-  double_t w2_er[19];
+  double_t w2[21];
+  double_t w2_er[21];
 
-  double_t al2[19];
-  double_t al2_er[19];
+  double_t al2[21];
+  double_t al2_er[21];
 
-  double_t n2[19];
- double_t n2_er[19];
+  double_t n2[21];
+ double_t n2_er[21];
 
   Int_t nlines = 0;
    TFile *f = new TFile("pioffeff_all.root","RECREATE");
@@ -50,7 +50,7 @@ void rootgen_wpion_pars() {
    while (1) {
      in >> x >> z >> ez >> f1 >> ef1 >> f2 >> ef2 >> y >> ey >> o >> xs >> s >> fw >> fw_er >> fal >> fal_er >> fn >> fn_er >> sw >> sw_er >> sal >> sal_er >> sn >> sn_er;
      if (!in.good()) break;
-     if (nlines < 19) printf(" x=%8f, z=%8f, ez=%8f, f1=%8f, ef1=%8f, f2=%8f, ef2=%8f, y=%8f, ey=%8f, o=%8f, xs=%8f, s=%8f",x, z, ez, f1,ef1, f2, ef2, y, ey, o, xs, s);
+     if (nlines < 21) printf(" x=%8f, z=%8f, ez=%8f, f1=%8f, ef1=%8f, f2=%8f, ef2=%8f, y=%8f, ey=%8f, o=%8f, xs=%8f, s=%8f",x, z, ez, f1,ef1, f2, ef2, y, ey, o, xs, s);
      ntuple->Fill(x,z,ez,f1,ef1,f2,ef2,y,ey,o,xs,s);
      m[nlines] = x;
      deteff[nlines] = y;
@@ -109,7 +109,7 @@ void rootgen_wpion_pars() {
      }
      nlines++;
    }
-  printf(" found %d points\n",nlines);
+     printf(" found %d points\n",nlines);
 
   TGraphErrors * gr_deteff = new TGraphErrors(nlines,m,deteff,ex,deteffer);
   gr_deteff->SetTitle(" detection efficiency as function of the Z' mass;M[GeV/c^{2}];Detection Efficiency;");

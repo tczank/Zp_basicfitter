@@ -43,10 +43,10 @@ void fitreborn_wpivon(TString signalfilename) {
 
   //   dpinvmasslm = (TH1F*)signal->Get(TString::Format("h_mycombitrigeffw_3"));
     bginvmasslm = (TH1F*)bg->Get(TString::Format("h_mycombitrigeffw_3"));
-    // genid_invmass = (TH1F*)signal->Get("h_mycombitrigeffw_0");
+    genid_invmass = (TH1F*)signal->Get("h_mycombitrigeffw_0");
 
     // for the pion veto on without the weighting factor case
-       genid_invmass = (TH1F*)signal->Get("h_genidredmu_0");
+    //       genid_invmass = (TH1F*)signal->Get("h_genidredmu_0");
 
     //Considering Ishikawa-san's correction on getting signal shape parameters based on truth tagged
     dpinvmasslm = genid_invmass;
