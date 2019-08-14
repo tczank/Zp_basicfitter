@@ -88,13 +88,13 @@ void nobs_nexp_v2() {
       //      cout << " the value of i and j is " << i << " " << j << endl;
       for(int l = 0; l < 15; l++){
         continuum_norm[l] = continuum_entries[l]/continuum_entries[0];
-        continuum_th_lum = 1e-3*85.73205*(continuum_norm[l]*up4sxs->Eval(mass));
+        continuum_th_lum = 1e3*85.73205*(continuum_norm[l]*up4sxs->Eval(mass));
         continuum_th_lum_all = continuum_th_lum_all + continuum_th_lum;
         // cout << " the weighted and scaled luminosity is " << continuum_th_lum_all << endl;
       }
       deteff = deteff_fit->Eval(mass);
       if(deteff < 0){ deteff = 0;}
-      double brlumdet = gr_mu->Eval(mass) * deteff * ((up1sxs->Eval(mass)*1e-3*4.77836) + (up2sxs->Eval(mass)*1e-3*3.5135) + (up3sxs->Eval(mass)*1e-3*16.89427) + (up4sxs->Eval(mass)*1e-3*690.555) + (up5sxs->Eval(mass)*1e-3*123.81655) + continuum_th_lum_all );
+      double brlumdet = gr_mu->Eval(mass) * deteff * ((up1sxs->Eval(mass)*1e3*4.77836) + (up2sxs->Eval(mass)*1e3*3.5135) + (up3sxs->Eval(mass)*1e3*16.89427) + (up4sxs->Eval(mass)*1e3*690.555) + (up5sxs->Eval(mass)*1e3*123.81655) + continuum_th_lum_all );
       //       cout << " the deteff mubr and brlumdet are " << deteff_fit->Eval(mass) << " " << gr_mu->Eval(mass) << " " << brlumdet << endl;
       nobs->GetPoint(i-213,vXout,vYout);
       double nexp_n = pow(gz,2)*(brlumdet/pow(0.1,2));
