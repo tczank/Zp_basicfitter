@@ -55,10 +55,10 @@ void nobs_nexp_v2() {
 
   //Output File //
   TFile * f = new TFile("real_pioff_nexp_nobs.root","RECREATE");
-  TH2D * nexp = new TH2D("h_nexp_gp_m", "number of expected events by Z' coupling strength and mass;m_{Z'}[GeV/c^{2}];g';number of expected events;", 10000,0.0,10.0,10000,-4.,0.0);
-  TH1F * nexp_x = new TH1F("h_nexp_gp_m_x", "number of expected events by Z' mass Xproject;m_{Z'}[GeV/c^{2}];number of expected events;", 10000,0.0,10.0);
-  TH1F * nexp_y = new TH1F("h_nexp_gp_m_y", "number of expected events by Z' coupling strength Yproject;g';number of expected events;", 10000,-4.,0.);
-  TH2D * gp = new TH2D("h_gp_m_gz", "g' coupling strength by mass and g'z;m_{Z'}[GeV/c^{2}];g';", 10000,0.0,10.0,10000,-4.,0.0);
+  TH2D * nexp = new TH2D("h_nexp_gp_m", "number of expected events by Z' coupling strength and mass;m_{Z'}[GeV/c^{2}];g';number of expected events;", 11064,0.0,10.0,10000,-5.,0.0);
+  TH1F * nexp_x = new TH1F("h_nexp_gp_m_x", "number of expected events by Z' mass Xproject;m_{Z'}[GeV/c^{2}];number of expected events;", 11064,0.0,10.0);
+  TH1F * nexp_y = new TH1F("h_nexp_gp_m_y", "number of expected events by Z' coupling strength Yproject;g';number of expected events;", 11064,-5.,0.);
+  TH2D * gp = new TH2D("h_gp_m_gz", "g' coupling strength by mass and g'z;m_{Z'}[GeV/c^{2}];g';", 11064,0.0,10.0,11064,-5.,0.0);
   // ########################################################## //
 
   // Continuum sample theoretical cross section scaling//
@@ -80,12 +80,13 @@ void nobs_nexp_v2() {
   int ybin = nexp_y->FindBin(0.0000);
   //  cout << " the bin corresponding to the muon threshold is " << xbin << endl;
 
+
   for(int j = 0;j<10000;j++){
     for(int i = 0;i<10000;i++){
      if(nexp_x->GetBinCenter(i+1) >= 0.212125){
-      double_t mass = nexp_x->GetBinCenter(i+1);
+       double_t mass = nexp_x->GetBinCenter(i+1);
       //      double_t gz = exp(nexp_y->GetBinCenter(j+1)*log(10));
-      double_t gz = pow(10,nexp_y->GetBinCenter(j+1));
+      double_t gz = pow(10.,nexp_y->GetBinCenter(j+1));
       // cout << " the value of i and j is " << i << " " << j << endl;
            // cout << " mass is " << mass << " and the gz " << gz << endl;
       for(int l = 0; l < 15; l++){
@@ -98,10 +99,11 @@ void nobs_nexp_v2() {
       if(deteff < 0){ deteff = 0;}
       double brlumdet = gr_mu->Eval(mass) * deteff * ((up1sxs->Eval(mass)*1e3*4.77836) + (up2sxs->Eval(mass)*1e3*3.5135) + (up3sxs->Eval(mass)*1e3*16.89427) + (up4sxs->Eval(mass)*1e3*690.555) + (up5sxs->Eval(mass)*1e3*123.81655) + continuum_th_lum_all );
       //     cout << " the deteff mubr and brlumdet are " << deteff_fit->Eval(mass) << " " << gr_mu->Eval(mass) << " " << brlumdet << endl;
-      nobs->GetPoint(i-213,vXout,vYout);
-      double nexp_n = pow(gz,2)*(brlumdet/pow(0.1,2));
+      if(i-235>=0){nobs->GetPoint(i-235,vXout,vYout);}
+      else{nobs->GetPoint(0,vXout,vYout);}
+      double nexp_n = (brlumdet*pow(gz,2))/pow(0.1,2);
       double gp_val = nexp_n/vYout;
-      if(gp_val > 1.){
+      if(gp_val >= 1.){
         gp->SetBinContent(i+1,j+1,gp_val);
       }
       // cout << " the number of expected events is " << nexp_n << endl;
