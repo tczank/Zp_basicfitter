@@ -28,10 +28,10 @@ void nobs_nexp_v2() {
   //## Loading the different CMS E "Theoretical" Cross section Br and det eff
   TFile * br_fil = new TFile("../merging_energies/Zp_BR.root");
   TFile * nobs_file = new TFile("./real_pioff_all.root");
-  TFile * up1s_xs = new TFile("/home/tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_1s.root");
-  TFile * up2s_xs = new TFile("/home/tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_2s.root");
-  TFile * up3s_xs = new TFile("/home/tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_3s.root");
-  TFile * up4s_xs = new TFile("/home/tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/madgraphxs_nodecaymode.root");
+  TFile * up1s_xs = new TFile("~tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_1s.root");
+  TFile * up2s_xs = new TFile("~tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_2s.root");
+  TFile * up3s_xs = new TFile("~tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_3s.root");
+  TFile * up4s_xs = new TFile("~tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/madgraphxs_nodecaymode.root");
   TFile * up5s_xs = new TFile("/home/tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_5s.root");
   // thczank or tczank get your cd pwd first
 
