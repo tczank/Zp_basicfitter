@@ -32,7 +32,7 @@ void nobs_nexp_v3() {
   TFile * up2s_xs = new TFile("~tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_2s.root");
   TFile * up3s_xs = new TFile("~tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_3s.root");
   TFile * up4s_xs = new TFile("~tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/madgraphxs_nodecaymode.root");
-  TFile * up5s_xs = new TFile("/home/tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_5s.root");
+  TFile * up5s_xs = new TFile("~tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_5s.root");
   // thczank or tczank get your cd pwd first
 
   TFile * deteff_plot = new TFile("./pionveto_on_off/pioff_pars/pioff_deteff.root");
