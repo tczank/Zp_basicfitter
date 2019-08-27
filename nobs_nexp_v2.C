@@ -8,7 +8,7 @@
 #include "TMath.h"
 #include "TFile.h"
 #include <cmath>
-
+#include <stdlib.h>
 //2019/06/07 Merging different CMS E Belle samples procedure
 // Calculation of the total number of expected events by "guessing" different gZ'
 // scanning from 10^-4 to 1
@@ -57,8 +57,8 @@ void nobs_nexp_v2() {
   TFile * f = new TFile("real_pioff_nexp_nobs.root","RECREATE");
   TH2D * nexp = new TH2D("h_nexp_gp_m", "number of expected events by Z' coupling strength and mass;m_{Z'}[GeV/c^{2}];g';number of expected events;", 11064,0.0,10.0,10000,-5.,0.0);
   TH1F * nexp_x = new TH1F("h_nexp_gp_m_x", "number of expected events by Z' mass Xproject;m_{Z'}[GeV/c^{2}];number of expected events;", 11064,0.0,10.0);
-  TH1F * nexp_y = new TH1F("h_nexp_gp_m_y", "number of expected events by Z' coupling strength Yproject;g';number of expected events;", 11064,-5.,0.);
-  TH2D * gp = new TH2D("h_gp_m_gz", "g' coupling strength by mass and g'z;m_{Z'}[GeV/c^{2}];g';", 11064,0.0,10.0,11064,-5.,0.0);
+  TH1F * nexp_y = new TH1F("h_nexp_gp_m_y", "number of expected events by Z' coupling strength Yproject;g';number of expected events;", 10000,-5.,0.);
+  TH2D * gp = new TH2D("h_gp_m_gz", "g' coupling strength by mass and g'z;m_{Z'}[GeV/c^{2}];g';", 11064,0.0,10.0,10000,-5.,0.0);
   // ########################################################## //
 
   // Continuum sample theoretical cross section scaling//
@@ -76,17 +76,16 @@ void nobs_nexp_v2() {
   // double_t gz = 0.0001; // gp
   double_t vXout, vYout, deteff;
 
-  int xbin = nexp_x->FindBin(0.212125);
-  int ybin = nexp_y->FindBin(0.0000);
   //  cout << " the bin corresponding to the muon threshold is " << xbin << endl;
 
 
   for(int j = 0;j<10000;j++){
-    for(int i = 0;i<10000;i++){
+    for(int i = 0;i<11064;i++){
      if(nexp_x->GetBinCenter(i+1) >= 0.212125){
        double_t mass = nexp_x->GetBinCenter(i+1);
       //      double_t gz = exp(nexp_y->GetBinCenter(j+1)*log(10));
       double_t gz = pow(10.,nexp_y->GetBinCenter(j+1));
+      cout << " j " << j << " nexp_y" << nexp_y->GetBinCenter(j+1) << " gz " << gz << endl;
       // cout << " the value of i and j is " << i << " " << j << endl;
            // cout << " mass is " << mass << " and the gz " << gz << endl;
       for(int l = 0; l < 15; l++){
@@ -103,6 +102,8 @@ void nobs_nexp_v2() {
       else{nobs->GetPoint(0,vXout,vYout);}
       double nexp_n = (brlumdet*pow(gz,2))/pow(0.1,2);
       double gp_val = nexp_n/vYout;
+      // if(gz == 1e-5){
+      cout << " mass " << mass << " gz " << gz <<  " nexp_n " << nexp_n << " vYout " << vYout << " gp_val " << gp_val << endl;
       if(gp_val >= 1.){
         gp->SetBinContent(i+1,j+1,gp_val);
       }
