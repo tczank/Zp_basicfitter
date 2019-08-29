@@ -102,6 +102,9 @@ void nobs_nexp_v3() {
       if(i-235>=0){nobs->GetPoint(i-235,vXout,vYout);}
       else{nobs->GetPoint(0,vXout,vYout);}
       double nexp_n = (brlumdet*pow(gz,2))/pow(0.1,2);
+      if(mass > 8.42 && mass < 8.43){nexp_n = 0;}
+      if(mass > 9.64 && mass < 9.66){nexp_n = 0;}
+      if(mass > 9.69 && mass < 9.70){nexp_n = 0;}
       double gp_val = nexp_n/vYout;
       if(gp_val >= 1.){
         gp->SetBinContent(i+1,j+1,gp_val);
