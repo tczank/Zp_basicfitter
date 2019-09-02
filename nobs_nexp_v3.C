@@ -27,7 +27,7 @@ void nobs_nexp_v3() {
 
   //## Loading the different CMS E "Theoretical" Cross section Br and det eff
   TFile * br_fil = new TFile("../merging_energies/Zp_BR.root");
-  TFile * nobs_file = new TFile("./real_pioff_all.root");
+  TFile * nobs_file = new TFile("./real_pion_all.root");
   TFile * up1s_xs = new TFile("~tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_1s.root");
   TFile * up2s_xs = new TFile("~tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_2s.root");
   TFile * up3s_xs = new TFile("~tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_3s.root");
@@ -54,7 +54,7 @@ void nobs_nexp_v3() {
   // ###############################################################//
 
   //Output File //
-  TFile * f = new TFile("real_pioff_nexp_nobs.root","RECREATE");
+  TFile * f = new TFile("real_pion_nexp_nobs.root","RECREATE");
   TH2D * nexp = new TH2D("h_nexp_gp_m", "number of expected events by Z' coupling strength and mass;m_{Z'}[GeV/c^{2}];g';number of expected events;", 11064,0.0,10.0,10000,-5.,0.0);
   TH1F * nexp_x = new TH1F("h_nexp_gp_m_x", "number of expected events by Z' mass Xproject;m_{Z'}[GeV/c^{2}];number of expected events;", 11064,0.0,10.0);
   TH1F * nexp_y = new TH1F("h_nexp_gp_m_y", "number of expected events by Z' coupling strength Yproject;g';number of expected events;", 10000,-5.,0.);
@@ -102,9 +102,9 @@ void nobs_nexp_v3() {
       if(i-235>=0){nobs->GetPoint(i-235,vXout,vYout);}
       else{nobs->GetPoint(0,vXout,vYout);}
       double nexp_n = (brlumdet*pow(gz,2))/pow(0.1,2);
-      if(mass > 8.42 && mass < 8.43){nexp_n = 0;}
-      if(mass > 9.64 && mass < 9.66){nexp_n = 0;}
-      if(mass > 9.68 && mass < 9.74){nexp_n = 0;}
+      // if(mass > 8.42 && mass < 8.43){nexp_n = 0;}
+      //if(mass > 9.64 && mass < 9.66){nexp_n = 0;}
+      //if(mass > 9.68 && mass < 9.74){nexp_n = 0;}
       double gp_val = nexp_n/vYout;
       if(gp_val >= 1.){
         gp->SetBinContent(i+1,j+1,gp_val);
