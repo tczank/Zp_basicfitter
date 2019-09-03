@@ -294,7 +294,7 @@ void fitreborn_pivoff(TString signalfilename) {
       double low_range = lowerfit;
       double high_range = higherfit;
 
-      dbcrysnpol3_forpull->SetRange(low_range,high_range);
+      //   dbcrysnpol3_forpull->SetRange(low_range,high_range);
 
       if(low_range < 0.0000){
         low_range = 0.00;
