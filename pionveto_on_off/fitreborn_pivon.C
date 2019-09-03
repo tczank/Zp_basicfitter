@@ -98,17 +98,17 @@ void fitreborn_pivon(TString signalfilename) {
 
     double_crystalball->SetNpx(1000);
 
-    double_crystalball->SetParLimits(0,10.,entriesatmean);
-    double_crystalball->FixParameter(1,hist_mean);
-    double_crystalball->FixParameter(6,hist_mean);
-    double_crystalball->SetParLimits(2,rms,10*peakwidth);
+    double_crystalball->SetParLimits(0,0.,entriesatmean);
+    double_crystalball->SetParameter(1,hist_mean);
+    double_crystalball->SetParameter(6,hist_mean);
+    double_crystalball->SetParLimits(2,rms,3*peakwidth);
     double_crystalball->SetParLimits(3,-5,0.);
-    double_crystalball->SetParLimits(4,0.,3.);
-    double_crystalball->SetParLimits(5,10.,entriesatmean);
-    double_crystalball->SetParLimits(7,rms,10*peakwidth);
+    double_crystalball->SetParLimits(4,0.,6.);
+    double_crystalball->SetParLimits(5,0.,entriesatmean);
+    double_crystalball->SetParLimits(7,rms,3*peakwidth);
     double_crystalball->SetParLimits(8,0.0,5);
     // double_crystalball->SetParLimits(9,50.0,entriesatmean);
-    double_crystalball->SetParLimits(9,0,3);
+    double_crystalball->SetParLimits(9,0,6);
 
     double_crystalball->SetLineColor(4);
     double_crystalball->SetRange(lowerfit,  higherfit);
@@ -151,7 +151,9 @@ void fitreborn_pivon(TString signalfilename) {
       thirdpolchi = normpol3->Chi2();
 
       // TFitResultPtr rebornfit = dpinvmasslm->Fit(triplegexp,"RBQS+");
-       TFitResultPtr cballfit = dpinvmasslm->Fit(double_crystalball,"MBQS+");
+       TFitResultPtr cballfit = dpinvmasslm->Fit(double_crystalball,"RNMBQS+");
+       cballfit = dpinvmasslm->Fit(double_crystalball,"RMBQS+");
+
        //       cballfit->Print();
 
       TAxis * xaxis = bginvmasslm->GetXaxis();
@@ -162,11 +164,11 @@ void fitreborn_pivon(TString signalfilename) {
       Double_t binxl_val = dpinvmasslm->GetBinCenter(binxl);
       Double_t binxh_val = dpinvmasslm->GetBinCenter(binxh);
       if(binxl_val < 0.00000){
-        binxl = xaxis->FindBin(hist_mean - );
+        binxl = xaxis->FindBin(hist_mean - 30*peakwidth );
         binxl_val = dpinvmasslm->GetBinCenter(binxl);
       }
       if(binxh_val > 10.500){
-        binxh = xaxis->FindBin(10.5);
+        binxh = xaxis->FindBin(hist_mean + 30*peakwidth);
         binxh_val = dpinvmasslm->GetBinCenter(binxh);
     }
       Int_t binint = binxh - binxl;
