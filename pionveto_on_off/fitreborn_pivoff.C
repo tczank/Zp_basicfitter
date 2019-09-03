@@ -252,7 +252,7 @@ void fitreborn_pivoff(TString signalfilename) {
       ///####Toy Montecarlo##################/////
 
 
-      TF1 * dbcrysnpol3_forpull = new TF1("double crystal ball with a 3rd order poly", " [15]*(crystalball(0)  + crystalball(5)) + [10]*([11]+[12]*x +[13]*x*x + [14]*x*x*x)", hist_mean-50*peakwidth, hist_mean+50*peakwidth);
+      TF1 * dbcrysnpol3_forpull = new TF1("double crystal ball with a 3rd order poly", " [15]*(crystalball(0)  + crystalball(5)) + [10]*([11]+[12]*x +[13]*x*x + [14]*x*x*x)", hist_mean-100*peakwidth, hist_mean+100*peakwidth);
 
 
       dbcrysnpol3_forpull->SetParName(0,"Constant_1");
