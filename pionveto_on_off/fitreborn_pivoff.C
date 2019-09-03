@@ -119,7 +119,7 @@ void fitreborn_pivoff(TString signalfilename) {
     double_crystalball->SetRange(lowerfit,  higherfit);
     //if(hist_mean >= 8.212){double_crystalball->SetRange(hist_mean - 1, hist_mean +1);}
 
-      pol3n = new TF1("norm pol3", "[0]*([1]+ [2]*x +[3]*x*x +[4]*x*x*x)", hist_mean -100*peakwidth, hist_mean + 100*peakwidth);
+      pol3n = new TF1("norm pol3", "[0]*([1]+ [2]*x +[3]*x*x +[4]*x*x*x)", hist_mean - 120*peakwidth, hist_mean + 120*peakwidth);
        pol3n->SetRange(lowerfit,higherfit);
       pol3n->SetParameter(0,1);
 
@@ -153,13 +153,12 @@ void fitreborn_pivoff(TString signalfilename) {
   h_pull_res[1]= new TH1D("pull distribution_1","pull;pull;entries;", 1000,-200,500);
 
   // here it is ok
-      TFitResultPtr normpol3 = bginvmasslm->Fit(pol3n,"RMENBQS+");
-      normpol3 = bginvmasslm->Fit(pol3n,"RMEBQS+");
+      TFitResultPtr normpol3 = bginvmasslm->Fit(pol3n,"RMEBQIS+");
       thirdpolchi = normpol3->Chi2();
 
       // TFitResultPtr rebornfit = dpinvmasslm->Fit(triplegexp,"RBQS+");
-       TFitResultPtr cballfit = dpinvmasslm->Fit(double_crystalball,"WWRMENBQS+");
-       cballfit = dpinvmasslm->Fit(double_crystalball,"WWRMEBQS+");
+       TFitResultPtr cballfit = dpinvmasslm->Fit(double_crystalball,"WWRMEINBQS+");
+       cballfit = dpinvmasslm->Fit(double_crystalball,"RMEBIQS+");
        //       cballfit->Print();
 
       TAxis * xaxis = bginvmasslm->GetXaxis();
@@ -322,10 +321,8 @@ void fitreborn_pivoff(TString signalfilename) {
            h_pull_res[0]->Fill(signyield_alt/signyield_alter);
            }
          ////############################################////
-         TFitResultPtr pull_result =  h_pull_res[0]->Fit("gaus", "WWEIMQ");
-           pull_result = h_pull_res[0]->Fit("gaus", "WWEIMQ");
-           pull_result = h_pull_res[0]->Fit("gaus", "WWEIMQ");
-
+            TFitResultPtr pull_result =  h_pull_res[0]->Fit("gaus","Q");
+            pull_result =  h_pull_res[0]->Fit("gaus", "EWWMQISC");
 
         TF1 * dbball = new TF1("number of events with double crystal ball", "[10]*(crystalball(0) + crystalball(5))", hist_mean-50*peakwidth, hist_mean+70*peakwidth);
 
