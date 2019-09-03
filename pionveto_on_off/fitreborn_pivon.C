@@ -78,9 +78,9 @@ void fitreborn_pivon(TString signalfilename) {
   rms = dpinvmasslm->GetBinWidth(1);
   std_dev = dpinvmasslm->GetStdDev(1);
 
-    double lowerfit = hist_mean -40*peakwidth;
+    double lowerfit = hist_mean -70*peakwidth;
     if(lowerfit < 0){lowerfit =0;}
-    double higherfit = hist_mean + 50*peakwidth;
+    double higherfit = hist_mean + 70*peakwidth;
     if(higherfit > 10.0){higherfit = 10.;}
 
     double_crystalball = new TF1("double_crystalball", "crystalball(0) + crystalball(5) ", hist_mean - 100*peakwidth , hist_mean + 100*peakwidth);
@@ -101,11 +101,11 @@ void fitreborn_pivon(TString signalfilename) {
     double_crystalball->SetParLimits(0,10.,entriesatmean);
     double_crystalball->FixParameter(1,hist_mean);
     double_crystalball->FixParameter(6,hist_mean);
-    double_crystalball->SetParLimits(2,rms,3*peakwidth);
+    double_crystalball->SetParLimits(2,rms,10*peakwidth);
     double_crystalball->SetParLimits(3,-5,0.);
     double_crystalball->SetParLimits(4,0.,3.);
     double_crystalball->SetParLimits(5,10.,entriesatmean);
-    double_crystalball->SetParLimits(7,rms,3*peakwidth);
+    double_crystalball->SetParLimits(7,rms,10*peakwidth);
     double_crystalball->SetParLimits(8,0.0,5);
     // double_crystalball->SetParLimits(9,50.0,entriesatmean);
     double_crystalball->SetParLimits(9,0,3);
@@ -113,7 +113,7 @@ void fitreborn_pivon(TString signalfilename) {
     double_crystalball->SetLineColor(4);
     double_crystalball->SetRange(lowerfit,  higherfit);
 
-      pol3n = new TF1("norm pol3", "[0]*([1]+ [2]*x +[3]*x*x +[4]*x*x*x)", hist_mean -50*peakwidth, hist_mean + 50*peakwidth);
+      pol3n = new TF1("norm pol3", "[0]*([1]+ [2]*x +[3]*x*x +[4]*x*x*x)", hist_mean -100*peakwidth, hist_mean + 100*peakwidth);
       pol3n->SetRange(lowerfit,higherfit);
       pol3n->FixParameter(0,1);
 
@@ -151,7 +151,7 @@ void fitreborn_pivon(TString signalfilename) {
       thirdpolchi = normpol3->Chi2();
 
       // TFitResultPtr rebornfit = dpinvmasslm->Fit(triplegexp,"RBQS+");
-       TFitResultPtr cballfit = dpinvmasslm->Fit(double_crystalball,"RMBQS+");
+       TFitResultPtr cballfit = dpinvmasslm->Fit(double_crystalball,"MBQS+");
        //       cballfit->Print();
 
       TAxis * xaxis = bginvmasslm->GetXaxis();
@@ -162,7 +162,7 @@ void fitreborn_pivon(TString signalfilename) {
       Double_t binxl_val = dpinvmasslm->GetBinCenter(binxl);
       Double_t binxh_val = dpinvmasslm->GetBinCenter(binxh);
       if(binxl_val < 0.00000){
-        binxl = xaxis->FindBin(0.0);
+        binxl = xaxis->FindBin(hist_mean - );
         binxl_val = dpinvmasslm->GetBinCenter(binxl);
       }
       if(binxh_val > 10.500){
@@ -298,7 +298,7 @@ void fitreborn_pivon(TString signalfilename) {
         high_range = 10.5;
       }
 
-            for(int l = 0; l < 1; l++){
+            for(int l = 0; l < 1000; l++){
            h_pull[l] = new TH1D("Pull distribution", "Toy MC reduced dimuon mass [GeV/c^{2}];m_{R};entries;", sigwinbin, low_range, high_range);
            h_pull[l]->Sumw2();
            TTimeStamp * c = new TTimeStamp();

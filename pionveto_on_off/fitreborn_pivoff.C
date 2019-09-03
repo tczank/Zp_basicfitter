@@ -83,12 +83,12 @@ void fitreborn_pivoff(TString signalfilename) {
 
     double lowerfit = hist_mean -70*peakwidth;
     if(lowerfit < 0){lowerfit =0;}
-    double higherfit = hist_mean + 80*peakwidth;
+    double higherfit = hist_mean + 70*peakwidth;
     if(higherfit > 10.5){higherfit = 10.5;}
 
 
 
-    double_crystalball = new TF1("double_crystalball", "crystalball(0) + crystalball(5) ", hist_mean - 100*peakwidth , hist_mean + 100*peakwidth);
+    double_crystalball = new TF1("double_crystalball", "crystalball(0) + crystalball(5) ", hist_mean - 70*peakwidth , hist_mean + 70*peakwidth);
 
     double_crystalball->SetParName(0,"Constant_1");
     double_crystalball->SetParName(1,"Mean_1");
@@ -103,23 +103,23 @@ void fitreborn_pivoff(TString signalfilename) {
 
     double_crystalball->SetNpx(1000);
 
-    double_crystalball->SetParLimits(0,10.,entriesatmean);
+    double_crystalball->SetParLimits(0,0.,10*entriesatmean);
     double_crystalball->FixParameter(1,hist_mean);
     double_crystalball->FixParameter(6,hist_mean);
-    double_crystalball->SetParLimits(2,rms,5*peakwidth);
+    double_crystalball->SetParLimits(2,rms,50*peakwidth);
     double_crystalball->SetParLimits(3,-6,0.);
-    double_crystalball->SetParLimits(4,0.,4.);
-    double_crystalball->SetParLimits(5,10.,entriesatmean);
-    double_crystalball->SetParLimits(7,rms,5*peakwidth);
+    double_crystalball->SetParLimits(4,0.,500.);
+    double_crystalball->SetParLimits(5,0.,10*entriesatmean);
+    double_crystalball->SetParLimits(7,rms,50*peakwidth);
     double_crystalball->SetParLimits(8,0.0,6);
     // double_crystalball->SetParLimits(9,50.0,entriesatmean);
-    double_crystalball->SetParLimits(9,0,4);
+    double_crystalball->SetParLimits(9,0,500);
 
     double_crystalball->SetLineColor(4);
     //double_crystalball->SetRange(lowerfit,  higherfit);
     if(hist_mean >= 8.212){double_crystalball->SetRange(hist_mean - 1, hist_mean +1);}
 
-      pol3n = new TF1("norm pol3", "[0]*([1]+ [2]*x +[3]*x*x +[4]*x*x*x)", hist_mean -100*peakwidth, hist_mean + 100*peakwidth);
+      pol3n = new TF1("norm pol3", "[0]*([1]+ [2]*x +[3]*x*x +[4]*x*x*x)", hist_mean -70*peakwidth, hist_mean + 70*peakwidth);
       // pol3n->SetRange(lowerfit,higherfit);
       pol3n->FixParameter(0,1);
 
@@ -168,11 +168,11 @@ void fitreborn_pivoff(TString signalfilename) {
       Double_t binxl_val = dpinvmasslm->GetBinCenter(binxl);
       Double_t binxh_val = dpinvmasslm->GetBinCenter(binxh);
       if(binxl_val < 0.00000){
-        binxl = xaxis->FindBin(0.0);
+        binxl = xaxis->FindBin(hist_mean -70*peakwidth);
         binxl_val = dpinvmasslm->GetBinCenter(binxl);
       }
       if(binxh_val > 10.500){
-        binxh = xaxis->FindBin(10.5);
+        binxh = xaxis->FindBin(hist_mean + 70*peakwidth);
         binxh_val = dpinvmasslm->GetBinCenter(binxh);
     }
       Int_t binint = binxh - binxl;
@@ -304,7 +304,7 @@ void fitreborn_pivoff(TString signalfilename) {
         high_range = 10.5;
       }
 
-            for(int l = 0; l < 100; l++){
+            for(int l = 0; l < 10000; l++){
            h_pull[l] = new TH1D("Pull distribution", "Toy MC reduced dimuon mass [GeV/c^{2}];m_{R};entries;", sigwinbin, low_range, high_range);
            h_pull[l]->Sumw2();
            TTimeStamp * c = new TTimeStamp();
@@ -313,7 +313,7 @@ void fitreborn_pivoff(TString signalfilename) {
            double_t timeseed2 = d->GetNanoSec();
            r1->SetSeed(timeseed);
            h_pull[l]->FillRandom("norm pol3",r1->Poisson(entriesinint));
-            TFitResultPtr dbnpol_forpull = h_pull[l]->Fit(dbcrysnpol3_forpull,"RBQS+");
+            TFitResultPtr dbnpol_forpull = h_pull[l]->Fit(dbcrysnpol3_forpull,"BQS+");
 
            double signyield_alt = dbcrysnpol3_forpull->GetParameter(15);
            double signyield_alter = dbcrysnpol3_forpull->GetParError(15);
@@ -321,7 +321,7 @@ void fitreborn_pivoff(TString signalfilename) {
            h_pull_res[0]->Fill(signyield_alt/signyield_alter);
            }
          ////############################################////
-         h_pull_res[0]->Fit("gaus", "RBQS+");
+         h_pull_res[0]->Fit("gaus", "BQS+");
 
         TF1 * dbball = new TF1("number of events with double crystal ball", "[10]*(crystalball(0) + crystalball(5))", hist_mean-50*peakwidth, hist_mean+70*peakwidth);
 
