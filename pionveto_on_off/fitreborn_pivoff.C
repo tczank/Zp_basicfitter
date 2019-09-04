@@ -23,7 +23,7 @@ void fitreborn_pivoff(TString signalfilename) {
   gr_mu = (TGraph*)br_fil->Get("gr_mu");
   gr_isr_w = (TGraph*)genid_isr_w->Get("gr_w_isr");
 
-  gStyle->SetOptFit(1);
+  gStyle->SetOptFit(0);
   gStyle->SetOptStat(1);
   // gROOT->SetBatch(1);
   TFile *signal = new TFile(signalfilename);
