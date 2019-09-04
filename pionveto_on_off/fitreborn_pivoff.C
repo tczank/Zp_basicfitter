@@ -81,9 +81,9 @@ void fitreborn_pivoff(TString signalfilename) {
   rms = dpinvmasslm->GetBinWidth(1);
   std_dev = dpinvmasslm->GetStdDev(1);
 
-    double lowerfit = hist_mean - 40*peakwidth;
+    double lowerfit = hist_mean - 70*peakwidth;
     if(lowerfit < 0){lowerfit =0;}
-    double higherfit = hist_mean + 70*peakwidth;
+    double higherfit = hist_mean + 30*peakwidth;
     if(higherfit > 10.5){higherfit = 10.5;}
 
 
@@ -305,7 +305,7 @@ void fitreborn_pivoff(TString signalfilename) {
         high_range = 10.5;
       }
 
-            for(int l = 0; l < 10000; l++){
+            for(int l = 0; l < 1000; l++){
            h_pull[l] = new TH1D("Pull distribution", "Toy MC reduced dimuon mass [GeV/c^{2}];m_{R};entries;", sigwinbin, low_range, high_range);
            h_pull[l]->Sumw2();
            TTimeStamp * c = new TTimeStamp();
