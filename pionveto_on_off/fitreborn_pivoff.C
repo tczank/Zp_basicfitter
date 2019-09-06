@@ -23,7 +23,7 @@ void fitreborn_pivoff(TString signalfilename) {
   gr_mu = (TGraph*)br_fil->Get("gr_mu");
   gr_isr_w = (TGraph*)genid_isr_w->Get("gr_w_isr");
 
-  gStyle->SetOptFit(0);
+  gStyle->SetOptFit(1);
   gStyle->SetOptStat(1);
   // gROOT->SetBatch(1);
   TFile *signal = new TFile(signalfilename);
@@ -157,7 +157,7 @@ void fitreborn_pivoff(TString signalfilename) {
       thirdpolchi = normpol3->Chi2();
 
       // TFitResultPtr rebornfit = dpinvmasslm->Fit(triplegexp,"RBQS+");
-       TFitResultPtr cballfit = dpinvmasslm->Fit(double_crystalball,"WWRMEGINBQS+");
+       TFitResultPtr cballfit = dpinvmasslm->Fit(double_crystalball,"WWRMEINBQS+");
        cballfit = dpinvmasslm->Fit(double_crystalball,"RMNQBS+");
        cballfit = dpinvmasslm->Fit(double_crystalball,"BSQ+");
        //       cballfit->Print();
@@ -314,16 +314,16 @@ void fitreborn_pivoff(TString signalfilename) {
            double_t timeseed2 = d->GetNanoSec();
            r1->SetSeed(timeseed);
            h_pull[l]->FillRandom("norm pol3",r1->Poisson(entriesinint));
-            TFitResultPtr dbnpol_forpull = h_pull[l]->Fit(dbcrysnpol3_forpull,"RNMBGQS+");
-            dbnpol_forpull = h_pull[l]->Fit(dbcrysnpol3_forpull,"RMBGQS+");
+            TFitResultPtr dbnpol_forpull = h_pull[l]->Fit(dbcrysnpol3_forpull,"RNMBQS+");
+            dbnpol_forpull = h_pull[l]->Fit(dbcrysnpol3_forpull,"RMBS+");
            double signyield_alt = dbcrysnpol3_forpull->GetParameter(15);
            double signyield_alter = dbcrysnpol3_forpull->GetParError(15);
            //  cout << " the alternate signal yield is " << signyield_alt << " +/- " << signyield_alter << endl;
            h_pull_res[0]->Fill(signyield_alt/signyield_alter);
            }
          ////############################################////
-            TFitResultPtr pull_result =  h_pull_res[0]->Fit("gaus","EWWMNISGQ+");
-            pull_result =  h_pull_res[0]->Fit("gaus", "");
+            TFitResultPtr pull_result =  h_pull_res[0]->Fit("gaus","RMNISQ+");
+            pull_result =  h_pull_res[0]->Fit("gaus", "MNISQ+");
 
         TF1 * dbball = new TF1("number of events with double crystal ball", "[10]*(crystalball(0) + crystalball(5))", hist_mean-50*peakwidth, hist_mean+70*peakwidth);
 
