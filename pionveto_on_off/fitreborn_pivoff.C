@@ -153,13 +153,13 @@ void fitreborn_pivoff(TString signalfilename) {
   h_pull_res[1]= new TH1D("pull distribution_1","pull;pull;entries;", 1000,-200,500);
 
   // here it is ok
-      TFitResultPtr normpol3 = bginvmasslm->Fit(pol3n,"RMEBQGIS+");
+      TFitResultPtr normpol3 = bginvmasslm->Fit(pol3n,"RMBQIS+");
       thirdpolchi = normpol3->Chi2();
 
       // TFitResultPtr rebornfit = dpinvmasslm->Fit(triplegexp,"RBQS+");
-       TFitResultPtr cballfit = dpinvmasslm->Fit(double_crystalball,"WWRMEINBQS+");
+       TFitResultPtr cballfit = dpinvmasslm->Fit(double_crystalball,"WWRMINBQS+");
        cballfit = dpinvmasslm->Fit(double_crystalball,"RMNQBS+");
-       cballfit = dpinvmasslm->Fit(double_crystalball,"BSQ+");
+       cballfit = dpinvmasslm->Fit(double_crystalball,"RBSQ+");
        //       cballfit->Print();
 
       TAxis * xaxis = bginvmasslm->GetXaxis();
@@ -323,7 +323,7 @@ void fitreborn_pivoff(TString signalfilename) {
            }
          ////############################################////
             TFitResultPtr pull_result =  h_pull_res[0]->Fit("gaus","RMNISQ+");
-            pull_result =  h_pull_res[0]->Fit("gaus", "MNISQ+");
+            pull_result =  h_pull_res[0]->Fit("gaus", "RMISQ+");
 
         TF1 * dbball = new TF1("number of events with double crystal ball", "[10]*(crystalball(0) + crystalball(5))", hist_mean-50*peakwidth, hist_mean+70*peakwidth);
 
