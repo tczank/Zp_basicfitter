@@ -2,7 +2,7 @@
 
 void rootgen_wpion_pars() {
   ifstream in;
-  in.open(Form("pioffeff_all.dat"));
+  in.open(Form("wpion_eff_all.dat"));
 
   Float_t x,z,ez,f1,ef1,f2,ef2,y,ey,o,xs,s, fw, fw_er, fal, fal_er, fn, fn_er, sw, sw_er, sal, sal_er, sn, sn_er;
 
@@ -44,7 +44,7 @@ void rootgen_wpion_pars() {
  double_t n2_er[19];
 
   Int_t nlines = 0;
-   TFile *f = new TFile("pioffeff_all.root","RECREATE");
+   TFile *f = new TFile("wpioneff_all.root","RECREATE");
    TNtuple *ntuple = new TNtuple("ntuple","data from parameters_all","x:z:ez:f1:ef1:f2:ef2:y:ey:o:xs:s");
 
    while (1) {
