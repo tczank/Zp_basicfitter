@@ -272,7 +272,7 @@ void fitreborn_pivoff(TString signalfilename) {
       dbcrysnpol3_forpull->SetParName(12,"a");
       dbcrysnpol3_forpull->SetParName(13,"b");
       dbcrysnpol3_forpull->SetParName(14,"c");
-      dbcrysnpol3_forpull->SetParName(15,"dbcrys_norm");
+      dbcrysnpol3_forpull->SetParName(15,"db_norm");
 
       dbcrysnpol3_forpull->SetNpx(1000);
 
@@ -305,6 +305,8 @@ void fitreborn_pivoff(TString signalfilename) {
         high_range = 10.5;
       }
 
+      TF1 * gausforpull = new TF1("gaussian fit for pull", "gaus",-6,6);
+
             for(int l = 0; l < 1000; l++){
            h_pull[l] = new TH1D("Pull distribution", "Toy MC reduced dimuon mass [GeV/c^{2}];m_{R};entries;", sigwinbin, low_range, high_range);
            h_pull[l]->Sumw2();
@@ -322,8 +324,11 @@ void fitreborn_pivoff(TString signalfilename) {
            h_pull_res[0]->Fill(signyield_alt/signyield_alter);
            }
          ////############################################////
-            TFitResultPtr pull_result =  h_pull_res[0]->Fit("gaus","RMNISQ+");
-            pull_result =  h_pull_res[0]->Fit("gaus", "MISQ+");
+            TFitResultPtr pull_result =  h_pull_res[0]->Fit(gausforpull,"RMNISQ+");
+            pull_result =  h_pull_res[0]->Fit(gausforpull, "MISQ+");
+
+            double pull_mean = gausforpull->GetParameter(1);
+            double pull_sigma = gausforpull->GetParameter(2);
 
         TF1 * dbball = new TF1("number of events with double crystal ball", "[10]*(crystalball(0) + crystalball(5))", hist_mean-50*peakwidth, hist_mean+70*peakwidth);
 
@@ -373,8 +378,8 @@ void fitreborn_pivoff(TString signalfilename) {
     Nobspdff->SetNpx(1000);
     Nobspdff->Draw();
 
-    //  TString pdfplotname = signalfilename + string("_pdf.eps");
-    //C8->Print(pdfplotname);
+    TString pdfplotname = signalfilename + string("_pdf.eps");
+    C8->Print(pdfplotname);
 
    double ninetylim;
    double ninetylimer;
@@ -447,7 +452,7 @@ void fitreborn_pivoff(TString signalfilename) {
     //cout << hist_mean << " " << dbw << " " << dbw_er << " " << dbfrac_1 << " " << dbfrac_1_er << " " << dbfrac_2 << " " << dbfrac_2_er << " " << tripSeff << " " << tripSeffer << " " << intestep << " " << intestep/(0.690555*(gr_mu->Eval(hist_mean)*tripSeff)) << " " << significance << " " << double_crystalball->GetParameter(2) << " " << double_crystalball->GetParError(2) << " " << double_crystalball->GetParameter(3) << " " << double_crystalball->GetParError(3) << " " << double_crystalball->GetParameter(4) << " " << double_crystalball->GetParError(4) << " " << double_crystalball->GetParameter(7) << " " << double_crystalball->GetParError(7) << " " << double_crystalball->GetParameter(8) << " " << double_crystalball->GetParError(8) << " " << double_crystalball->GetParameter(9) << " " << double_crystalball->GetParError(9) << endl;
 
     // MAPPING OF THE BIAS
-   cout << hist_mean << " " << dbw << " " << dbw_er << " " << dbfrac_1 << " " << dbfrac_1_er << " " << dbfrac_2 << " " << dbfrac_2_er << " " << tripSeff << " " << tripSeffer << " " << intestep << " " << intestep/(0.690555*(gr_mu->Eval(hist_mean)*tripSeff)) << " " << significance << " " << double_crystalball->GetParameter(2) << " " << double_crystalball->GetParError(2) << " " << double_crystalball->GetParameter(3) << " " << double_crystalball->GetParError(3) << " " << double_crystalball->GetParameter(4) << " " << double_crystalball->GetParError(4) << " " << double_crystalball->GetParameter(7) << " " << double_crystalball->GetParError(7) << " " << double_crystalball->GetParameter(8) << " " << double_crystalball->GetParError(8) << " " << double_crystalball->GetParameter(9) << " " << double_crystalball->GetParError(9) << endl;
+    cout << hist_mean << " " << pull_mean << " " << pull_sigma << endl;
 
 
     //    cout << hist_mean << " " << tripSeff << " " << tripSeffer << " " << fitfeff << " " << fitfeffer << endl;
@@ -465,8 +470,8 @@ void fitreborn_pivoff(TString signalfilename) {
    // pull->SetMarkerStyle(3);
    // pull->Draw("*");
 
-   //TString signalresname = signalfilename + string("res.eps");
-   // C7->Print(signalresname);
+   TString signalresname = signalfilename + string("res.eps");
+    C7->Print(signalresname);
 
     TCanvas * C89 = new TCanvas("randomtest","",10,10,800,800);
  C89->Divide(2,1);
@@ -476,7 +481,7 @@ void fitreborn_pivoff(TString signalfilename) {
   C89->cd(2);
   h_pull_res[0]->Draw();
 
-  // TString pullplotname = signalfilename + string("pull.eps");
-  // C89->Print(pullplotname);
+   TString pullplotname = signalfilename + string("pull.eps");
+   C89->Print(pullplotname);
 
 }
