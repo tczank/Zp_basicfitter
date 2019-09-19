@@ -81,9 +81,9 @@ void fitreborn_pivoff(TString signalfilename) {
   rms = dpinvmasslm->GetBinWidth(1);
   std_dev = dpinvmasslm->GetStdDev(1);
 
-  double lowerfit = 0.;//hist_mean - 200*peakwidth;
+  double lowerfit = hist_mean - 100*peakwidth;
     if(lowerfit < 0){lowerfit =0;}
-    double higherfit = 10.5;// hist_mean + 250*peakwidth;
+    double higherfit = hist_mean + 150*peakwidth;
     if(higherfit > 10.5){higherfit = 10.5;}
 
 
@@ -305,7 +305,7 @@ void fitreborn_pivoff(TString signalfilename) {
         high_range = 10.5;
       }
 
-            for(int l = 0; l < 100; l++){
+            for(int l = 0; l < 1000; l++){
            h_pull[l] = new TH1D("Pull distribution", "Toy MC reduced dimuon mass [GeV/c^{2}];m_{R};entries;", sigwinbin, low_range, high_range);
            h_pull[l]->Sumw2();
            TTimeStamp * c = new TTimeStamp();
@@ -373,8 +373,8 @@ void fitreborn_pivoff(TString signalfilename) {
     Nobspdff->SetNpx(1000);
     Nobspdff->Draw();
 
-   TString pdfplotname = signalfilename + string("_pdf.eps");
-   C8->Print(pdfplotname);
+    //  TString pdfplotname = signalfilename + string("_pdf.eps");
+    //C8->Print(pdfplotname);
 
    double ninetylim;
    double ninetylimer;
@@ -444,13 +444,16 @@ void fitreborn_pivoff(TString signalfilename) {
 
     //        cout << hist_mean << " " << dbw << " " << dbw_er << " " << dbfrac_1 << " " << dbfrac_1_er << " " << dbfrac_2 << " " << dbfrac_2_er << " " << fitfeff << " " << fitfeffer << " " << intestep << " " << intestep/(0.690555*(gr_mu->Eval(hist_mean)*tripSeff)) << " " << significance << endl;
 
-     cout << hist_mean << " " << dbw << " " << dbw_er << " " << dbfrac_1 << " " << dbfrac_1_er << " " << dbfrac_2 << " " << dbfrac_2_er << " " << tripSeff << " " << tripSeffer << " " << intestep << " " << intestep/(0.690555*(gr_mu->Eval(hist_mean)*tripSeff)) << " " << significance << " " << double_crystalball->GetParameter(2) << " " << double_crystalball->GetParError(2) << " " << double_crystalball->GetParameter(3) << " " << double_crystalball->GetParError(3) << " " << double_crystalball->GetParameter(4) << " " << double_crystalball->GetParError(4) << " " << double_crystalball->GetParameter(7) << " " << double_crystalball->GetParError(7) << " " << double_crystalball->GetParameter(8) << " " << double_crystalball->GetParError(8) << " " << double_crystalball->GetParameter(9) << " " << double_crystalball->GetParError(9) << endl;
+    //cout << hist_mean << " " << dbw << " " << dbw_er << " " << dbfrac_1 << " " << dbfrac_1_er << " " << dbfrac_2 << " " << dbfrac_2_er << " " << tripSeff << " " << tripSeffer << " " << intestep << " " << intestep/(0.690555*(gr_mu->Eval(hist_mean)*tripSeff)) << " " << significance << " " << double_crystalball->GetParameter(2) << " " << double_crystalball->GetParError(2) << " " << double_crystalball->GetParameter(3) << " " << double_crystalball->GetParError(3) << " " << double_crystalball->GetParameter(4) << " " << double_crystalball->GetParError(4) << " " << double_crystalball->GetParameter(7) << " " << double_crystalball->GetParError(7) << " " << double_crystalball->GetParameter(8) << " " << double_crystalball->GetParError(8) << " " << double_crystalball->GetParameter(9) << " " << double_crystalball->GetParError(9) << endl;
+
+    // MAPPING OF THE BIAS
+   cout << hist_mean << " " << dbw << " " << dbw_er << " " << dbfrac_1 << " " << dbfrac_1_er << " " << dbfrac_2 << " " << dbfrac_2_er << " " << tripSeff << " " << tripSeffer << " " << intestep << " " << intestep/(0.690555*(gr_mu->Eval(hist_mean)*tripSeff)) << " " << significance << " " << double_crystalball->GetParameter(2) << " " << double_crystalball->GetParError(2) << " " << double_crystalball->GetParameter(3) << " " << double_crystalball->GetParError(3) << " " << double_crystalball->GetParameter(4) << " " << double_crystalball->GetParError(4) << " " << double_crystalball->GetParameter(7) << " " << double_crystalball->GetParError(7) << " " << double_crystalball->GetParameter(8) << " " << double_crystalball->GetParError(8) << " " << double_crystalball->GetParameter(9) << " " << double_crystalball->GetParError(9) << endl;
 
 
     //    cout << hist_mean << " " << tripSeff << " " << tripSeffer << " " << fitfeff << " " << fitfeffer << endl;
 
-      TString signalplotname = signalfilename + string(".eps");
-        C1->Print(signalplotname);
+     //      TString signalplotname = signalfilename + string(".eps");
+     //   C1->Print(signalplotname);
 
  TCanvas * C7 = new TCanvas("residuals"," ",10,10,800,800);
  //C7->Divide(2,1);
@@ -462,8 +465,8 @@ void fitreborn_pivoff(TString signalfilename) {
    // pull->SetMarkerStyle(3);
    // pull->Draw("*");
 
-TString signalresname = signalfilename + string("res.eps");
- C7->Print(signalresname);
+   //TString signalresname = signalfilename + string("res.eps");
+   // C7->Print(signalresname);
 
     TCanvas * C89 = new TCanvas("randomtest","",10,10,800,800);
  C89->Divide(2,1);
@@ -473,7 +476,7 @@ TString signalresname = signalfilename + string("res.eps");
   C89->cd(2);
   h_pull_res[0]->Draw();
 
-  TString pullplotname = signalfilename + string("pull.eps");
- C89->Print(pullplotname);
+  // TString pullplotname = signalfilename + string("pull.eps");
+  // C89->Print(pullplotname);
 
 }
