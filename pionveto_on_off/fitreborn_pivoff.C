@@ -304,10 +304,7 @@ void fitreborn_pivoff(TString signalfilename) {
         high_range = 10.5;
       }
 
-            for(int l = 0; l < 10000; l++){
-      TF1 * gausforpull = new TF1("gaussian fit for pull", "gaus",-6,6);
-
-            for(int l = 0; l < 1000; l++){
+         for(int l = 0; l < 10000; l++){
            h_pull[l] = new TH1D("Pull distribution", "Toy MC reduced dimuon mass [GeV/c^{2}];m_{R};entries;", sigwinbin, low_range, high_range);
            h_pull[l]->Sumw2();
            TTimeStamp * c = new TTimeStamp();
@@ -324,7 +321,8 @@ void fitreborn_pivoff(TString signalfilename) {
            h_pull_res[0]->Fill(signyield_alt/signyield_alter);
            }
          ////############################################////
-            TFitResultPtr pull_result =  h_pull_res[0]->Fit("gaus","EWWMNISGQ+");
+         TF1 * gausforpull = new TF1("gaussian fit for pull", "gaus",-6,6);
+         TFitResultPtr pull_result =  h_pull_res[0]->Fit("gaus","EWWMNISGQ+");
             pull_result =  h_pull_res[0]->Fit("gaus", "Q");
 
             double pull_mean = gausforpull->GetParameter(1);
