@@ -159,9 +159,6 @@ void fitreborn_pivoff(TString signalfilename) {
        TFitResultPtr cballfit = dpinvmasslm->Fit(double_crystalball,"RMEINBQS+");
        cballfit = dpinvmasslm->Fit(double_crystalball,"RMINQBS+");
        cballfit = dpinvmasslm->Fit(double_crystalball,"RMBSQ+");
-       TFitResultPtr cballfit = dpinvmasslm->Fit(double_crystalball,"WWRMINBQS+");
-       cballfit = dpinvmasslm->Fit(double_crystalball,"RMNQBS+");
-       cballfit = dpinvmasslm->Fit(double_crystalball,"RBSQ+");
        //       cballfit->Print();
 
       TAxis * xaxis = bginvmasslm->GetXaxis();
@@ -329,8 +326,6 @@ void fitreborn_pivoff(TString signalfilename) {
          ////############################################////
             TFitResultPtr pull_result =  h_pull_res[0]->Fit("gaus","EWWMNISGQ+");
             pull_result =  h_pull_res[0]->Fit("gaus", "Q");
-            TFitResultPtr pull_result =  h_pull_res[0]->Fit(gausforpull,"RMNISQ+");
-            pull_result =  h_pull_res[0]->Fit(gausforpull, "MISQ+");
 
             double pull_mean = gausforpull->GetParameter(1);
             double pull_sigma = gausforpull->GetParameter(2);
