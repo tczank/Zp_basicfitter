@@ -322,8 +322,8 @@ void fitreborn_pivoff(TString signalfilename) {
            }
          ////############################################////
          TF1 * gausforpull = new TF1("gaussian fit for pull", "gaus",-6,6);
-         TFitResultPtr pull_result =  h_pull_res[0]->Fit("gaus","EWWMNISGQ+");
-            pull_result =  h_pull_res[0]->Fit("gaus", "Q");
+         TFitResultPtr pull_result =  h_pull_res[0]->Fit(gausforpull,"EWWMNISGQ+");
+            pull_result =  h_pull_res[0]->Fit(gausforpull, "Q");
 
             double pull_mean = gausforpull->GetParameter(1);
             double pull_sigma = gausforpull->GetParameter(2);
