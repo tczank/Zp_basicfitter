@@ -156,7 +156,7 @@ void fitreborn_pivoff(TString signalfilename) {
       thirdpolchi = normpol3->Chi2();
 
       // TFitResultPtr rebornfit = dpinvmasslm->Fit(triplegexp,"RBQS+");
-       TFitResultPtr cballfit = dpinvmasslm->Fit(double_crystalball,"RMEINBQS+");
+       TFitResultPtr cballfit = dpinvmasslm->Fit(double_crystalball,"RMINBQS+");
        cballfit = dpinvmasslm->Fit(double_crystalball,"RMINQBS+");
        cballfit = dpinvmasslm->Fit(double_crystalball,"RMBSQ+");
        //       cballfit->Print();
@@ -322,7 +322,7 @@ void fitreborn_pivoff(TString signalfilename) {
            }
          ////############################################////
          TF1 * gausforpull = new TF1("gaussian fit for pull", "gaus",-6,6);
-         TFitResultPtr pull_result =  h_pull_res[0]->Fit(gausforpull,"EWWMNISGQ+");
+         TFitResultPtr pull_result =  h_pull_res[0]->Fit(gausforpull,"Q+");
             pull_result =  h_pull_res[0]->Fit(gausforpull, "Q");
 
             double pull_mean = gausforpull->GetParameter(1);
