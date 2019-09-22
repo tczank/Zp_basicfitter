@@ -81,17 +81,10 @@ void fitreborn_pivoff(TString signalfilename) {
   rms = dpinvmasslm->GetBinWidth(1);
   std_dev = dpinvmasslm->GetStdDev(1);
 
-<<<<<<< HEAD
     double lowerfit = hist_mean -100*peakwidth;
     if(lowerfit < 0){lowerfit =0;}
-    double higherfit = hist_mean +50*peakwidth;
-=======
-  double lowerfit = hist_mean - 100*peakwidth;
-    if(lowerfit < 0){lowerfit =0;}
     double higherfit = hist_mean + 150*peakwidth;
->>>>>>> e08f62ba7f5d913bd3908544b2bf527c86a89115
     if(higherfit > 10.5){higherfit = 10.5;}
-    if(hist_mean >= 10.){higherfit=10.5;}
 
 
     double_crystalball = new TF1("double_crystalball", "crystalball(0) + crystalball(5) ", 0. , 10.5);
@@ -163,15 +156,12 @@ void fitreborn_pivoff(TString signalfilename) {
       thirdpolchi = normpol3->Chi2();
 
       // TFitResultPtr rebornfit = dpinvmasslm->Fit(triplegexp,"RBQS+");
-<<<<<<< HEAD
        TFitResultPtr cballfit = dpinvmasslm->Fit(double_crystalball,"RMEINBQS+");
        cballfit = dpinvmasslm->Fit(double_crystalball,"RMINQBS+");
        cballfit = dpinvmasslm->Fit(double_crystalball,"RMBSQ+");
-=======
        TFitResultPtr cballfit = dpinvmasslm->Fit(double_crystalball,"WWRMINBQS+");
        cballfit = dpinvmasslm->Fit(double_crystalball,"RMNQBS+");
        cballfit = dpinvmasslm->Fit(double_crystalball,"RBSQ+");
->>>>>>> e08f62ba7f5d913bd3908544b2bf527c86a89115
        //       cballfit->Print();
 
       TAxis * xaxis = bginvmasslm->GetXaxis();
@@ -317,13 +307,10 @@ void fitreborn_pivoff(TString signalfilename) {
         high_range = 10.5;
       }
 
-<<<<<<< HEAD
             for(int l = 0; l < 10000; l++){
-=======
       TF1 * gausforpull = new TF1("gaussian fit for pull", "gaus",-6,6);
 
             for(int l = 0; l < 1000; l++){
->>>>>>> e08f62ba7f5d913bd3908544b2bf527c86a89115
            h_pull[l] = new TH1D("Pull distribution", "Toy MC reduced dimuon mass [GeV/c^{2}];m_{R};entries;", sigwinbin, low_range, high_range);
            h_pull[l]->Sumw2();
            TTimeStamp * c = new TTimeStamp();
@@ -340,16 +327,13 @@ void fitreborn_pivoff(TString signalfilename) {
            h_pull_res[0]->Fill(signyield_alt/signyield_alter);
            }
          ////############################################////
-<<<<<<< HEAD
             TFitResultPtr pull_result =  h_pull_res[0]->Fit("gaus","EWWMNISGQ+");
             pull_result =  h_pull_res[0]->Fit("gaus", "Q");
-=======
             TFitResultPtr pull_result =  h_pull_res[0]->Fit(gausforpull,"RMNISQ+");
             pull_result =  h_pull_res[0]->Fit(gausforpull, "MISQ+");
 
             double pull_mean = gausforpull->GetParameter(1);
             double pull_sigma = gausforpull->GetParameter(2);
->>>>>>> e08f62ba7f5d913bd3908544b2bf527c86a89115
 
         TF1 * dbball = new TF1("number of events with double crystal ball", "[10]*(crystalball(0) + crystalball(5))", hist_mean-50*peakwidth, hist_mean+70*peakwidth);
 
