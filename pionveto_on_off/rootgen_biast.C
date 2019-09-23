@@ -32,10 +32,10 @@ void rootgen_biast() {
      printf(" found %d points\n",nlines);
 
   TGraph * gr_deteff = new TGraph(nlines,m,deteff);
-  gr_deteff->SetTitle(" pull dist fit mean as function of the Z' mass;M[GeV/c^{2}];pull fit mean;");
+  gr_deteff->SetTitle(" pull dist fit sigma as function of the Z' mass;M[GeV/c^{2}];pull fit mean;");
 
   TGraph * gr_ww = new TGraph(nlines,m,ww);
-  gr_ww->SetTitle("pull dist fit sigma as function of Z' mass;M[GeV/c^{2}];pull fit sigma;");
+  gr_ww->SetTitle("pull dist fit mean as function of Z' mass;M[GeV/c^{2}];pull fit sigma;");
 
 
   gr_deteff->SetName("gr_deteff");
