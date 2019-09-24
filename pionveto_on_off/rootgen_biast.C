@@ -2,7 +2,7 @@
 
 void rootgen_biast() {
   ifstream in;
-  in.open(Form("./bias_test.dat"));
+  in.open(Form("./bias_pion.dat"));
 
   Float_t x,z,y;
 
@@ -16,7 +16,7 @@ void rootgen_biast() {
   Double_t deteffer[21];
 
   Int_t nlines = 0;
-   TFile *f = new TFile("biasmap.root","RECREATE");
+   TFile *f = new TFile("biasmap_pion.root","RECREATE");
    TNtuple *ntuple = new TNtuple("ntuple","data from parameters_all","x:z:y");
 
    while (1) {
