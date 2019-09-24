@@ -322,11 +322,9 @@ void fitreborn_pivon(TString signalfilename) {
             TFitResultPtr pull_result =  h_pull_res[0]->Fit(gausforpull,"SQ+");
             pull_result =  h_pull_res[0]->Fit(gausforpull, "SQ+");
 
-            cout << "gausforpull_1 " << gausforpull->GetParameter(1) << endl;
             double pull_mean = gausforpull->GetParameter(1);
             double pull_sigma = gausforpull->GetParameter(2);
 
-            cout << "pull_mean " << pull_mean << endl;
 
         TF1 * dbball = new TF1("number of events with double crystal ball", "[10]*(crystalball(0) + crystalball(5))", hist_mean-50*peakwidth, hist_mean+70*peakwidth);
 
