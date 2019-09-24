@@ -78,9 +78,9 @@ void fitreborn_pivon(TString signalfilename) {
   rms = dpinvmasslm->GetBinWidth(1);
   std_dev = dpinvmasslm->GetStdDev(1);
 
-    double lowerfit = hist_mean -100*peakwidth;
+    double lowerfit = hist_mean -70*peakwidth;
     if(lowerfit < 0){lowerfit =0;}
-    double higherfit = hist_mean + 150*peakwidth;
+    double higherfit = hist_mean + 100*peakwidth;
     if(higherfit > 10.0){higherfit = 10.;}
 
     double_crystalball = new TF1("double_crystalball", "crystalball(0) + crystalball(5) ", hist_mean - 100*peakwidth , hist_mean + 100*peakwidth);
@@ -147,12 +147,12 @@ void fitreborn_pivon(TString signalfilename) {
   h_pull_res[1]= new TH1D("pull distribution_1","pull;pull;entries;", 1000,-200,500);
 
   // here it is ok
-      TFitResultPtr normpol3 = bginvmasslm->Fit(pol3n,"RMBQS+");
+      TFitResultPtr normpol3 = bginvmasslm->Fit(pol3n,"RBQS+");
       thirdpolchi = normpol3->Chi2();
 
       // TFitResultPtr rebornfit = dpinvmasslm->Fit(triplegexp,"RBQS+");
-       TFitResultPtr cballfit = dpinvmasslm->Fit(double_crystalball,"RNMBQS+");
-       cballfit = dpinvmasslm->Fit(double_crystalball,"RMBQS+");
+       TFitResultPtr cballfit = dpinvmasslm->Fit(double_crystalball,"RNBQS+");
+       cballfit = dpinvmasslm->Fit(double_crystalball,"RBQS+");
 
        //       cballfit->Print();
 
@@ -309,7 +309,7 @@ void fitreborn_pivon(TString signalfilename) {
            double_t timeseed2 = d->GetNanoSec();
            r1->SetSeed(timeseed);
            h_pull[l]->FillRandom("norm pol3",r1->Poisson(entriesinint));
-            TFitResultPtr dbnpol_forpull = h_pull[l]->Fit(dbcrysnpol3_forpull,"RBQS+");
+            TFitResultPtr dbnpol_forpull = h_pull[l]->Fit(dbcrysnpol3_forpull,"RQS+");
 
            double signyield_alt = dbcrysnpol3_forpull->GetParameter(15);
            double signyield_alter = dbcrysnpol3_forpull->GetParError(15);
@@ -319,12 +319,14 @@ void fitreborn_pivon(TString signalfilename) {
          ////############################################////
 
             TF1 * gausforpull = new TF1("gaussian fit for pull", "gaus",-6,6);
-            TFitResultPtr pull_result =  h_pull_res[0]->Fit(gausforpull,"BQS+");
-            pull_result =  h_pull_res[0]->Fit(gausforpull, "BQS");
+            TFitResultPtr pull_result =  h_pull_res[0]->Fit(gausforpull,"SQ+");
+            pull_result =  h_pull_res[0]->Fit(gausforpull, "SQ+");
 
+            cout << "gausforpull_1 " << gausforpull->GetParameter(1) << endl;
             double pull_mean = gausforpull->GetParameter(1);
             double pull_sigma = gausforpull->GetParameter(2);
 
+            cout << "pull_mean " << pull_mean << endl;
 
         TF1 * dbball = new TF1("number of events with double crystal ball", "[10]*(crystalball(0) + crystalball(5))", hist_mean-50*peakwidth, hist_mean+70*peakwidth);
 
