@@ -78,9 +78,9 @@ void fitreborn_pivon(TString signalfilename) {
   rms = dpinvmasslm->GetBinWidth(1);
   std_dev = dpinvmasslm->GetStdDev(1);
 
-    double lowerfit = hist_mean -70*peakwidth;
+    double lowerfit = hist_mean -100*peakwidth;
     if(lowerfit < 0){lowerfit =0;}
-    double higherfit = hist_mean + 70*peakwidth;
+    double higherfit = hist_mean + 150*peakwidth;
     if(higherfit > 10.0){higherfit = 10.;}
 
     double_crystalball = new TF1("double_crystalball", "crystalball(0) + crystalball(5) ", hist_mean - 100*peakwidth , hist_mean + 100*peakwidth);
@@ -300,7 +300,7 @@ void fitreborn_pivon(TString signalfilename) {
         high_range = 10.5;
       }
 
-            for(int l = 0; l < 1000; l++){
+            for(int l = 0; l < 10000; l++){
            h_pull[l] = new TH1D("Pull distribution", "Toy MC reduced dimuon mass [GeV/c^{2}];m_{R};entries;", sigwinbin, low_range, high_range);
            h_pull[l]->Sumw2();
            TTimeStamp * c = new TTimeStamp();
@@ -317,7 +317,14 @@ void fitreborn_pivon(TString signalfilename) {
            h_pull_res[0]->Fill(signyield_alt/signyield_alter);
            }
          ////############################################////
-         h_pull_res[0]->Fit("gaus", "BQS+");
+
+            TF1 * gausforpull = new TF1("gaussian fit for pull", "gaus",-6,6);
+            TFitResultPtr pull_result =  h_pull_res[0]->Fit(gausforpull,"BQS+");
+            pull_result =  h_pull_res[0]->Fit(gausforpull, "BQS");
+
+            double pull_mean = gausforpull->GetParameter(1);
+            double pull_sigma = gausforpull->GetParameter(2);
+
 
         TF1 * dbball = new TF1("number of events with double crystal ball", "[10]*(crystalball(0) + crystalball(5))", hist_mean-50*peakwidth, hist_mean+70*peakwidth);
 
