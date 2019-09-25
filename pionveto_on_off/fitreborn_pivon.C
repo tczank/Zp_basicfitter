@@ -78,12 +78,12 @@ void fitreborn_pivon(TString signalfilename) {
   rms = dpinvmasslm->GetBinWidth(1);
   std_dev = dpinvmasslm->GetStdDev(1);
 
-    double lowerfit = hist_mean -90*peakwidth;
+    double lowerfit = hist_mean - 70*peakwidth;
     if(lowerfit < 0){lowerfit =0;}
-    double higherfit = hist_mean + 60*peakwidth;
+    double higherfit = hist_mean + 90*peakwidth;
     if(higherfit > 10.0){higherfit = 10.;}
 
-    double_crystalball = new TF1("double_crystalball", "crystalball(0) + crystalball(5) ", hist_mean - 100*peakwidth , hist_mean + 100*peakwidth);
+    double_crystalball = new TF1("double_crystalball", "crystalball(0) + crystalball(5) ", 0. , 10.5);
 
     double_crystalball->SetParName(0,"Constant_1");
     double_crystalball->SetParName(1,"Mean_1");
@@ -99,8 +99,8 @@ void fitreborn_pivon(TString signalfilename) {
     double_crystalball->SetNpx(1000);
 
     double_crystalball->SetParLimits(0,0.,entriesatmean);
-    double_crystalball->SetParameter(1,hist_mean);
-    double_crystalball->SetParameter(6,hist_mean);
+    double_crystalball->FixParameter(1,hist_mean);
+    double_crystalball->FixParameter(6,hist_mean);
     double_crystalball->SetParLimits(2,rms,3*peakwidth);
     double_crystalball->SetParLimits(3,-5,0.);
     double_crystalball->SetParLimits(4,0.,6.);

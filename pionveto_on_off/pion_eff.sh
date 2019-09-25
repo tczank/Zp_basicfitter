@@ -16,3 +16,4 @@ cat pion_eff.${map}.dat >> pion_eff_all.dat
 rm pion_eff.${map}.dat
 done
 
+gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -dSAFER -sOutputFile=../../pion_veto_on/fitsum.pdf ../../pion_veto_on/*root.eps
