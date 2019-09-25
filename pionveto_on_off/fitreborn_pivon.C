@@ -78,9 +78,9 @@ void fitreborn_pivon(TString signalfilename) {
   rms = dpinvmasslm->GetBinWidth(1);
   std_dev = dpinvmasslm->GetStdDev(1);
 
-    double lowerfit = hist_mean -70*peakwidth;
+    double lowerfit = hist_mean -90*peakwidth;
     if(lowerfit < 0){lowerfit =0;}
-    double higherfit = hist_mean + 100*peakwidth;
+    double higherfit = hist_mean + 60*peakwidth;
     if(higherfit > 10.0){higherfit = 10.;}
 
     double_crystalball = new TF1("double_crystalball", "crystalball(0) + crystalball(5) ", hist_mean - 100*peakwidth , hist_mean + 100*peakwidth);
@@ -149,6 +149,7 @@ void fitreborn_pivon(TString signalfilename) {
   // here it is ok
       TFitResultPtr normpol3 = bginvmasslm->Fit(pol3n,"RBQS+");
       thirdpolchi = normpol3->Chi2();
+      double_t thirdpoldof = normpol3->Ndf();
 
       // TFitResultPtr rebornfit = dpinvmasslm->Fit(triplegexp,"RBQS+");
        TFitResultPtr cballfit = dpinvmasslm->Fit(double_crystalball,"RNBQS+");
@@ -244,6 +245,7 @@ void fitreborn_pivon(TString signalfilename) {
         TFitResultPtr dballpolfit = bginvmasslm->Fit(dbcrysnpol3,"RMBQS+");
 
         dballnobschi = dballpolfit->Chi2();
+        double_t dballdof = dballpolfit->Ndf();
 
       ///####Toy Montecarlo##################/////
 
@@ -300,7 +302,7 @@ void fitreborn_pivon(TString signalfilename) {
         high_range = 10.5;
       }
 
-            for(int l = 0; l < 10000; l++){
+            for(int l = 0; l < 1; l++){
            h_pull[l] = new TH1D("Pull distribution", "Toy MC reduced dimuon mass [GeV/c^{2}];m_{R};entries;", sigwinbin, low_range, high_range);
            h_pull[l]->Sumw2();
            TTimeStamp * c = new TTimeStamp();
@@ -358,7 +360,7 @@ void fitreborn_pivon(TString signalfilename) {
          double Nobs = sigtrigS;
           double Nobser = sigtrigSer;
 
-    significance = ROOT::Math::Sign(Nobs)*sqrt(dballnobschi/thirdpolchi);
+          significance = ROOT::Math::Sign(Nobs)*sqrt(pow(dballnobschi/dballdof - thirdpolchi/thirdpoldof,2));
    //   cout << " the number of observed events is " << ROOT::Math::Sign(Nobs) << endl;
 
    dbball->Draw("sames");
@@ -446,10 +448,10 @@ void fitreborn_pivon(TString signalfilename) {
     //        cout << hist_mean << " " << dbw << " " << dbw_er << " " << dbfrac_1 << " " << dbfrac_1_er << " " << dbfrac_2 << " " << dbfrac_2_er << " " << fitfeff << " " << fitfeffer << " " << intestep << " " << intestep/(0.690555*(gr_mu->Eval(hist_mean)*tripSeff)) << " " << significance << endl;
 
     // MAPPING OF THE BIAS
-    cout << hist_mean << " " << pull_mean << " " << pull_sigma << endl;
+    //  cout << hist_mean << " " << pull_mean << " " << pull_sigma << endl;
 
 
-    // cout << hist_mean << " " << dbw << " " << dbw_er << " " << dbfrac_1 << " " << dbfrac_1_er << " " << dbfrac_2 << " " << dbfrac_2_er << " " << tripSeff << " " << tripSeffer << " " << intestep << " " << intestep/(0.690555*(gr_mu->Eval(hist_mean)*tripSeff)) << " " << significance << " " << double_crystalball->GetParameter(2) << " " << double_crystalball->GetParError(2) << " " << double_crystalball->GetParameter(3) << " " << double_crystalball->GetParError(3) << " " << double_crystalball->GetParameter(4) << " " << double_crystalball->GetParError(4) << " " << double_crystalball->GetParameter(7) << " " << double_crystalball->GetParError(7) << " " << double_crystalball->GetParameter(8) << " " << double_crystalball->GetParError(8) << " " << double_crystalball->GetParameter(9) << " " << double_crystalball->GetParError(9) << endl;
+     cout << hist_mean << " " << dbw << " " << dbw_er << " " << dbfrac_1 << " " << dbfrac_1_er << " " << dbfrac_2 << " " << dbfrac_2_er << " " << tripSeff << " " << tripSeffer << " " << intestep << " " << intestep/(0.690555*(gr_mu->Eval(hist_mean)*tripSeff)) << " " << significance << " " << double_crystalball->GetParameter(2) << " " << double_crystalball->GetParError(2) << " " << double_crystalball->GetParameter(3) << " " << double_crystalball->GetParError(3) << " " << double_crystalball->GetParameter(4) << " " << double_crystalball->GetParError(4) << " " << double_crystalball->GetParameter(7) << " " << double_crystalball->GetParError(7) << " " << double_crystalball->GetParameter(8) << " " << double_crystalball->GetParError(8) << " " << double_crystalball->GetParameter(9) << " " << double_crystalball->GetParError(9) << endl;
 
 
     //    cout << hist_mean << " " << tripSeff << " " << tripSeffer << " " << fitfeff << " " << fitfeffer << endl;
