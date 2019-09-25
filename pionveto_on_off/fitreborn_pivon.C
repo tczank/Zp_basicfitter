@@ -202,7 +202,7 @@ void fitreborn_pivon(TString signalfilename) {
       double fitfeffer = ((double_crystalball->IntegralError(hist_mean-3*dbw,hist_mean+3*dbw,cballfit->GetParams(), cballfit->GetCovarianceMatrix().GetMatrixArray()))/dpinvmasslm->GetBinWidth(0))/100000;
 
 
-      TF1 * dbcrysnpol3 = new TF1("double crystal ball with a 3rd order poly", " [15]*(crystalball(0)  + crystalball(5)) + [10]*([11]+[12]*x +[13]*x*x + [14]*x*x*x)", hist_mean-50*peakwidth, hist_mean+50*peakwidth);
+      TF1 * dbcrysnpol3 = new TF1("double crystal ball with a 3rd order poly", " [15]*(crystalball(0)  + crystalball(5)) + [10]*([11]+[12]*x +[13]*x*x + [14]*x*x*x)", 0., 10.5);
 
 
       dbcrysnpol3->SetParName(0,"Constant_1");
@@ -250,7 +250,7 @@ void fitreborn_pivon(TString signalfilename) {
       ///####Toy Montecarlo##################/////
 
 
-      TF1 * dbcrysnpol3_forpull = new TF1("double crystal ball with a 3rd order poly", " [15]*(crystalball(0)  + crystalball(5)) + [10]*([11]+[12]*x +[13]*x*x + [14]*x*x*x)", hist_mean-50*peakwidth, hist_mean+50*peakwidth);
+      TF1 * dbcrysnpol3_forpull = new TF1("double crystal ball with a 3rd order poly", " [15]*(crystalball(0)  + crystalball(5)) + [10]*([11]+[12]*x +[13]*x*x + [14]*x*x*x)", 0., 10.5);
 
 
       dbcrysnpol3_forpull->SetParName(0,"Constant_1");
@@ -328,7 +328,7 @@ void fitreborn_pivon(TString signalfilename) {
             double pull_sigma = gausforpull->GetParameter(2);
 
 
-        TF1 * dbball = new TF1("number of events with double crystal ball", "[10]*(crystalball(0) + crystalball(5))", hist_mean-50*peakwidth, hist_mean+70*peakwidth);
+        TF1 * dbball = new TF1("number of events with double crystal ball", "[10]*(crystalball(0) + crystalball(5))", lowerfit, higherfit);
 
         dbball->SetParameter(0,double_crystalball->GetParameter(0));
         dbball->SetParameter(1,double_crystalball->GetParameter(1));
