@@ -152,8 +152,10 @@ void fitreborn_pivon(TString signalfilename) {
       double_t thirdpoldof = normpol3->Ndf();
 
       // TFitResultPtr rebornfit = dpinvmasslm->Fit(triplegexp,"RBQS+");
-       TFitResultPtr cballfit = dpinvmasslm->Fit(double_crystalball,"RNBQS+");
+       TFitResultPtr cballfit = dpinvmasslm->Fit(double_crystalball,"RENBQS+");
        cballfit = dpinvmasslm->Fit(double_crystalball,"RBQS+");
+       cballfit = dpinvmasslm->Fit(double_crystalball,"RS");
+
 
        //       cballfit->Print();
 
