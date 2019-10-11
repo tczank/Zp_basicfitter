@@ -16,4 +16,4 @@ cat pion_eff.${map}_newbg.dat >> pion_eff_all_newbg.dat
 rm pion_eff.${map}_newbg.dat
 done
 
-gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -dSAFER -sOutputFile=../../weighted_pion_veto_on/fitsum.pdf ../../weighted_pion_veto_on/*root.eps
+gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -dSAFER -sOutputFile=../../weighted_pion_veto/fitsum.pdf ../../weighted_pion_veto/*root.eps
