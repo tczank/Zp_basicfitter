@@ -308,7 +308,7 @@ void fitreborn_pivon_v0(TString signalfilename) {
         high_range = 10.5;
       }
 
-            for(int l = 0; l < 10000; l++){
+            for(int l = 0; l < 1; l++){
            h_pull[l] = new TH1D("Pull distribution", "Toy MC reduced dimuon mass [GeV/c^{2}];m_{R};entries;", sigwinbin, low_range, high_range);
            h_pull[l]->Sumw2();
            TTimeStamp * c = new TTimeStamp();
