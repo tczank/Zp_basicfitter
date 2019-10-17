@@ -82,14 +82,14 @@ void nobs_nexp_v3() {
 
   // THOMAS FROM THE PAST MESSAGE//
   // AFTER SO MANY CHANGES ON THE BG FIT THE NUMBER OF BINS HAS DECREASED, REMEMBER TO CHECK IT BEFORE USING 11064//
-  for(int j = 0;j<10000;j++){
-    for(int i = 0;i<11064;i++){
+  for(int j = 8000;j<8001;j++){
+    for(int i = 5532;i<5533;i++){
      if(nexp_x->GetBinCenter(i+1) >= 0.212125){
        double_t mass = nexp_x->GetBinCenter(i+1);
       //      double_t gz = exp(nexp_y->GetBinCenter(j+1)*log(10));
       double_t gz = pow(10.,nexp_y->GetBinCenter(j+1));
-      // cout << " the value of i and j is " << i << " " << j << endl;
-           // cout << " mass is " << mass << " and the gz " << gz << endl;
+       cout << " the value of i and j is " << i << " " << j << endl;
+            cout << " mass is " << mass << " and the gz " << gz << endl;
       for(int l = 0; l < 15; l++){
         continuum_norm[l] = continuum_entries[l]/(continuum_entries[0]+continuum_entries[1]+continuum_entries[2]+continuum_entries[3]+continuum_entries[4]+continuum_entries[5]+continuum_entries[6]+continuum_entries[7]+continuum_entries[8]+continuum_entries[9]+continuum_entries[10]+continuum_entries[11]+continuum_entries[12]+continuum_entries[13]+continuum_entries[14]) ;
         continuum_th_lum = 1e3*85.73205*(continuum_norm[l]*up4sxs->Eval(mass));
@@ -99,9 +99,10 @@ void nobs_nexp_v3() {
       deteff = deteff_fit->Eval(mass);
       if(deteff < 0){ deteff = 0;}
       double brlumdet = gr_mu->Eval(mass) * deteff * ((up1sxs->Eval(mass)*1e3*4.77836) + (up2sxs->Eval(mass)*1e3*3.5135) + (up3sxs->Eval(mass)*1e3*16.89427) + (up4sxs->Eval(mass)*1e3*690.555) + (up5sxs->Eval(mass)*1e3*123.81655) + continuum_th_lum_all );
-      //     cout << " the deteff mubr and brlumdet are " << deteff_fit->Eval(mass) << " " << gr_mu->Eval(mass) << " " << brlumdet << endl;
+           cout << " the deteff mubr and brlumdet are " << deteff_fit->Eval(mass) << " " << gr_mu->Eval(mass) << " " << brlumdet << endl;
       if(i-235>=0){nobs->GetPoint(i-235,vXout,vYout);}
       else{nobs->GetPoint(0,vXout,vYout);}
+      cout << " normalized brlumdet by gz " << (brlumdet*pow(gz,2))/pow(0.1,2) << endl;
       double nexp_n = (brlumdet*pow(gz,2))/pow(0.1,2);
       // if(mass > 8.42 && mass < 8.43){nexp_n = 0;}
       //if(mass > 9.64 && mass < 9.66){nexp_n = 0;}
