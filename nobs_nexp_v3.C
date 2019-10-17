@@ -80,7 +80,8 @@ void nobs_nexp_v3() {
   int ybin = nexp_y->FindBin(0.0000);
   //  cout << " the bin corresponding to the muon threshold is " << xbin << endl;
 
-
+  // THOMAS FROM THE PAST MESSAGE//
+  // AFTER SO MANY CHANGES ON THE BG FIT THE NUMBER OF BINS HAS DECREASED, REMEMBER TO CHECK IT BEFORE USING 11064//
   for(int j = 0;j<10000;j++){
     for(int i = 0;i<11064;i++){
      if(nexp_x->GetBinCenter(i+1) >= 0.212125){
