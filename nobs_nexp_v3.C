@@ -98,8 +98,10 @@ void nobs_nexp_v3() {
       }
       deteff = deteff_fit->Eval(mass);
       if(deteff < 0){ deteff = 0;}
-      double brlumdet = gr_mu->Eval(mass) * deteff * ((up1sxs->Eval(mass)*1e3*4.77836) + (up2sxs->Eval(mass)*1e3*3.5135) + (up3sxs->Eval(mass)*1e3*16.89427) + (up4sxs->Eval(mass)*1e3*690.555) + (up5sxs->Eval(mass)*1e3*123.81655) + continuum_th_lum_all );
-           cout << " the deteff mubr and brlumdet are " << deteff_fit->Eval(mass) << " " << gr_mu->Eval(mass) << " " << brlumdet << endl;
+      //double brlumdet = gr_mu->Eval(mass) * deteff * ((up1sxs->Eval(mass)*1e3*4.77836) + (up2sxs->Eval(mass)*1e3*3.5135) + (up3sxs->Eval(mass)*1e3*16.89427) + (up4sxs->Eval(mass)*1e3*690.555) + (up5sxs->Eval(mass)*1e3*123.81655) + continuum_th_lum_all );
+      // cout << " the deteff mubr and brlumdet are " << deteff_fit->Eval(mass) << " " << gr_mu->Eval(mass) << " " << brlumdet << endl;
+      double brlumdet = gr_mu->Eval(mass) * deteff * 925.28973*((up1sxs->Eval(mass)*1e3*4.77836/925.28973) + (up2sxs->Eval(mass)*1e3*3.5135/925.28973) + (up3sxs->Eval(mass)*1e3*16.89427/925.28973) + (up4sxs->Eval(mass)*1e3*690.555/925.28973) + (up5sxs->Eval(mass)*1e3*123.81655/925.28973) + continuum_th_lum_all/925.28973 );
+      cout << " the deteff mubr and brlumdet are " << deteff_fit->Eval(mass) << " " << gr_mu->Eval(mass) << " " << brlumdet << endl;
       if(i-235>=0){nobs->GetPoint(i-235,vXout,vYout);}
       else{nobs->GetPoint(0,vXout,vYout);}
       cout << " normalized brlumdet by gz " << (brlumdet*pow(gz,2))/pow(0.1,2) << endl;
