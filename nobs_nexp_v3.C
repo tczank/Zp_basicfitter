@@ -55,10 +55,10 @@ void nobs_nexp_v3() {
 
   //Output File //
   TFile * f = new TFile("real_pion_nexp_nobs_new.root","RECREATE");
-  TH2D * nexp = new TH2D("h_nexp_gp_m", "number of expected events by Z' coupling strength and mass;m_{Z'}[GeV/c^{2}];g';number of expected events;", 11064,0.0,10.0,10000,-5.,0.0);
+  TH2F * nexp = new TH2F("h_nexp_gp_m", "number of expected events by Z' coupling strength and mass;m_{Z'}[GeV/c^{2}];g';number of expected events;", 11064,0.0,10.0,10000,-5.,0.0);
   TH1F * nexp_x = new TH1F("h_nexp_gp_m_x", "number of expected events by Z' mass Xproject;m_{Z'}[GeV/c^{2}];number of expected events;", 11064,0.0,10.0);
   TH1F * nexp_y = new TH1F("h_nexp_gp_m_y", "number of expected events by Z' coupling strength Yproject;g';number of expected events;", 10000,-5.,0.);
-  TH2D * gp = new TH2D("h_gp_m_gz", "g' coupling strength by mass and g'z;m_{Z'}[GeV/c^{2}];g';", 11064,0.0,10.0,10000,-5.,0.0);
+  TH2F * gp = new TH2F("h_gp_m_gz", "g' coupling strength by mass and g'z;m_{Z'}[GeV/c^{2}];g';", 11064,0.0,10.0,10000,-5.,0.0);
   //  TGraph * gr_gp[11064];
   // ########################################################## //
 
