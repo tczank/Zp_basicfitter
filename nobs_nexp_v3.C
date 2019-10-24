@@ -118,10 +118,10 @@ void nobs_nexp_v3() {
       //if(mass > 9.68 && mass < 9.74){nexp_n = 0;}
       double gp_val = nexp_n/vYout;
       //    cout << " gp_val " << gp_val << " and vYout " << vYout << " and nexp_n " << nexp_n << " and vXout " << vXout << endl;
-      if(gp_val > 1.0){
-        gp->SetBinContent(i+1,j+1,gp_val);
+      if(gp_val < 1.0){
+        gp->SetBinContent(i+1,j+1,0);
       }
-      else continue;// gp->SetBinContent(i+1,j+1,0);
+      else gp->SetBinContent(i+1,j+1,gp_val);
       // cout << " the number of expected events is " << nexp_n << endl;
       //  cout << "  g' " << gp_val << endl;
      // mass_ar[i] = vXout;
