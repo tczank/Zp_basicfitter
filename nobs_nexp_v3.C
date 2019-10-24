@@ -118,7 +118,7 @@ void nobs_nexp_v3() {
       //if(mass > 9.68 && mass < 9.74){nexp_n = 0;}
       double gp_val = nexp_n/vYout;
       //    cout << " gp_val " << gp_val << " and vYout " << vYout << " and nexp_n " << nexp_n << " and vXout " << vXout << endl;
-      if(gp_val >= 1.0){
+      if(gp_val > 1.0){
         gp->SetBinContent(i+1,j+1,gp_val);
       }
       else continue;// gp->SetBinContent(i+1,j+1,0);
