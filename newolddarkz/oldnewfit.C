@@ -98,9 +98,9 @@ void oldnewfit(TString signalfilename) {
 
     singpartripgaus->SetRange(hist_mean-20*peakwidth,hist_mean+20*peakwidth);
 
-      pol3n = new TF1("norm pol3", "[0]*([1]+ [2]*x +[3]*x*x +[4]*x*x*x)", hist_mean-20*peakwidth, hist_mean+20*peakwidth);
+      pol3n = new TF1("norm pol3", "[0]*([1]+ [2]*x +[3]*x*x +[4]*x*x*x)", 0., 10.5);
       pol3n->SetRange(hist_mean-20*peakwidth,hist_mean+20*peakwidth);
-      // pol3n->FixParameter(0,1);
+      pol3n->FixParameter(0,1);
 
        pol3n->SetLineColor(3);
     pol3n->SetLineStyle(2);
@@ -169,7 +169,7 @@ void oldnewfit(TString signalfilename) {
 
       for (int l = 0; l < 3 ; l++){
         normtripg[l] = (heightlist[l]/(heightlist[0] + heightlist[1] +heightlist[2]));
-        cout << " the normtripg is " << normtripg[l] << " and the heightlist is " << heightlist[l] << endl;
+        //   cout << " the normtripg is " << normtripg[l] << " and the heightlist is " << heightlist[l] << endl;
       }
 
       TF1 *only_one_gaus[3];
@@ -243,6 +243,7 @@ void oldnewfit(TString signalfilename) {
       //  tripgtripo->SetParameter(5,singpartripgaus->GetParameter(5));
           tripgtripo->FixParameter(6,normtripg[2]);
       tripgtripo->SetParameter(7,pol3n->GetParameter(0));
+
                 tripgtripo->SetParameter(8,pol3n->GetParameter(1));
                 tripgtripo->SetParameter(9,pol3n->GetParameter(2));
                 tripgtripo->SetParError(9,pol3n->GetParError(2));
@@ -357,7 +358,7 @@ void oldnewfit(TString signalfilename) {
                 double sigtrigS = tripsiggaus->Integral(hist_mean-3*tripsiggaus->GetParameter(4),hist_mean+3*tripsiggaus->GetParameter(4))/bginvmasslm->GetBinWidth(0);
                  double sigtrigSer = (tripsiggaus->GetParError(9)/tripsiggaus->GetParameter(9))*sigtrigS;
 
-                  cout << " the number of observed events for the trip = " << sigtrigS << " +/- " << sigtrigSer << endl;
+                 // cout << " the number of observed events for the trip = " << sigtrigS << " +/- " << sigtrigSer << endl;
 
 
    double Nobs = sigtrigS;
