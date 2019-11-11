@@ -184,7 +184,7 @@ void fitreborn_wpivon(TString signalfilename) {
 
       double dbfrac_1 = double_crystalball->GetParameter(0)/(double_crystalball->GetParameter(0) + double_crystalball->GetParameter(5));
 
-      double dbfrac_1_er = double_crystalball->GetParError(0)/(double_crystalball->GetParameter(0) + double_crystalball->GetParameter(5)) - double_crystalball->GetParameter(0)*double_crystalball->GetParError(5)/(pow(double_crystalball->GetParameter(0) + double_crystalball->GetParameter(5),2));
+      double dbfrac_1_er = sqrt(pow(double_crystalball->GetParError(0)/(double_crystalball->GetParameter(0) + double_crystalball->GetParameter(5)),2) - pow(double_crystalball->GetParameter(0),2)*pow(double_crystalball->GetParError(5)/(pow(double_crystalball->GetParameter(0) + double_crystalball->GetParameter(5),2)),2));
 
       double dbfrac_2 = double_crystalball->GetParameter(5)/(double_crystalball->GetParameter(0) + double_crystalball->GetParameter(5));
 
