@@ -55,10 +55,10 @@ void nobs_nexp_v3() {
 
   //Output File //
   TFile * f = new TFile("real_pion_nexp_nobs_new.root","RECREATE");
-  TH2F * nexp = new TH2F("h_nexp_gp_m", "number of expected events by Z' coupling strength and mass;m_{Z'}[GeV/c^{2}];g';number of expected events;", 11064,0.0,10.0,10000,-5.,0.0);
-  TH1F * nexp_x = new TH1F("h_nexp_gp_m_x", "number of expected events by Z' mass Xproject;m_{Z'}[GeV/c^{2}];number of expected events;", 11064,0.0,10.0);
+  TH2F * nexp = new TH2F("h_nexp_gp_m", "number of expected events by Z' coupling strength and mass;m_{Z'}[GeV/c^{2}];g';number of expected events;", 10421,0.0,10.0,10000,-5.,0.0);
+  TH1F * nexp_x = new TH1F("h_nexp_gp_m_x", "number of expected events by Z' mass Xproject;m_{Z'}[GeV/c^{2}];number of expected events;", 10421,0.0,10.0);
   TH1F * nexp_y = new TH1F("h_nexp_gp_m_y", "number of expected events by Z' coupling strength Yproject;g';number of expected events;", 10000,-5.,0.);
-  TH2I * gp = new TH2I("h_gp_m_gz", "g' coupling strength by mass and g'z;m_{Z'}[GeV/c^{2}];g';", 11064,0.0,10.0,10000,-5.,0.0);
+  TH2I * gp = new TH2I("h_gp_m_gz", "g' coupling strength by mass and g'z;m_{Z'}[GeV/c^{2}];g';", 10421,0.0,10.0,10000,-5.,0.0);
   //  TGraph * gr_gp[11064];
   // ########################################################## //
 
@@ -84,7 +84,7 @@ void nobs_nexp_v3() {
   // THOMAS FROM THE PAST MESSAGE//
   // AFTER SO MANY CHANGES ON THE BG FIT THE NUMBER OF BINS HAS DECREASED, REMEMBER TO CHECK IT BEFORE USING 11064//
   for(int j = 0;j<10000;j++){
-    for(int i = 0;i<11064;i++){
+    for(int i = 0;i<10421;i++){
      if(nexp_x->GetBinCenter(i+1) >= 0.212125){
        double_t mass = nexp_x->GetBinCenter(i+1);
       //      double_t gz = exp(nexp_y->GetBinCenter(j+1)*log(10));
@@ -106,7 +106,8 @@ void nobs_nexp_v3() {
         continuum_th_lum_all = 0;
       //double brlumdet =  925.28973*((up1sxs->Eval(mass)*1e3*4.77836/925.28973) + (up2sxs->Eval(mass)*1e3*3.5135/925.28973) + (up3sxs->Eval(mass)*1e3*16.89427/925.28973) + (up4sxs->Eval(mass)*1e3*690.555/925.28973) + (up5sxs->Eval(mass)*1e3*123.81655/925.28973) + continuum_th_lum_all/925.28973 );
         // cout << " the deteff mubr and brlumdet are " << deteff_fit->Eval(mass) << " " << gr_mu->Eval(mass) << " " << brlumdet << endl;
-      if(i-235>=0){nobs->GetPoint(i-235,vXout,vYout);}
+        //# for the previous number of bins on x 11064 the dimuon mass threshold is on the bin # 235
+        if(i-222>=0){nobs->GetPoint(i-222,vXout,vYout);}
       //if(i-135>=0){nobs->GetPoint(i-135,vXout,vYout);}
       else{nobs->GetPoint(0,vXout,vYout);}
       //  gz = 0.001;
@@ -118,10 +119,12 @@ void nobs_nexp_v3() {
       //if(mass > 9.68 && mass < 9.74){nexp_n = 0;}
       double gp_val = nexp_n/vYout;
       //    cout << " gp_val " << gp_val << " and vYout " << vYout << " and nexp_n " << nexp_n << " and vXout " << vXout << endl;
-      if(gp_val < 1.0){
-        gp->SetBinContent(i+1,j+1,0);
+      if(gp_val > 1.0){
+        gp->SetBinContent(i+1,j+1,gp_val);
       }
-      else gp->SetBinContent(i+1,j+1,gp_val);
+      //  if(nexp_n < vYout){gp->SetBinContent(i+1,j+1,0.);}
+
+      //  else gp->Fill(i+1,j+1,gp_val);
       // cout << " the number of expected events is " << nexp_n << endl;
       //  cout << "  g' " << gp_val << endl;
      // mass_ar[i] = vXout;
@@ -135,7 +138,7 @@ void nobs_nexp_v3() {
   //   gPad->SetLogz();
 
   // Saving Output File //
-  gp->SetMinimum(1.0);
+  //  gp->SetMinimum(1.0);
   gp->SetName("gp");
   gp->Write();
 
