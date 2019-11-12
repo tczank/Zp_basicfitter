@@ -241,7 +241,7 @@ void oldnewfit(TString signalfilename) {
       //tripgtripo->SetParameter(4,singpartripgaus->GetParameter(4));
           tripgtripo->FixParameter(5,singpartripgaus->GetParameter(5));
       //  tripgtripo->SetParameter(5,singpartripgaus->GetParameter(5));
-          tripgtripo->FixParameter(6,normtripg[2]);
+          tripgtripo->FixParameter(6,1. -normtripg[0] -normtripg[1]);
       tripgtripo->SetParameter(7,pol3n->GetParameter(0));
 
                 tripgtripo->SetParameter(8,pol3n->GetParameter(1));
@@ -461,7 +461,7 @@ void oldnewfit(TString signalfilename) {
     double thirdwidther = singpartripgaus->GetParError(5);
 
        //to parametrize the double gaussian completely
-    cout << hist_mean << " " << firstwidth << " " << firstwidther << " " << secondwidth << " " << secondwidther << " " << thirdwidth << " " << thirdwidther << " " << normtripg[0] << " " << normer[0] << " " << normtripg[1] << " " << normer[1] << " " << normtripg[2] << " " << normer[2] << " " << intestep << " " << intestep/(0.92528973*(gr_mu->Eval(hist_mean)*tripSeff)) << " " << tripww << " " << triperww << " " << significance  << endl;
+    cout << hist_mean << " " << firstwidth << " " << firstwidther << " " << secondwidth << " " << secondwidther << " " << thirdwidth << " " << thirdwidther << " " << normtripg[0] << " " << normer[0] << " " << normtripg[1] << " " << normer[1] << " " << 1 - normtripg[0] - normtripg[1] << " " << normer[2] << " " << intestep << " " << intestep/(0.92528973*(gr_mu->Eval(hist_mean)*tripSeff)) << " " << tripww << " " << triperww << " " << significance  << endl;
 
 
 
