@@ -161,11 +161,11 @@ void oldnewfit(TString signalfilename) {
       herr[1] = singpartripgaus->GetParError(3);
       herr[2] = singpartripgaus->GetParError(6);
 
-      normer[0] = sqrt(pow(herr[0]/(heightlist[0] + heightlist[1] + heightlist[2]),2) - pow(heightlist[0]*herr[1]/(pow(heightlist[0] + heightlist[1] + heightlist[2],2)),2) - pow(heightlist[0]*herr[2]/(pow(heightlist[0] + heightlist[1] + heightlist[2],2)),2));
+      normer[0] = sqrt(pow(herr[0]/(heightlist[0] + heightlist[1] + heightlist[2]),2) + pow(heightlist[0]*herr[1]/(pow(heightlist[0] + heightlist[1] + heightlist[2],2)),2) + pow(heightlist[0]*herr[2]/(pow(heightlist[0] + heightlist[1] + heightlist[2],2)),2));
 
-      normer[1] = sqrt(pow(herr[1]/(heightlist[0] + heightlist[1] + heightlist[2]),2) - pow(heightlist[1]*herr[0]/(pow(heightlist[0] + heightlist[1] + heightlist[2],2)),2) - pow(heightlist[1]*herr[2]/(pow(heightlist[0] + heightlist[1] + heightlist[2],2)),2));
+      normer[1] = sqrt(pow(herr[1]/(heightlist[0] + heightlist[1] + heightlist[2]),2) + pow(heightlist[1]*herr[0]/(pow(heightlist[0] + heightlist[1] + heightlist[2],2)),2) + pow(heightlist[1]*herr[2]/(pow(heightlist[0] + heightlist[1] + heightlist[2],2)),2));
 
-      normer[2] = sqrt(pow(herr[2]/(heightlist[0] + heightlist[1] + heightlist[2]),2) - pow(heightlist[2]*herr[1]/(pow(heightlist[0] + heightlist[1] + heightlist[2],2)),2) - pow(heightlist[2]*herr[0]/(pow(heightlist[0] + heightlist[1] + heightlist[2],2)),2));
+      normer[2] = sqrt(pow(herr[2]/(heightlist[0] + heightlist[1] + heightlist[2]),2) + pow(heightlist[2]*herr[1]/(pow(heightlist[0] + heightlist[1] + heightlist[2],2)),2) + pow(heightlist[2]*herr[0]/(pow(heightlist[0] + heightlist[1] + heightlist[2],2)),2));
 
       for (int l = 0; l < 3 ; l++){
         normtripg[l] = (heightlist[l]/(heightlist[0] + heightlist[1] +heightlist[2]));
