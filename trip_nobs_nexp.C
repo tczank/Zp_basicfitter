@@ -83,8 +83,8 @@ void trip_nobs_nexp() {
 
   // THOMAS FROM THE PAST MESSAGE//
   // AFTER SO MANY CHANGES ON THE BG FIT THE NUMBER OF BINS HAS DECREASED, REMEMBER TO CHECK IT BEFORE USING 11064//
-  for(int j = 9999;j<10000;j++){
-    for(int i = 10473;i<10474;i++){
+  for(int j = 0;j<10000;j++){
+    for(int i = 0;i<10474;i++){
      if(nexp_x->GetBinCenter(i+1) >= 0.212125){
        double_t mass = nexp_x->GetBinCenter(i+1);
       //      double_t gz = exp(nexp_y->GetBinCenter(j+1)*log(10));
