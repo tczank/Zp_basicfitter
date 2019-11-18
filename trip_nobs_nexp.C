@@ -35,7 +35,7 @@ void trip_nobs_nexp() {
   TFile * up5s_xs = new TFile("~tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_5s.root");
   // thczank or tczank get your cd pwd first
 
-  TFile * deteff_plot = new TFile("./weighted_pionveto_on/pion_par/pion_now_deteff.root");
+  TFile * deteff_plot = new TFile("./newolddarkz_det.root");
   // path for detefffit might include a folder or not
 
   TFile * sqrs_scale = new TFile("./sqrts_scalefit.root");
@@ -49,7 +49,7 @@ void trip_nobs_nexp() {
   TGraphErrors *up4sxs = (TGraphErrors*) up4s_xs->Get("madgraphxsZpm_gppone");
   TGraphErrors *up5sxs = (TGraphErrors*) up5s_xs->Get("Cross_section_Y5S");
   TGraph *nobs = (TGraph*)nobs_file->Get("gr_obs");
-  TF1 * deteff_fit = (TF1*) deteff_plot->Get("PrevFitTMP");
+  TGraph * deteff_fit = (TGraph*) deteff_plot->Get("gr_det");
   TF1 * sqrs_scale_fit = (TF1*) sqrs_scale->Get("PrevFitTMP");
   // ###############################################################//
 
