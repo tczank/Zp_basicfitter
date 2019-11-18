@@ -28,11 +28,7 @@ void trip_nobs_nexp() {
   //## Loading the different CMS E "Theoretical" Cross section Br and det eff
   TFile * br_fil = new TFile("../merging_energies/Zp_BR.root");
   TFile * nobs_file = new TFile("./tripfit_sum.root");
-  TFile * up1s_xs = new TFile("~tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_1s.root");
-  TFile * up2s_xs = new TFile("~tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_2s.root");
-  TFile * up3s_xs = new TFile("~tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_3s.root");
-  TFile * up4s_xs = new TFile("~tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/madgraphxs_nodecaymode.root");
-  TFile * up5s_xs = new TFile("~tczank/MEGA/MEGAsync/part-phys/rootfiles/newdarkz/gplimproc/xslist_5s.root");
+  TFile * upws_xs = new TFile("./Official-weighted-theoretical-cross-section.root");
   // thczank or tczank get your cd pwd first
 
   TFile * deteff_plot = new TFile("./newolddarkz_det.root");
@@ -43,11 +39,7 @@ void trip_nobs_nexp() {
 
   //## Setting madgraph cross sections ##//
   TGraph *gr_mu = (TGraph*)br_fil->Get("gr_mu");
-  TGraphErrors *up1sxs = (TGraphErrors*) up1s_xs->Get("Cross_section_Y1S");
-  TGraphErrors *up2sxs = (TGraphErrors*) up2s_xs->Get("Cross_section_Y2S");
-  TGraphErrors *up3sxs = (TGraphErrors*) up3s_xs->Get("Cross_section_Y3S");
-  TGraphErrors *up4sxs = (TGraphErrors*) up4s_xs->Get("madgraphxsZpm_gppone");
-  TGraphErrors *up5sxs = (TGraphErrors*) up5s_xs->Get("Cross_section_Y5S");
+  TGraphErrors *upwsxs = (TGraphErrors*) upws_xs->Get("gr_xs_no_isr");
   TGraph *nobs = (TGraph*)nobs_file->Get("gr_obs");
   TGraph * deteff_fit = (TGraph*) deteff_plot->Get("gr_det");
   TF1 * sqrs_scale_fit = (TF1*) sqrs_scale->Get("PrevFitTMP");
@@ -93,7 +85,7 @@ void trip_nobs_nexp() {
       //      cout << " mass is " << mass << " and the gz " << gz << endl;
       for(int l = 0; l < 15; l++){
         continuum_norm[l] = continuum_entries[l]/(continuum_entries[0]+continuum_entries[1]+continuum_entries[2]+continuum_entries[3]+continuum_entries[4]+continuum_entries[5]+continuum_entries[6]+continuum_entries[7]+continuum_entries[8]+continuum_entries[9]+continuum_entries[10]+continuum_entries[11]+continuum_entries[12]+continuum_entries[13]+continuum_entries[14]) ;
-        continuum_th_lum = 1e3*85.73205*(continuum_norm[l]*up4sxs->Eval(mass));
+        continuum_th_lum = 1e3*85.73205*(continuum_norm[l]*upwsxs->Eval(mass));
         continuum_th_lum_all = continuum_th_lum_all + continuum_th_lum;
         //  cout << " the weighted and scaled luminosity is " << continuum_th_lum_all << endl;
       }
@@ -101,7 +93,7 @@ void trip_nobs_nexp() {
       if(deteff < 0){ deteff = 0;}
       //double brlumdet = gr_mu->Eval(mass) * deteff * ((up1sxs->Eval(mass)*1e3*4.77836) + (up2sxs->Eval(mass)*1e3*3.5135) + (up3sxs->Eval(mass)*1e3*16.89427) + (up4sxs->Eval(mass)*1e3*690.555) + (up5sxs->Eval(mass)*1e3*123.81655) + continuum_th_lum_all );
       // cout << " the deteff mubr and brlumdet are " << deteff_fit->Eval(mass) << " " << gr_mu->Eval(mass) << " " << brlumdet << endl;
-        double brlumdet = gr_mu->Eval(mass) * deteff * 925.28973*((up1sxs->Eval(mass)*1e3*4.77836/925.28973) + (up2sxs->Eval(mass)*1e3*3.5135/925.28973) + (up3sxs->Eval(mass)*1e3*16.89427/925.28973) + (up4sxs->Eval(mass)*1e3*690.555/925.28973) + (up5sxs->Eval(mass)*1e3*123.81655/925.28973) + continuum_th_lum_all/925.28973 );
+      double brlumdet = gr_mu->Eval(mass) * deteff * 0.92528973*(upwsxs->Eval(mass));
         continuum_th_lum = 0;
         continuum_th_lum_all = 0;
       //double brlumdet =  925.28973*((up1sxs->Eval(mass)*1e3*4.77836/925.28973) + (up2sxs->Eval(mass)*1e3*3.5135/925.28973) + (up3sxs->Eval(mass)*1e3*16.89427/925.28973) + (up4sxs->Eval(mass)*1e3*690.555/925.28973) + (up5sxs->Eval(mass)*1e3*123.81655/925.28973) + continuum_th_lum_all/925.28973 );
@@ -119,7 +111,7 @@ void trip_nobs_nexp() {
       //if(mass > 9.68 && mass < 9.74){nexp_n = 0;}
       double gp_val = nexp_n/vYout;
       //    cout << " gp_val " << gp_val << " and vYout " << vYout << " and nexp_n " << nexp_n << " and vXout " << vXout << endl;
-      if(gp_val > 1.0){
+      if(gp_val >= 1.0){
         gp->SetBinContent(i+1,j+1,gp_val);
       }
       //  if(nexp_n < vYout){gp->SetBinContent(i+1,j+1,0.);}
