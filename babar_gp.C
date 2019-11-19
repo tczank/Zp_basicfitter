@@ -22,7 +22,7 @@
 // continuum 85.73205
 
 
-void babar_gp.C() {
+void babar_gp() {
 
 
   //## Loading the different CMS E "Theoretical" Cross section Br and det eff
