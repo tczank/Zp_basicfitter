@@ -27,7 +27,7 @@ void babar_gp_db() {
 
   //## Loading the different CMS E "Theoretical" Cross section Br and det eff
   TFile * br_fil = new TFile("../merging_energies/Zp_BR.root");
-  TFile * nobs_file = new TFile("./real_pion_all_babarrebin.root");
+  TFile * nobs_file = new TFile("./babarrebin_newpion.root");
   TFile * upws_xs = new TFile("./Official-weighted-theoretical-cross-section.root");
   // thczank or tczank get your cd pwd first
 
