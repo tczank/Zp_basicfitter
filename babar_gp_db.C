@@ -31,7 +31,8 @@ void babar_gp_db() {
   TFile * upws_xs = new TFile("./Official-weighted-theoretical-cross-section.root");
   // thczank or tczank get your cd pwd first
 
-  TFile * deteff_plot = new TFile("./weighted_pionveto_on/pion_par/pion_now_deteff.root");
+  // TFile * deteff_plot = new TFile("./weighted_pionveto_on/pion_par/pion_now_deteff.root");
+  TFile * deteff_plot = new TFile("../signal_mc_dist_reader/newpionvetodeteff.root");
   // path for detefffit might include a folder or not
 
   TFile * sqrs_scale = new TFile("./sqrts_scalefit.root");
@@ -41,16 +42,17 @@ void babar_gp_db() {
   TGraph *gr_mu = (TGraph*)br_fil->Get("gr_mu");
   TGraphErrors *upwsxs = (TGraphErrors*) upws_xs->Get("gr_xs_isr");
   TGraph *nobs = (TGraph*)nobs_file->Get("gr_obs");
-  TF1 * deteff_fit = (TF1*) deteff_plot->Get("PrevFitTMP");
+  TGraph *deteff_fit = (TGraph*)deteff_plot->Get("gr_det_isr");
+  // TF1 * deteff_fit = (TF1*) deteff_plot->Get("PrevFitTMP");
   TF1 * sqrs_scale_fit = (TF1*) sqrs_scale->Get("PrevFitTMP");
   // ###############################################################//
 
   //Output File //
-  TFile * f = new TFile("babar_gp_dp_rebin.root","RECREATE");
-  TH2F * nexp = new TH2F("h_nexp_gp_m", "number of expected events by Z' coupling strength and mass;m_{Z'}[GeV/c^{2}];g';number of expected events;", 2029,0.212,9.99923,10000,-5.,0.0);
-  TH1F * nexp_x = new TH1F("h_nexp_gp_m_x", "number of expected events by Z' mass Xproject;m_{Z'}[GeV/c^{2}];number of expected events;", 2029,0.212,9.99923);
+  TFile * f = new TFile("babar_gp_dp_rebin_newpion.root","RECREATE");
+  TH2F * nexp = new TH2F("h_nexp_gp_m", "number of expected events by Z' coupling strength and mass;m_{Z'}[GeV/c^{2}];g';number of expected events;", 2070,0.212,9.99923,10000,-5.,0.0);
+  TH1F * nexp_x = new TH1F("h_nexp_gp_m_x", "number of expected events by Z' mass Xproject;m_{Z'}[GeV/c^{2}];number of expected events;", 2070,0.212,9.99923);
   TH1F * nexp_y = new TH1F("h_nexp_gp_m_y", "number of expected events by Z' coupling strength Yproject;g';number of expected events;", 10000,-5.,0.);
-  TH2I * gp = new TH2I("h_gp_m_gz", "g' coupling strength by mass and g'z;m_{Z'}[GeV/c^{2}];g';", 2029,0.212,9.99923,10000,-5.,0.0);
+  TH2I * gp = new TH2I("h_gp_m_gz", "g' coupling strength by mass and g'z;m_{Z'}[GeV/c^{2}];g';", 2070,0.212,9.99923,10000,-5.,0.0);
   //  TGraph * gr_gp[11064];
   // ########################################################## //
 
@@ -76,7 +78,7 @@ void babar_gp_db() {
   // THOMAS FROM THE PAST MESSAGE//
   // AFTER SO MANY CHANGES ON THE BG FIT THE NUMBER OF BINS HAS DECREASED, REMEMBER TO CHECK IT BEFORE USING 11064//
   for(int j = 0;j<10000;j++){
-    for(int i = 0;i<2029;i++){
+    for(int i = 0;i<2070;i++){
       // if(nexp_x->GetBinCenter(i+1) >= 0.212125){
        double_t mass = nexp_x->GetBinCenter(i+1);
       //      double_t gz = exp(nexp_y->GetBinCenter(j+1)*log(10));
