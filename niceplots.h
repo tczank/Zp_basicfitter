@@ -3,7 +3,7 @@
 #include "Nice1D.c"
 
 
-void niceplots{
+void niceplots(){
 gROOT->Reset();
 
   gROOT->SetStyle("Bold");
