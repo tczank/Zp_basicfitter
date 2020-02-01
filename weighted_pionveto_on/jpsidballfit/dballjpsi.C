@@ -27,7 +27,7 @@ void dballjpsi(TString signalfilename) {
   gStyle->SetOptStat(1);
   // gROOT->SetBatch(1);
   TFile *signal = new TFile(signalfilename);
-  TFile *bg = new TFile("../../../new_pion_veto/smearbackvphojpsimumu.root");
+  TFile *bg = new TFile("../../../new_pion_veto/isrjpsimumu.root");
 
   TH1F *dpinvmasslm;
   TH1F *bginvmasslm;
