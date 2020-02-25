@@ -78,8 +78,8 @@ void fitreborn_wpivon(TString signalfilename) {
   double zpgenideff = genid_invmass->GetEntries();
 
   hist_mean = dpinvmasslm->GetBinCenter(dpinvmasslm->GetMaximumBin());
-  //  peakwidth = gr_isr_w->Eval(hist_mean);
-  peakwidth = dbwidth->Eval(hist_mean);
+  peakwidth = gr_isr_w->Eval(hist_mean);
+  // peakwidth = dbwidth->Eval(hist_mean);
   entriesatmean = dpinvmasslm->GetBinContent(dpinvmasslm->GetMaximumBin());
   rms = dpinvmasslm->GetBinWidth(1);
   std_dev = dpinvmasslm->GetStdDev(1);
