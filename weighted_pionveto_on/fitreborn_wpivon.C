@@ -84,9 +84,9 @@ void fitreborn_wpivon(TString signalfilename) {
   rms = dpinvmasslm->GetBinWidth(1);
   std_dev = dpinvmasslm->GetStdDev(1);
 
-    double lowerfit = hist_mean -60*peakwidth;
+    double lowerfit = hist_mean -15*peakwidth;
     if(lowerfit < 0){lowerfit =0;}
-    double higherfit = hist_mean + 70*peakwidth;
+    double higherfit = hist_mean + 30*peakwidth;
     if(higherfit > 10.0){higherfit = 10.;}
 
     double_crystalball = new TF1("double_crystalball", "crystalball(0) + crystalball(5) ", hist_mean - 100*peakwidth , hist_mean + 100*peakwidth);
@@ -119,7 +119,7 @@ void fitreborn_wpivon(TString signalfilename) {
     double_crystalball->SetLineColor(4);
     double_crystalball->SetRange(lowerfit,  higherfit);
 
-      pol3n = new TF1("norm pol3", "[0]*([1]+ [2]*x +[3]*x*x +[4]*x*x*x)", hist_mean -50*peakwidth, hist_mean + 50*peakwidth);
+      pol3n = new TF1("norm pol3", "[0]*([1]+ [2]*x +[3]*x*x +[4]*x*x*x)", hist_mean -100*peakwidth, hist_mean + 100*peakwidth);
       pol3n->SetRange(lowerfit,higherfit);
       pol3n->FixParameter(0,1);
 
