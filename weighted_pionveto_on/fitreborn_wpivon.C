@@ -89,16 +89,16 @@ void fitreborn_wpivon(TString signalfilename) {
 
   cout << "hist mean " << hist_mean << endl;
   if(hist_mean < 0.212){
-    lowerfit = hist_mean -3*peakwidth;
+    lowerfit = hist_mean -1*peakwidth;
     if(lowerfit < 0){lowerfit =0;}
-    higherfit = hist_mean + 1*peakwidth;
+    higherfit = hist_mean + 3*peakwidth;
     if(higherfit > 10.0){higherfit = 10.;}
   }
 
   else{
-    lowerfit = hist_mean -6*peakwidth;
+    lowerfit = hist_mean -3*peakwidth;
     if(lowerfit < 0){lowerfit =0;}
-    higherfit = hist_mean + 3*peakwidth;
+    higherfit = hist_mean + 5*peakwidth;
     if(higherfit > 10.0){higherfit = 10.;}
   }
 
