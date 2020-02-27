@@ -84,10 +84,24 @@ void fitreborn_wpivon(TString signalfilename) {
   rms = dpinvmasslm->GetBinWidth(1);
   std_dev = dpinvmasslm->GetStdDev(1);
 
-    double lowerfit = hist_mean -15*peakwidth;
+  double lowerfit;
+  double higherfit;
+
+  cout << "hist mean " << hist_mean << endl;
+  if(hist_mean < 0.212){
+    lowerfit = hist_mean -3*peakwidth;
     if(lowerfit < 0){lowerfit =0;}
-    double higherfit = hist_mean + 30*peakwidth;
+    higherfit = hist_mean + 1*peakwidth;
     if(higherfit > 10.0){higherfit = 10.;}
+  }
+
+  else{
+    lowerfit = hist_mean -6*peakwidth;
+    if(lowerfit < 0){lowerfit =0;}
+    higherfit = hist_mean + 3*peakwidth;
+    if(higherfit > 10.0){higherfit = 10.;}
+  }
+
 
     double_crystalball = new TF1("double_crystalball", "crystalball(0) + crystalball(5) ", hist_mean - 100*peakwidth , hist_mean + 100*peakwidth);
 
@@ -304,7 +318,7 @@ void fitreborn_wpivon(TString signalfilename) {
         high_range = 10.5;
       }
 
-            for(int l = 0; l < 1; l++){
+            for(int l = 0; l < 10000; l++){
            h_pull[l] = new TH1D("Pull distribution", "Toy MC reduced dimuon mass [GeV/c^{2}];m_{R};entries;", sigwinbin, low_range, high_range);
            h_pull[l]->Sumw2();
            TTimeStamp * c = new TTimeStamp();
