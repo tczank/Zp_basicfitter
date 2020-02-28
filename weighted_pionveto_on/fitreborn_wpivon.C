@@ -98,7 +98,7 @@ void fitreborn_wpivon(TString signalfilename) {
   else{
     lowerfit = hist_mean -3*peakwidth;
     if(lowerfit < 0){lowerfit =0;}
-    higherfit = hist_mean + 5*peakwidth;
+    higherfit = hist_mean + 6*peakwidth;
     if(higherfit > 10.0){higherfit = 10.;}
   }
 
@@ -118,17 +118,17 @@ void fitreborn_wpivon(TString signalfilename) {
 
     double_crystalball->SetNpx(1000);
 
-    double_crystalball->SetParLimits(0,10.,entriesatmean);
+    double_crystalball->SetParLimits(0,1,entriesatmean);
     double_crystalball->FixParameter(1,hist_mean);
     double_crystalball->FixParameter(6,hist_mean);
-    double_crystalball->SetParLimits(2,rms,3*peakwidth);
-    double_crystalball->SetParLimits(3,-5,0.);
-    double_crystalball->SetParLimits(4,0.,3.);
-    double_crystalball->SetParLimits(5,10.,entriesatmean);
-    double_crystalball->SetParLimits(7,rms,3*peakwidth);
-    double_crystalball->SetParLimits(8,0.0,5);
+    double_crystalball->SetParLimits(2,rms,500*peakwidth);
+    double_crystalball->SetParLimits(3,-100,0.);
+    double_crystalball->SetParLimits(4,1.,100.);
+    double_crystalball->SetParLimits(5,1,entriesatmean);
+    double_crystalball->SetParLimits(7,rms,500*peakwidth);
+    double_crystalball->SetParLimits(8,1.0,100);
     // double_crystalball->SetParLimits(9,50.0,entriesatmean);
-    double_crystalball->SetParLimits(9,0,3);
+    double_crystalball->SetParLimits(9,1,100);
 
     double_crystalball->SetLineColor(4);
     double_crystalball->SetRange(lowerfit,  higherfit);
@@ -266,7 +266,7 @@ void fitreborn_wpivon(TString signalfilename) {
       ///####Toy Montecarlo##################/////
 
 
-      TF1 * dbcrysnpol3_forpull = new TF1("double crystal ball with a 3rd order poly", " [15]*(crystalball(0)  + crystalball(5)) + [10]*([11]+[12]*x +[13]*x*x + [14]*x*x*x)", hist_mean-50*peakwidth, hist_mean+50*peakwidth);
+      TF1 * dbcrysnpol3_forpull = new TF1("double crystal ball with a 3rd order poly", " [15]*(crystalball(0)  + crystalball(5)) + [10]*([11]+[12]*x +[13]*x*x + [14]*x*x*x)", hist_mean-100*peakwidth, hist_mean+100*peakwidth);
 
 
       dbcrysnpol3_forpull->SetParName(0,"Constant_1");
@@ -308,8 +308,6 @@ void fitreborn_wpivon(TString signalfilename) {
       double low_range = lowerfit;
       double high_range = higherfit;
 
-      dbcrysnpol3_forpull->SetRange(low_range,high_range);
-
       if(low_range < 0.0000){
         low_range = 0.00;
       }
@@ -318,7 +316,9 @@ void fitreborn_wpivon(TString signalfilename) {
         high_range = 10.5;
       }
 
-            for(int l = 0; l < 10000; l++){
+      dbcrysnpol3_forpull->SetRange(low_range,high_range);
+
+          for(int l = 0; l < 10000; l++){
            h_pull[l] = new TH1D("Pull distribution", "Toy MC reduced dimuon mass [GeV/c^{2}];m_{R};entries;", sigwinbin, low_range, high_range);
            h_pull[l]->Sumw2();
            TTimeStamp * c = new TTimeStamp();
@@ -327,6 +327,7 @@ void fitreborn_wpivon(TString signalfilename) {
            double_t timeseed2 = d->GetNanoSec();
            r1->SetSeed(timeseed);
            h_pull[l]->FillRandom("norm pol3",r1->Poisson(entriesinint));
+           h_pull[l]->Rebin(10);
             TFitResultPtr dbnpol_forpull = h_pull[l]->Fit(dbcrysnpol3_forpull,"RBQS+");
 
            double signyield_alt = dbcrysnpol3_forpull->GetParameter(15);
