@@ -48,7 +48,7 @@ void babar_gp_db() {
   // ###############################################################//
 
   //Output File //
-  TFile * f = new TFile("babar_gp_dp_rebin_newpion.root","RECREATE");
+  TFile * f = new TFile("babar_gp_dp_rebin_newpion_jpsiveto.root","RECREATE");
   TH2F * nexp = new TH2F("h_nexp_gp_m", "number of expected events by Z' coupling strength and mass;m_{Z'}[GeV/c^{2}];g';number of expected events;", 2070,0.212,9.99923,10000,-5.,0.0);
   TH1F * nexp_x = new TH1F("h_nexp_gp_m_x", "number of expected events by Z' mass Xproject;m_{Z'}[GeV/c^{2}];number of expected events;", 2070,0.212,9.99923);
   TH1F * nexp_y = new TH1F("h_nexp_gp_m_y", "number of expected events by Z' coupling strength Yproject;g';number of expected events;", 10000,-5.,0.);
@@ -113,8 +113,12 @@ void babar_gp_db() {
       //if(mass > 9.68 && mass < 9.74){nexp_n = 0;}
       double gp_val = nexp_n/vYout;
       //    cout << " gp_val " << gp_val << " and vYout " << vYout << " and nexp_n " << nexp_n << " and vXout " << vXout << endl;
-      if(gp_val >= 1.0){
+      if(gp_val >= 1.0 && (mass < 3.05 || mass > 3.13)){
         gp->SetBinContent(i+1,j+1,gp_val);
+      }
+      else{
+        nexp->SetBinContent(i+1,j+1,0);
+        gp->SetBinContent(i+1,j+1,0);
       }
       //  if(nexp_n < vYout){gp->SetBinContent(i+1,j+1,0.);}
 

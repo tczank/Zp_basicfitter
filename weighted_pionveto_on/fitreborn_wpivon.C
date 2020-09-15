@@ -96,9 +96,9 @@ void fitreborn_wpivon(TString signalfilename) {
   }
 
   else{
-    lowerfit = hist_mean -3*peakwidth;
+    lowerfit = hist_mean -10*peakwidth;
     if(lowerfit < 0){lowerfit =0;}
-    higherfit = hist_mean + 6*peakwidth;
+    higherfit = hist_mean + 20*peakwidth;
     if(higherfit > 10.0){higherfit = 10.;}
   }
 
@@ -118,15 +118,15 @@ void fitreborn_wpivon(TString signalfilename) {
 
     double_crystalball->SetNpx(1000);
 
-    double_crystalball->SetParLimits(0,1,entriesatmean);
+    double_crystalball->SetParLimits(0,0.,entriesatmean);
     double_crystalball->FixParameter(1,hist_mean);
     double_crystalball->FixParameter(6,hist_mean);
     double_crystalball->SetParLimits(2,rms,500*peakwidth);
-    double_crystalball->SetParLimits(3,-100,0.);
-    double_crystalball->SetParLimits(4,1.,100.);
-    double_crystalball->SetParLimits(5,1,entriesatmean);
+    double_crystalball->SetParLimits(3,-500,0.);
+    double_crystalball->SetParLimits(4,0.,100.);
+    double_crystalball->SetParLimits(5,0,entriesatmean);
     double_crystalball->SetParLimits(7,rms,500*peakwidth);
-    double_crystalball->SetParLimits(8,1.0,100);
+    double_crystalball->SetParLimits(8,0.0,500);
     // double_crystalball->SetParLimits(9,50.0,entriesatmean);
     double_crystalball->SetParLimits(9,1,100);
 
@@ -135,7 +135,7 @@ void fitreborn_wpivon(TString signalfilename) {
 
       pol3n = new TF1("norm pol3", "[0]*([1]+ [2]*x +[3]*x*x +[4]*x*x*x)", hist_mean -100*peakwidth, hist_mean + 100*peakwidth);
       pol3n->SetRange(lowerfit,higherfit);
-      pol3n->FixParameter(0,1);
+      pol3n->SetParameter(0,1);
 
       TCanvas *C2 = new TCanvas("C2", "", 10, 10, 800, 800);
       C2->cd(1);
@@ -167,11 +167,35 @@ void fitreborn_wpivon(TString signalfilename) {
   h_pull_res[1]= new TH1D("pull distribution_1","pull;pull;entries;", 1000,-200,500);
 
   // here it is ok
-      TFitResultPtr normpol3 = bginvmasslm->Fit(pol3n,"RMBQS+");
+      TFitResultPtr normpol3 = bginvmasslm->Fit(pol3n,"0Q");
+      normpol3 = bginvmasslm->Fit(pol3n,"0Q");
+      normpol3 = bginvmasslm->Fit(pol3n,"0Q");
+      normpol3 = bginvmasslm->Fit(pol3n,"0Q");
+      normpol3 = bginvmasslm->Fit(pol3n,"0RMBQS+");
+      normpol3 = bginvmasslm->Fit(pol3n,"RMBQS+");
+
       thirdpolchi = normpol3->Chi2();
 
       // TFitResultPtr rebornfit = dpinvmasslm->Fit(triplegexp,"RBQS+");
-       TFitResultPtr cballfit = dpinvmasslm->Fit(double_crystalball,"RMBQS+");
+      TFitResultPtr cballfit = dpinvmasslm->Fit(double_crystalball,"0Q");
+       cballfit = dpinvmasslm->Fit(double_crystalball);
+
+       double_crystalball->ReleaseParameter(1);
+       double_crystalball->ReleaseParameter(6);
+
+       cballfit = dpinvmasslm->Fit(double_crystalball,"0RMBQ");
+       cballfit = dpinvmasslm->Fit(double_crystalball,"0RMBQ");
+       cballfit = dpinvmasslm->Fit(double_crystalball,"0RMBQ");
+       cballfit = dpinvmasslm->Fit(double_crystalball,"0RMBQ");
+       cballfit = dpinvmasslm->Fit(double_crystalball,"0RMBQ");
+       cballfit = dpinvmasslm->Fit(double_crystalball,"0RMBQ");
+       cballfit = dpinvmasslm->Fit(double_crystalball,"0RMBQ");
+
+
+
+       cballfit = dpinvmasslm->Fit(double_crystalball,"RMBQS+");
+
+
        //       cballfit->Print();
 
       TAxis * xaxis = bginvmasslm->GetXaxis();
@@ -208,10 +232,7 @@ void fitreborn_wpivon(TString signalfilename) {
 
       double dbw_er = (dbfrac_1_er*pow(double_crystalball->GetParameter(2),2) + dbfrac_2_er*pow(double_crystalball->GetParameter(7),2))/(2*dbw) + (double_crystalball->GetParameter(2)*double_crystalball->GetParError(2)*dbfrac_1 + double_crystalball->GetParameter(7)*double_crystalball->GetParError(7)*dbfrac_2)/dbw;
 
-       double tripS = double_crystalball->Integral(hist_mean-3*dbw, hist_mean+3*dbw);
-      double tripSer = (double_crystalball->IntegralError(hist_mean-3*dbw, hist_mean+3*dbw, cballfit->GetParams(), cballfit->GetCovarianceMatrix().GetMatrixArray()));
-
-      double tripSeff = zpgenideff/100000;
+       double tripSeff = zpgenideff/100000;
       //      cout << " the efficiency from the gen id dist is " << tripSeff << endl;
       double tripSeffer = sqrt((tripSeff*(1-tripSeff))/100000);
 
@@ -219,7 +240,7 @@ void fitreborn_wpivon(TString signalfilename) {
       double fitfeffer = ((double_crystalball->IntegralError(hist_mean-3*dbw,hist_mean+3*dbw,cballfit->GetParams(), cballfit->GetCovarianceMatrix().GetMatrixArray()))/dpinvmasslm->GetBinWidth(0))/100000;
 
 
-      TF1 * dbcrysnpol3 = new TF1("double crystal ball with a 3rd order poly", " [15]*(crystalball(0)  + crystalball(5)) + [10]*([11]+[12]*x +[13]*x*x + [14]*x*x*x)", hist_mean-50*peakwidth, hist_mean+50*peakwidth);
+      TF1 * dbcrysnpol3 = new TF1("double crystal ball with a 3rd order poly", " [15]*(crystalball(0)  + crystalball(5)) + [10]*([11]+[12]*x +[13]*x*x + [14]*x*x*x)", hist_mean-100*peakwidth, hist_mean+100*peakwidth);
 
 
       dbcrysnpol3->SetParName(0,"Constant_1");
@@ -259,9 +280,18 @@ void fitreborn_wpivon(TString signalfilename) {
       dbcrysnpol3->SetParameter(14,pol3n->GetParameter(4));
 
       dbcrysnpol3->SetRange(lowerfit,higherfit);
-        TFitResultPtr dballpolfit = bginvmasslm->Fit(dbcrysnpol3,"RMBQS+");
+        TFitResultPtr dballpolfit = bginvmasslm->Fit(dbcrysnpol3,"Q0");
+        dballpolfit = bginvmasslm->Fit(dbcrysnpol3,"Q0");
+        dballpolfit = bginvmasslm->Fit(dbcrysnpol3,"Q0");
+        dballpolfit = bginvmasslm->Fit(dbcrysnpol3,"Q0");
+        dballpolfit = bginvmasslm->Fit(dbcrysnpol3,"Q0");
+        dballpolfit = bginvmasslm->Fit(dbcrysnpol3,"RMBQ0");
+        dballpolfit = bginvmasslm->Fit(dbcrysnpol3,"RMBQS+");
 
         dballnobschi = dballpolfit->Chi2();
+
+        double tripS = dbcrysnpol3->Integral(hist_mean-3*dbw, hist_mean+3*dbw)/dpinvmasslm->GetBinWidth(1);
+        double tripSer = (dbcrysnpol3->IntegralError(hist_mean-3*dbw, hist_mean+3*dbw, dballpolfit->GetParams(), dballpolfit->GetCovarianceMatrix().GetMatrixArray()))/dpinvmasslm->GetBinWidth(1);
 
       ///####Toy Montecarlo##################/////
 
@@ -419,8 +449,8 @@ void fitreborn_wpivon(TString signalfilename) {
 
 
    //cout << " the number of observed events from 0 to infinity is " << Nobspdff->Integral(0,100*Nobser) << endl;
-   double B = (pol3n->Integral(hist_mean-3*dbw,hist_mean+3*dbw));
-   double Ber= (pol3n->IntegralError(double_crystalball->GetParameter(1)-3*dbw,double_crystalball->GetParameter(1)+3*dbw,normpol3->GetParams(), normpol3->GetCovarianceMatrix().GetMatrixArray()));
+   double B = (pol3n->Integral(hist_mean-3*dbw,hist_mean+3*dbw))/bginvmasslm->GetBinWidth(1);
+   double Ber= (pol3n->IntegralError(double_crystalball->GetParameter(1)-3*dbw,double_crystalball->GetParameter(1)+3*dbw,normpol3->GetParams(), normpol3->GetCovarianceMatrix().GetMatrixArray()))/bginvmasslm->GetBinWidth(1);
 
         dpinvmasslm->GetXaxis()->SetRangeUser(lowerfit, higherfit);
 
@@ -436,7 +466,7 @@ void fitreborn_wpivon(TString signalfilename) {
      sigres->Fill(x,y);
      z = bginvmasslm->GetBinCenter(k);
      //w = (bginvmasslm->GetBinContent(k) - gausnpol3->Eval(z));
-     w = ((bginvmasslm->GetBinContent(k) - dbcrysnpol3->Eval(z))*(bginvmasslm->GetBinContent(k) - dbcrysnpol3->Eval(z)));
+     w = ((bginvmasslm->GetBinContent(k) - dbcrysnpol3->Eval(z)));//*(bginvmasslm->GetBinContent(k) - dbcrysnpol3->Eval(z)));
      sigres_alt->Fill(z,w);
      er = (bginvmasslm->GetBinError(k)*bginvmasslm->GetBinError(k));
      pull->Fill(z,w/er);
@@ -460,22 +490,29 @@ void fitreborn_wpivon(TString signalfilename) {
 
     //to parametrize the double gaussian completely
 
-     cout << hist_mean << " " << dbw << " " << dbw_er << " " << dbfrac_1 << " " << dbfrac_1_er << " " << dbfrac_2 << " " << dbfrac_2_er << " " << tripSeff << " " << tripSeffer << " " << intestep << " " << intestep/(0.92528973*(gr_mu->Eval(hist_mean)*tripSeff)) << " " << significance << " " << double_crystalball->GetParameter(2) << " " << double_crystalball->GetParError(2) << " " << double_crystalball->GetParameter(3) << " " << double_crystalball->GetParError(3) << " " << double_crystalball->GetParameter(4) << " " << double_crystalball->GetParError(4) << " " << double_crystalball->GetParameter(7) << " " << double_crystalball->GetParError(7) << " " << double_crystalball->GetParameter(8) << " " << double_crystalball->GetParError(8) << " " << double_crystalball->GetParameter(9) << " " << double_crystalball->GetParError(9) << endl;
+
+
+    //     cout << hist_mean << " " << dbw << " " << dbw_er << " " << dbfrac_1 << " " << dbfrac_1_er << " " << dbfrac_2 << " " << dbfrac_2_er << " " << tripSeff << " " << tripSeffer << " " << intestep << " " << intestep/(0.92528973*(gr_mu->Eval(hist_mean)*tripSeff)) << " " << significance << " " << double_crystalball->GetParameter(2) << " " << double_crystalball->GetParError(2) << " " << double_crystalball->GetParameter(3) << " " << double_crystalball->GetParError(3) << " " << double_crystalball->GetParameter(4) << " " << double_crystalball->GetParError(4) << " " << double_crystalball->GetParameter(7) << " " << double_crystalball->GetParError(7) << " " << double_crystalball->GetParameter(8) << " " << double_crystalball->GetParError(8) << " " << double_crystalball->GetParameter(9) << " " << double_crystalball->GetParError(9) << endl;
 
 
     //    cout << hist_mean << " " << tripSeff << " " << tripSeffer << " " << fitfeff << " " << fitfeffer << endl;
+
+    cout << tripS << " " << tripSer << " " << B << " " << Ber << " " << intestep << endl;
 
       TString signalplotname = signalfilename + string(".eps");
         C1->Print(signalplotname);
 
  TCanvas * C7 = new TCanvas("residuals"," ",10,10,800,800);
- //C7->Divide(2,1);
+ C7->Divide(2,1);
 
    C7->cd(1);
-   sigres_alt->SetMarkerStyle(3);
-   sigres_alt->Draw("*");
-   //   C7->cd(2);
-   // pull->SetMarkerStyle(3);
+     sigres_alt->SetMarkerStyle(3);
+    sigres_alt->Draw("*");
+   sigres->SetMarkerStyle(4);
+     C7->cd(2);
+     sigres->SetMarkerColor(2);
+     sigres->Draw("+");
+     // pull->SetMarkerStyle(3);
    // pull->Draw("*");
 
 TString signalresname = signalfilename + string("res.eps");

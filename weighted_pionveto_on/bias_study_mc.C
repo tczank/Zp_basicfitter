@@ -12,10 +12,10 @@
 //2019/03/25
 //## Working fit of a double crystal ball over the isr Z' signal mc samples
 
-void dballjpsi(TString signalfilename) {
+void bias_study_mc(TString signalfilename) {
 
-  TFile * br_fil = new TFile("../../../merging_energies/Zp_BR.root");
-  TFile * genid_isr_w = new TFile("../all_4mu_redmu_cor_isr_wpvon.root");
+  TFile * br_fil = new TFile("../../merging_energies/Zp_BR.root");
+  TFile * genid_isr_w = new TFile("./all_4mu_redmu_cor_isr_wpvon.root");
 
   TGraph *gr_mu = new TGraph();
   TGraph *gr_isr_w = new TGraph();
@@ -27,7 +27,7 @@ void dballjpsi(TString signalfilename) {
   gStyle->SetOptStat(1);
   // gROOT->SetBatch(1);
   TFile *signal = new TFile(signalfilename);
-  TFile *bg = new TFile("../../../new_pion_veto/zpjpsimumu.root");
+  TFile *bg = new TFile("../../weighted_pion_veto/aafhmumumumu_wpion.root");
 
   TH1F *dpinvmasslm;
   TH1F *bginvmasslm;
@@ -43,7 +43,7 @@ void dballjpsi(TString signalfilename) {
 
   //   dpinvmasslm = (TH1F*)signal->Get(TString::Format("h_mycombitrigeffw_3"));
     bginvmasslm = (TH1F*)bg->Get(TString::Format("h_mycombitrigeffw_3"));
-    genid_invmass = (TH1F*)signal->Get("h_genidredmu_1");
+    genid_invmass = (TH1F*)signal->Get("h_mycombitrigeffw_0");
 
     // for the pion veto on without the weighting factor case
     //       genid_invmass = (TH1F*)signal->Get("h_genidredmu_0");
@@ -78,16 +78,30 @@ void dballjpsi(TString signalfilename) {
   double zpgenideff = genid_invmass->GetEntries();
 
   hist_mean = dpinvmasslm->GetBinCenter(dpinvmasslm->GetMaximumBin());
-  //  peakwidth = gr_isr_w->Eval(hist_mean);
-  peakwidth = dbwidth->Eval(hist_mean);
+  peakwidth = gr_isr_w->Eval(hist_mean);
+  // peakwidth = dbwidth->Eval(hist_mean);
   entriesatmean = dpinvmasslm->GetBinContent(dpinvmasslm->GetMaximumBin());
   rms = dpinvmasslm->GetBinWidth(1);
   std_dev = dpinvmasslm->GetStdDev(1);
 
-    double lowerfit = hist_mean -60*peakwidth;
+  double lowerfit;
+  double higherfit;
+
+  cout << "hist mean " << hist_mean << endl;
+  if(hist_mean < 0.212){
+    lowerfit = hist_mean -1*peakwidth;
     if(lowerfit < 0){lowerfit =0;}
-    double higherfit = hist_mean + 70*peakwidth;
+    higherfit = hist_mean + 3*peakwidth;
     if(higherfit > 10.0){higherfit = 10.;}
+  }
+
+  else{
+    lowerfit = hist_mean -10*peakwidth;
+    if(lowerfit < 0){lowerfit =0;}
+    higherfit = hist_mean + 20*peakwidth;
+    if(higherfit > 10.0){higherfit = 10.;}
+  }
+
 
     double_crystalball = new TF1("double_crystalball", "crystalball(0) + crystalball(5) ", hist_mean - 100*peakwidth , hist_mean + 100*peakwidth);
 
@@ -104,24 +118,24 @@ void dballjpsi(TString signalfilename) {
 
     double_crystalball->SetNpx(1000);
 
-    double_crystalball->SetParLimits(0,10.,entriesatmean);
+    double_crystalball->SetParLimits(0,0.,entriesatmean);
     double_crystalball->FixParameter(1,hist_mean);
     double_crystalball->FixParameter(6,hist_mean);
-    double_crystalball->SetParLimits(2,rms,3*peakwidth);
-    double_crystalball->SetParLimits(3,-5,0.);
-    double_crystalball->SetParLimits(4,0.,3.);
-    double_crystalball->SetParLimits(5,10.,entriesatmean);
-    double_crystalball->SetParLimits(7,rms,3*peakwidth);
-    double_crystalball->SetParLimits(8,0.0,5);
+    double_crystalball->SetParLimits(2,rms,500*peakwidth);
+    double_crystalball->SetParLimits(3,-500,0.);
+    double_crystalball->SetParLimits(4,0.,100.);
+    double_crystalball->SetParLimits(5,0,entriesatmean);
+    double_crystalball->SetParLimits(7,rms,500*peakwidth);
+    double_crystalball->SetParLimits(8,0.0,500);
     // double_crystalball->SetParLimits(9,50.0,entriesatmean);
-    double_crystalball->SetParLimits(9,0,3);
+    double_crystalball->SetParLimits(9,1,100);
 
     double_crystalball->SetLineColor(4);
     double_crystalball->SetRange(lowerfit,  higherfit);
 
-      pol3n = new TF1("norm pol3", "[0]*([1]+ [2]*x +[3]*x*x +[4]*x*x*x)", hist_mean -50*peakwidth, hist_mean + 50*peakwidth);
+      pol3n = new TF1("norm pol3", "[0]*([1]+ [2]*x +[3]*x*x +[4]*x*x*x)", hist_mean -100*peakwidth, hist_mean + 100*peakwidth);
       pol3n->SetRange(lowerfit,higherfit);
-      pol3n->FixParameter(0,1);
+      pol3n->SetParameter(0,1);
 
       TCanvas *C2 = new TCanvas("C2", "", 10, 10, 800, 800);
       C2->cd(1);
@@ -153,11 +167,35 @@ void dballjpsi(TString signalfilename) {
   h_pull_res[1]= new TH1D("pull distribution_1","pull;pull;entries;", 1000,-200,500);
 
   // here it is ok
-      TFitResultPtr normpol3 = bginvmasslm->Fit(pol3n,"RMBQS+");
+      TFitResultPtr normpol3 = bginvmasslm->Fit(pol3n,"0Q");
+      normpol3 = bginvmasslm->Fit(pol3n,"0Q");
+      normpol3 = bginvmasslm->Fit(pol3n,"0Q");
+      normpol3 = bginvmasslm->Fit(pol3n,"0Q");
+      normpol3 = bginvmasslm->Fit(pol3n,"0RMBQS+");
+      normpol3 = bginvmasslm->Fit(pol3n,"RMBQS+");
+
       thirdpolchi = normpol3->Chi2();
 
       // TFitResultPtr rebornfit = dpinvmasslm->Fit(triplegexp,"RBQS+");
-       TFitResultPtr cballfit = dpinvmasslm->Fit(double_crystalball,"RMBQS+");
+      TFitResultPtr cballfit = dpinvmasslm->Fit(double_crystalball,"0Q");
+       cballfit = dpinvmasslm->Fit(double_crystalball);
+
+       double_crystalball->ReleaseParameter(1);
+       double_crystalball->ReleaseParameter(6);
+
+       cballfit = dpinvmasslm->Fit(double_crystalball,"0RMBQ");
+       cballfit = dpinvmasslm->Fit(double_crystalball,"0RMBQ");
+       cballfit = dpinvmasslm->Fit(double_crystalball,"0RMBQ");
+       cballfit = dpinvmasslm->Fit(double_crystalball,"0RMBQ");
+       cballfit = dpinvmasslm->Fit(double_crystalball,"0RMBQ");
+       cballfit = dpinvmasslm->Fit(double_crystalball,"0RMBQ");
+       cballfit = dpinvmasslm->Fit(double_crystalball,"0RMBQ");
+
+
+
+       cballfit = dpinvmasslm->Fit(double_crystalball,"RMBQS+");
+
+
        //       cballfit->Print();
 
       TAxis * xaxis = bginvmasslm->GetXaxis();
@@ -194,10 +232,7 @@ void dballjpsi(TString signalfilename) {
 
       double dbw_er = (dbfrac_1_er*pow(double_crystalball->GetParameter(2),2) + dbfrac_2_er*pow(double_crystalball->GetParameter(7),2))/(2*dbw) + (double_crystalball->GetParameter(2)*double_crystalball->GetParError(2)*dbfrac_1 + double_crystalball->GetParameter(7)*double_crystalball->GetParError(7)*dbfrac_2)/dbw;
 
-       double tripS = double_crystalball->Integral(hist_mean-3*dbw, hist_mean+3*dbw);
-      double tripSer = (double_crystalball->IntegralError(hist_mean-3*dbw, hist_mean+3*dbw, cballfit->GetParams(), cballfit->GetCovarianceMatrix().GetMatrixArray()));
-
-      double tripSeff = zpgenideff/100000;
+       double tripSeff = zpgenideff/100000;
       //      cout << " the efficiency from the gen id dist is " << tripSeff << endl;
       double tripSeffer = sqrt((tripSeff*(1-tripSeff))/100000);
 
@@ -205,7 +240,7 @@ void dballjpsi(TString signalfilename) {
       double fitfeffer = ((double_crystalball->IntegralError(hist_mean-3*dbw,hist_mean+3*dbw,cballfit->GetParams(), cballfit->GetCovarianceMatrix().GetMatrixArray()))/dpinvmasslm->GetBinWidth(0))/100000;
 
 
-      TF1 * dbcrysnpol3 = new TF1("double crystal ball with a 3rd order poly", " [15]*(crystalball(0)  + crystalball(5)) + [10]*([11]+[12]*x +[13]*x*x + [14]*x*x*x)", hist_mean-50*peakwidth, hist_mean+50*peakwidth);
+      TF1 * dbcrysnpol3 = new TF1("double crystal ball with a 3rd order poly", " [15]*(crystalball(0)  + crystalball(5)) + [10]*([11]+[12]*x +[13]*x*x + [14]*x*x*x)", hist_mean-100*peakwidth, hist_mean+100*peakwidth);
 
 
       dbcrysnpol3->SetParName(0,"Constant_1");
@@ -245,14 +280,23 @@ void dballjpsi(TString signalfilename) {
       dbcrysnpol3->SetParameter(14,pol3n->GetParameter(4));
 
       dbcrysnpol3->SetRange(lowerfit,higherfit);
-        TFitResultPtr dballpolfit = bginvmasslm->Fit(dbcrysnpol3,"RMBQS+");
+        TFitResultPtr dballpolfit = bginvmasslm->Fit(dbcrysnpol3,"Q0");
+        dballpolfit = bginvmasslm->Fit(dbcrysnpol3,"Q0");
+        dballpolfit = bginvmasslm->Fit(dbcrysnpol3,"Q0");
+        dballpolfit = bginvmasslm->Fit(dbcrysnpol3,"Q0");
+        dballpolfit = bginvmasslm->Fit(dbcrysnpol3,"Q0");
+        dballpolfit = bginvmasslm->Fit(dbcrysnpol3,"RMBQ0");
+        dballpolfit = bginvmasslm->Fit(dbcrysnpol3,"RMBQS+");
 
         dballnobschi = dballpolfit->Chi2();
+
+        double tripS = dbcrysnpol3->Integral(hist_mean-3*dbw, hist_mean+3*dbw)/dpinvmasslm->GetBinWidth(1);
+        double tripSer = (dbcrysnpol3->IntegralError(hist_mean-3*dbw, hist_mean+3*dbw, dballpolfit->GetParams(), dballpolfit->GetCovarianceMatrix().GetMatrixArray()))/dpinvmasslm->GetBinWidth(1);
 
       ///####Toy Montecarlo##################/////
 
 
-      TF1 * dbcrysnpol3_forpull = new TF1("double crystal ball with a 3rd order poly", " [15]*(crystalball(0)  + crystalball(5)) + [10]*([11]+[12]*x +[13]*x*x + [14]*x*x*x)", hist_mean-50*peakwidth, hist_mean+50*peakwidth);
+      TF1 * dbcrysnpol3_forpull = new TF1("double crystal ball with a 3rd order poly", " [15]*(crystalball(0)  + crystalball(5)) + [10]*([11]+[12]*x +[13]*x*x + [14]*x*x*x)", hist_mean-100*peakwidth, hist_mean+100*peakwidth);
 
 
       dbcrysnpol3_forpull->SetParName(0,"Constant_1");
@@ -286,15 +330,13 @@ void dballjpsi(TString signalfilename) {
       dbcrysnpol3_forpull->FixParameter(8,double_crystalball->GetParameter(8));
       dbcrysnpol3_forpull->FixParameter(9,double_crystalball->GetParameter(9));
       dbcrysnpol3_forpull->SetParameter(10,pol3n->GetParameter(0));
-      dbcrysnpol3_forpull->SetParameter(11,pol3n->GetParameter(1));
-      dbcrysnpol3_forpull->SetParameter(12,pol3n->GetParameter(2));
-      dbcrysnpol3_forpull->SetParameter(13,pol3n->GetParameter(3));
-      dbcrysnpol3_forpull->SetParameter(14,pol3n->GetParameter(4));
+      dbcrysnpol3_forpull->FixParameter(11,pol3n->GetParameter(1));
+      dbcrysnpol3_forpull->FixParameter(12,pol3n->GetParameter(2));
+      dbcrysnpol3_forpull->FixParameter(13,pol3n->GetParameter(3));
+      dbcrysnpol3_forpull->FixParameter(14,pol3n->GetParameter(4));
 
       double low_range = lowerfit;
       double high_range = higherfit;
-
-      dbcrysnpol3_forpull->SetRange(low_range,high_range);
 
       if(low_range < 0.0000){
         low_range = 0.00;
@@ -304,7 +346,15 @@ void dballjpsi(TString signalfilename) {
         high_range = 10.5;
       }
 
-            for(int l = 0; l < 1; l++){
+      dbcrysnpol3_forpull->SetRange(low_range,high_range);
+
+      TF1 * gausforpull = new TF1("gaus for pull", "gaus", -10., 10.);
+
+      gausforpull->SetParameter(1,0.);
+      gausforpull->SetParameter(2,1.);
+
+
+          for(int l = 0; l < 10000; l++){
            h_pull[l] = new TH1D("Pull distribution", "Toy MC reduced dimuon mass [GeV/c^{2}];m_{R};entries;", sigwinbin, low_range, high_range);
            h_pull[l]->Sumw2();
            TTimeStamp * c = new TTimeStamp();
@@ -313,6 +363,7 @@ void dballjpsi(TString signalfilename) {
            double_t timeseed2 = d->GetNanoSec();
            r1->SetSeed(timeseed);
            h_pull[l]->FillRandom("norm pol3",r1->Poisson(entriesinint));
+           h_pull[l]->Rebin(10);
             TFitResultPtr dbnpol_forpull = h_pull[l]->Fit(dbcrysnpol3_forpull,"RBQS+");
 
            double signyield_alt = dbcrysnpol3_forpull->GetParameter(15);
@@ -321,7 +372,8 @@ void dballjpsi(TString signalfilename) {
            h_pull_res[0]->Fill(signyield_alt/signyield_alter);
            }
          ////############################################////
-         h_pull_res[0]->Fit("gaus", "BQS+");
+         h_pull_res[0]->Fit(gausforpull, "BQS+");
+
 
         TF1 * dbball = new TF1("number of events with double crystal ball", "[10]*(crystalball(0) + crystalball(5))", hist_mean-50*peakwidth, hist_mean+70*peakwidth);
 
@@ -404,8 +456,8 @@ void dballjpsi(TString signalfilename) {
 
 
    //cout << " the number of observed events from 0 to infinity is " << Nobspdff->Integral(0,100*Nobser) << endl;
-   double B = (pol3n->Integral(hist_mean-3*dbw,hist_mean+3*dbw));
-   double Ber= (pol3n->IntegralError(double_crystalball->GetParameter(1)-3*dbw,double_crystalball->GetParameter(1)+3*dbw,normpol3->GetParams(), normpol3->GetCovarianceMatrix().GetMatrixArray()));
+   double B = (pol3n->Integral(hist_mean-3*dbw,hist_mean+3*dbw))/bginvmasslm->GetBinWidth(1);
+   double Ber= (pol3n->IntegralError(double_crystalball->GetParameter(1)-3*dbw,double_crystalball->GetParameter(1)+3*dbw,normpol3->GetParams(), normpol3->GetCovarianceMatrix().GetMatrixArray()))/bginvmasslm->GetBinWidth(1);
 
         dpinvmasslm->GetXaxis()->SetRangeUser(lowerfit, higherfit);
 
@@ -421,7 +473,7 @@ void dballjpsi(TString signalfilename) {
      sigres->Fill(x,y);
      z = bginvmasslm->GetBinCenter(k);
      //w = (bginvmasslm->GetBinContent(k) - gausnpol3->Eval(z));
-     w = ((bginvmasslm->GetBinContent(k) - dbcrysnpol3->Eval(z))*(bginvmasslm->GetBinContent(k) - dbcrysnpol3->Eval(z)));
+     w = ((bginvmasslm->GetBinContent(k) - dbcrysnpol3->Eval(z)));//*(bginvmasslm->GetBinContent(k) - dbcrysnpol3->Eval(z)));
      sigres_alt->Fill(z,w);
      er = (bginvmasslm->GetBinError(k)*bginvmasslm->GetBinError(k));
      pull->Fill(z,w/er);
@@ -445,25 +497,35 @@ void dballjpsi(TString signalfilename) {
 
     //to parametrize the double gaussian completely
 
-     cout << hist_mean << " " << dbw << " " << dbw_er << " " << dbfrac_1 << " " << dbfrac_1_er << " " << dbfrac_2 << " " << dbfrac_2_er << " " << tripSeff << " " << tripSeffer << " " << intestep << " " << intestep/(0.92528973*(gr_mu->Eval(hist_mean)*tripSeff)) << " " << significance << " " << double_crystalball->GetParameter(2) << " " << double_crystalball->GetParError(2) << " " << double_crystalball->GetParameter(3) << " " << double_crystalball->GetParError(3) << " " << double_crystalball->GetParameter(4) << " " << double_crystalball->GetParError(4) << " " << double_crystalball->GetParameter(7) << " " << double_crystalball->GetParError(7) << " " << double_crystalball->GetParameter(8) << " " << double_crystalball->GetParError(8) << " " << double_crystalball->GetParameter(9) << " " << double_crystalball->GetParError(9) << endl;
+
+
+    //     cout << hist_mean << " " << dbw << " " << dbw_er << " " << dbfrac_1 << " " << dbfrac_1_er << " " << dbfrac_2 << " " << dbfrac_2_er << " " << tripSeff << " " << tripSeffer << " " << intestep << " " << intestep/(0.92528973*(gr_mu->Eval(hist_mean)*tripSeff)) << " " << significance << " " << double_crystalball->GetParameter(2) << " " << double_crystalball->GetParError(2) << " " << double_crystalball->GetParameter(3) << " " << double_crystalball->GetParError(3) << " " << double_crystalball->GetParameter(4) << " " << double_crystalball->GetParError(4) << " " << double_crystalball->GetParameter(7) << " " << double_crystalball->GetParError(7) << " " << double_crystalball->GetParameter(8) << " " << double_crystalball->GetParError(8) << " " << double_crystalball->GetParameter(9) << " " << double_crystalball->GetParError(9) << endl;
 
 
     //    cout << hist_mean << " " << tripSeff << " " << tripSeffer << " " << fitfeff << " " << fitfeffer << endl;
 
-      TString signalplotname = signalfilename + string(".eps");
+    // cout << tripS << " " << tripSer << " " << B << " " << Ber << " " << intestep << endl;
+
+    cout << hist_mean << " " << gausforpull->GetParameter(1) << " " << gausforpull->GetParameter(2) << endl;
+
+
+      TString signalplotname = signalfilename + string(".pdf");
         C1->Print(signalplotname);
 
  TCanvas * C7 = new TCanvas("residuals"," ",10,10,800,800);
- //C7->Divide(2,1);
+ C7->Divide(2,1);
 
    C7->cd(1);
-   sigres_alt->SetMarkerStyle(3);
-   sigres_alt->Draw("*");
-   //   C7->cd(2);
-   // pull->SetMarkerStyle(3);
+     sigres_alt->SetMarkerStyle(3);
+    sigres_alt->Draw("*");
+   sigres->SetMarkerStyle(4);
+     C7->cd(2);
+     sigres->SetMarkerColor(2);
+     sigres->Draw("+");
+     // pull->SetMarkerStyle(3);
    // pull->Draw("*");
 
-TString signalresname = signalfilename + string("res.eps");
+TString signalresname = signalfilename + string("res.pdf");
  C7->Print(signalresname);
 
     TCanvas * C89 = new TCanvas("randomtest","",10,10,800,800);
@@ -474,7 +536,7 @@ TString signalresname = signalfilename + string("res.eps");
   C89->cd(2);
   h_pull_res[0]->Draw();
 
-  TString pullplotname = signalfilename + string("pull.eps");
+  TString pullplotname = signalfilename + string("pull.pdf");
  C89->Print(pullplotname);
 
 }
