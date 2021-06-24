@@ -133,22 +133,22 @@ void rootgen_wpion_pars() {
   gr_s->SetTitle("Significance of the Fit double crystal ball compared with the background pol3; M[GeV/c^{2}];Significance");
 
   TGraphErrors * gr_fw = new TGraphErrors(nlines,m,w1,ex,w1_er);
-  gr_fw->SetTitle("1st Width from double gaussian ff;M[GeV/c^{2}];#sigma_{1}");
+  gr_fw->SetTitle("1st Width from double crystalball ff;M[GeV/c^{2}];#sigma_{1}");
 
   TGraphErrors * gr_sw = new TGraphErrors(nlines,m,w2,ex,w2_er);
-  gr_sw->SetTitle("2nd Width from double gaussian ff;M[GeV/c^{2}];#sigma_{2}");
+  gr_sw->SetTitle("2nd Width from double crystalball ff;M[GeV/c^{2}];#sigma_{2}");
 
   TGraphErrors * gr_fal = new TGraphErrors(nlines,m,al1,ex,al1_er);
-  gr_fal->SetTitle("1st alpha from double gaussian ff;M[GeV/c^{2}];#alpha_{1}");
+  gr_fal->SetTitle("1st alpha from double crystalball ff;M[GeV/c^{2}];#alpha_{1}");
 
   TGraphErrors * gr_sal = new TGraphErrors(nlines,m,al2,ex,al2_er);
-  gr_sal->SetTitle("2nd alpha from double gaussian ff;M[GeV/c^{2}];#alpha_{2}");
+  gr_sal->SetTitle("2nd alpha from double crystalball ff;M[GeV/c^{2}];#alpha_{2}");
 
   TGraphErrors * gr_fn = new TGraphErrors(nlines,m,n1,ex,n1_er);
-  gr_fn->SetTitle("1st n from double gaussian ff;M[GeV/c^{2]}];N_{1}");
+  gr_fn->SetTitle("1st n from double crystalball ff;M[GeV/c^{2]}];N_{1}");
 
   TGraphErrors * gr_sn = new TGraphErrors(nlines,m,n2,ex,n2_er);
-  gr_sn->SetTitle("2nd n from double gaussian ff;M[GeV/c^{2]}];N_{2}");
+  gr_sn->SetTitle("2nd n from double crystalball ff;M[GeV/c^{2]}];N_{2}");
 
   gr_deteff->SetName("gr_deteff");
   gr_deteff->Write();

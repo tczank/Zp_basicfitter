@@ -14,7 +14,7 @@
 
 void fitreborn_wpivon(TString signalfilename) {
 
-  TFile * br_fil = new TFile("../../merging_energies/Zp_BR.root");
+  TFile * br_fil = new TFile("/home/tczank/Documentos/merging_energies/Zp_BR.root");
   TFile * genid_isr_w = new TFile("./all_4mu_redmu_cor_isr_wpvon.root");
 
   TGraph *gr_mu = new TGraph();
@@ -348,7 +348,7 @@ void fitreborn_wpivon(TString signalfilename) {
 
       dbcrysnpol3_forpull->SetRange(low_range,high_range);
 
-          for(int l = 0; l < 10000; l++){
+          for(int l = 0; l < 1; l++){
            h_pull[l] = new TH1D("Pull distribution", "Toy MC reduced dimuon mass [GeV/c^{2}];m_{R};entries;", sigwinbin, low_range, high_range);
            h_pull[l]->Sumw2();
            TTimeStamp * c = new TTimeStamp();
