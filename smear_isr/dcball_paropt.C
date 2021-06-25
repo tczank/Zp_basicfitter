@@ -12,7 +12,7 @@
 //2019/03/25
 //## Working fit of a double crystal ball over the isr Z' signal mc samples
 
-void dcball_newfit(TString signalfilename) {
+void dcball_paropt(TString signalfilename) {
 
   TFile * br_fil = new TFile("Zp_BR.root");
   TFile * genid_isr_w = new TFile("smear_skim_deteff.root");
@@ -20,40 +20,32 @@ void dcball_newfit(TString signalfilename) {
   TGraph *gr_mu = new TGraph();
   TGraph *gr_isr_w = new TGraph();
 
-  /*  TFile * db1fracfit = new TFile("../../dcball_optmize/kekcc_pion_par/pion_dbfrac1.root");
-  TFile * db2fracfit = new TFile("../../dcball_optmize/kekcc_pion_par/pion_dbfrac2.root");
-  TFile * dbwwfit = new TFile("../../dcball_optmize/kekcc_pion_par/pion_ww.root");
-  TFile * db1wfit = new TFile("../../dcball_optmize/kekcc_pion_par/pion_dbfw.root");
-  TFile * db2wfit = new TFile("../../dcball_optmize/kekcc_pion_par/pion_dbsw.root");
-  TFile * db1alfit = new TFile("../../dcball_optmize/kekcc_pion_par/pion_fal.root");
-  TFile * db2alfit = new TFile("../../dcball_optmize/kekcc_pion_par/pion_sal.root");
-  TFile * db1nfit = new TFile("../../dcball_optmize/kekcc_pion_par/pion_fn.root");
-  TFile * db2nfit = new TFile("../../dcball_optmize/kekcc_pion_par/pion_sn.root");
-  TFile * deteffit = new TFile("../../dcball_optmize/kekcc_pion_par/newpionvetodeteff.root");
+  // TFile * dbin = new TFile("dcball_par.root");
+   TFile * dbin = new TFile("dcball_optpar_1.root");
 
-   TF1 * dbfrac1;
-   TF1 * dbfrac2;
-   TF1 * dbww;
-   TF1 * db1w;
-   TF1 * db2w;
-   TF1 * db1al;
-   TF1 * db2al;
-   TF1 * db1n;
-   TF1 * db2n;
-   TGraph * deteff;
+  TGraphErrors *dbfrac1;
+  TGraphErrors *dbfrac2;
+  TGraphErrors *dbww;
+  TGraphErrors *db1w;
+  TGraphErrors *db2w;
+  TGraphErrors *db1al;
+  TGraphErrors *db2al;
+  TGraphErrors *db1n;
+  TGraphErrors *db2n;
+  TGraph *deteff;
 
-   double dbpar[10];
+  double dbpar[10];
 
-   dbfrac1 = (TF1*)db1fracfit->Get("PrevFitTMP");
-   dbfrac2 = (TF1*)db2fracfit->Get("PrevFitTMP");
-   db1w = (TF1*)db1wfit->Get("PrevFitTMP");
-   db2w = (TF1*)db2wfit->Get("PrevFitTMP");
-   db1al = (TF1*)db1alfit->Get("PrevFitTMP");
-   db2al = (TF1*)db2alfit->Get("PrevFitTMP");
-   db1n = (TF1*)db1nfit->Get("PrevFitTMP");
-   db2n = (TF1*)db2nfit->Get("PrevFitTMP");
-   dbww = (TF1*)dbwwfit->Get("PrevFitTMP");
-   deteff = (TGraph*)deteffit->Get("gr_det_isr");*/
+  dbfrac1 = (TGraphErrors *)dbin->Get("gr_dbfrac1");
+  dbfrac2 = (TGraphErrors *)dbin->Get("gr_dbfrac2");
+  db1w = (TGraphErrors *)dbin->Get("gr_fw");
+  db2w = (TGraphErrors *)dbin->Get("gr_sw");
+  db1al = (TGraphErrors *)dbin->Get("gr_fal");
+  db2al = (TGraphErrors *)dbin->Get("gr_sal");
+  db1n = (TGraphErrors *)dbin->Get("gr_fn");
+  db2n = (TGraphErrors *)dbin->Get("gr_sn");
+  dbww = (TGraphErrors *)dbin->Get("gr_ww");
+  deteff = (TGraph *)genid_isr_w->Get("gr_det_isr");
 
   gr_mu = (TGraph*)br_fil->Get("gr_mu");
   gr_isr_w = (TGraph*)genid_isr_w->Get("gr_w_isr");
@@ -97,7 +89,7 @@ void dcball_newfit(TString signalfilename) {
   rms = dpinvmasslm->GetBinWidth(1);
   std_dev = dpinvmasslm->GetStdDev(1);
 
-  /*  dbpar[0] = dbfrac1->Eval(hist_mean);
+    dbpar[0] = dbfrac1->Eval(hist_mean);
   dbpar[1] = hist_mean;
   dbpar[2] = db1w->Eval(hist_mean);
   dbpar[3] = db1al->Eval(hist_mean);
@@ -106,7 +98,7 @@ void dcball_newfit(TString signalfilename) {
   dbpar[6] =  hist_mean;
   dbpar[7] = db2w->Eval(hist_mean);
   dbpar[8] = db2al->Eval(hist_mean);
-  dbpar[9] = db2n->Eval(hist_mean);*/
+  dbpar[9] = db2n->Eval(hist_mean);
 
 
   double lowerfit;
@@ -129,10 +121,10 @@ void dcball_newfit(TString signalfilename) {
 
     double_crystalball = new TF1("double_crystalball", "crystalball(0) + crystalball(5) ", hist_mean - 100*peakwidth , hist_mean + 100*peakwidth);
 
-    // for(int i = 0; i < 10; i++){
-    //  double_crystalball->SetParameter(i,dbpar[i]);
-    //  double_crystalball->SetParLimits(i,dbpar[i]/2, dbpar[i]*2);
-    //}
+     for(int i = 0; i < 10; i++){
+      double_crystalball->SetParameter(i,dbpar[i]);
+      double_crystalball->SetParLimits(i,dbpar[i]/10, dbpar[i]*10);
+    }
 
     double_crystalball->SetParName(0,"Constant_1");
     double_crystalball->SetParName(1,"Mean_1");
@@ -147,21 +139,21 @@ void dcball_newfit(TString signalfilename) {
 
     double_crystalball->SetNpx(1000);
 
-    double_crystalball->SetParLimits(0,0.,entriesatmean - 600);
+    double_crystalball->SetParLimits(0,0.,entriesatmean - 100);
     double_crystalball->FixParameter(1,hist_mean);
     double_crystalball->FixParameter(6,hist_mean);
-    double_crystalball->SetParLimits(2,rms,50*peakwidth);
-    double_crystalball->SetParLimits(3,-50,0.);
-    double_crystalball->SetParLimits(4,0.,40.);
-    double_crystalball->SetParLimits(5,0,entriesatmean - 600);
-    double_crystalball->SetParLimits(7,rms,50*peakwidth);
-    double_crystalball->SetParLimits(8,0.0,40);
-    double_crystalball->SetParLimits(9,1,50);
+    double_crystalball->SetParLimits(2,rms,3*peakwidth);
+    double_crystalball->SetParLimits(3,-20,0.);
+    double_crystalball->SetParLimits(4,0.,10.);
+    double_crystalball->SetParLimits(5,0,entriesatmean - 100);
+    double_crystalball->SetParLimits(7,rms,3*peakwidth);
+    double_crystalball->SetParLimits(8,0.0,20);
+    double_crystalball->SetParLimits(9,1,10);
 
     
 
     double_crystalball->SetLineColor(4);
-    double_crystalball->SetRange(hist_mean - 3*peakwidth, hist_mean + 3*peakwidth);
+    double_crystalball->SetRange(hist_mean - 2*peakwidth, hist_mean + 2*peakwidth);
 
 
   Int_t nbinsdp;
@@ -184,7 +176,7 @@ TF1 * opt_dbcball = new TF1("optmized double_crystalball", "crystalball(0) + cry
       TFitResultPtr cballfit = dpinvmasslm->Fit(double_crystalball,"S0Q+");
       double chi2 = cballfit->Chi2();
 
-      /*  for (int j = 0; j < 10 ; j++){
+        for (int j = 0; j < 10 ; j++){
         opt_dbcball->SetParameter(j,double_crystalball->GetParameter(j));
         opt_dbcball->SetParName(j,double_crystalball->GetParName(j));
         dbpar[j] = double_crystalball->GetParameter(j);
@@ -192,7 +184,7 @@ TF1 * opt_dbcball = new TF1("optmized double_crystalball", "crystalball(0) + cry
       }
 
       opt_dbcball->FixParameter(1, hist_mean);
-      opt_dbcball->FixParameter(6, hist_mean);*/
+      opt_dbcball->FixParameter(6, hist_mean);
 
       double_crystalball->ReleaseParameter(1);
       double_crystalball->ReleaseParameter(6);
@@ -215,17 +207,50 @@ TF1 * opt_dbcball = new TF1("optmized double_crystalball", "crystalball(0) + cry
 
       double dbfrac_1 = double_crystalball->GetParameter(0)/(double_crystalball->GetParameter(0) + double_crystalball->GetParameter(5));
 
-      double dbfrac_1_er = sqrt(pow(double_crystalball->GetParError(0)/(double_crystalball->GetParameter(0) + double_crystalball->GetParameter(5)),2) - pow(double_crystalball->GetParameter(0),2)*pow(double_crystalball->GetParError(5)/(pow(double_crystalball->GetParameter(0) + double_crystalball->GetParameter(5),2)),2));
+      //cout << "frac1 " << dbfrac_1 << endl;
 
-      double dbfrac_2 = double_crystalball->GetParameter(5)/(double_crystalball->GetParameter(0) + double_crystalball->GetParameter(5));
+      double dbfrac_1_er = sqrt(pow(double_crystalball->GetParError(0)/(double_crystalball->GetParameter(0) + double_crystalball->GetParameter(5)) - (double_crystalball->GetParameter(0)*double_crystalball->GetParError(0))/pow(double_crystalball->GetParameter(0) + double_crystalball->GetParameter(5),2),2) +pow((-1*double_crystalball->GetParameter(0)*double_crystalball->GetParError(5))/(pow(double_crystalball->GetParameter(0) + double_crystalball->GetParameter(5),2)),2));
 
-      double dbfrac_2_er = double_crystalball->GetParError(5)/(double_crystalball->GetParameter(0) + double_crystalball->GetParameter(5)) - double_crystalball->GetParameter(5)*double_crystalball->GetParError(0)/(pow(double_crystalball->GetParameter(0) + double_crystalball->GetParameter(5),2));
+      //cout << "frac1 error " << dbfrac_1_er << endl;
+
+      double dbfrac_2 = double_crystalball->GetParameter(5) /
+                        (double_crystalball->GetParameter(0) +
+                         double_crystalball->GetParameter(5));
+
+      double dbfrac_2_er =
+          sqrt(pow(double_crystalball->GetParError(5) /
+                   (double_crystalball->GetParameter(0) +
+                                   double_crystalball->GetParameter(5)
+                               ) -
+                       (double_crystalball->GetParameter(5) *
+                        double_crystalball->GetParError(5)) /
+                           pow(double_crystalball->GetParameter(0) +
+                                   double_crystalball->GetParameter(5),
+                               2),
+                   2) +
+               pow((-1 * double_crystalball->GetParameter(5) *
+                    double_crystalball->GetParError(0)) /
+                       (pow(double_crystalball->GetParameter(0) +
+                                double_crystalball->GetParameter(5),
+                            2)),
+                   2));
+
+
+      //cout << "frac2 " << dbfrac_2 << endl;
+
+      //    double dbfrac_2_er = double_crystalball->GetParError(5)/(double_crystalball->GetParameter(0) + double_crystalball->GetParameter(5)) - double_crystalball->GetParameter(5)*double_crystalball->GetParError(0)/(pow(double_crystalball->GetParameter(0) + double_crystalball->GetParameter(5),2));
+
+      // cout << "frac2 er " << dbfrac_2_er << endl;
 
       double dbw = sqrt(dbfrac_1*pow(double_crystalball->GetParameter(2),2) + dbfrac_2*pow(double_crystalball->GetParameter(7),2) );
 
+      // cout << "weighted width " << dbw << endl;
+
       double dbw_er = (dbfrac_1_er*pow(double_crystalball->GetParameter(2),2) + dbfrac_2_er*pow(double_crystalball->GetParameter(7),2))/(2*dbw) + (double_crystalball->GetParameter(2)*double_crystalball->GetParError(2)*dbfrac_1 + double_crystalball->GetParameter(7)*double_crystalball->GetParError(7)*dbfrac_2)/dbw;
 
-       double tripSeff = zpgenideff/100000;
+      // cout << "weighted width er " << dbw_er << endl;
+
+      double tripSeff = zpgenideff / 100000;
       //      cout << " the efficiency from the gen id dist is " << tripSeff << endl;
       double tripSeffer = sqrt((tripSeff*(1-tripSeff))/100000);
 
@@ -238,16 +263,16 @@ TF1 * opt_dbcball = new TF1("optmized double_crystalball", "crystalball(0) + cry
 
       TAxis *xaxis = dpinvmasslm->GetXaxis();
       TAxis *yaxis = dpinvmasslm->GetYaxis();
-      Int_t binxl =  xaxis->FindBin(double_crystalball->GetParameter(1) - 5 * peakwidth);
+      Int_t binxl =  xaxis->FindBin(double_crystalball->GetParameter(1) - 2 * peakwidth);
       Double_t binxlerror = dpinvmasslm->GetBinError(binxl);
-      Int_t binxh =  xaxis->FindBin(double_crystalball->GetParameter(1) + 5 * peakwidth);
+      Int_t binxh =  xaxis->FindBin(double_crystalball->GetParameter(1) + 2 * peakwidth);
 
       dpinvmasslm->GetXaxis()->SetRange(binxl, binxh);
 
       // cout << tripS << " " << tripSer << " " << B << " " << Ber << " " <<
       // intestep << endl;
 
-      cout << hist_mean << " " << dbw << " " << dbw_er << " " << dbfrac_1 << " "
+            cout << hist_mean << " " << dbw << " " << dbw_er << " " << dbfrac_1 << " "
            << dbfrac_1_er << " " << dbfrac_2 << " " << dbfrac_2_er << " "
            << double_crystalball->GetParameter(2) << " "
            << double_crystalball->GetParError(2) << " "
@@ -261,7 +286,6 @@ TF1 * opt_dbcball = new TF1("optmized double_crystalball", "crystalball(0) + cry
            << double_crystalball->GetParError(8) << " "
            << double_crystalball->GetParameter(9) << " "
            << double_crystalball->GetParError(9) << endl;
-
 
 
       TString signalplotname = signalfilename + string(".eps");
