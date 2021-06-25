@@ -39,9 +39,9 @@ void rootgen_dcball_optpar() {
  double_t n2_er[54];
 
   Int_t nlines = 0;
-   TFile *f = new TFile("dcball_optpar_1.root","RECREATE");
+   TFile *f = new TFile("dcball_optpar_4.root","RECREATE");
 
-   while (nlines < 53) {
+   while (nlines < 52) {
      in >> x >> z >> ez >> f1 >> ef1 >> f2 >> ef2 >> fw >> fw_er >> fal >> fal_er >> fn >> fn_er >> sw >> sw_er >> sal >> sal_er >> sn >> sn_er;
      // if (!in.good()) break;
      if (nlines < 20) printf(" x=%8f, z=%8f, ez=%8f, f1=%8f, ef1=%8f, f2=%8f, ef2=%8f",x, z, ez, f1, ef1, f2, ef2);

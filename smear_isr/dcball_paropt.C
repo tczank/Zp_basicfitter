@@ -21,7 +21,7 @@ void dcball_paropt(TString signalfilename) {
   TGraph *gr_isr_w = new TGraph();
 
   // TFile * dbin = new TFile("dcball_par.root");
-   TFile * dbin = new TFile("dcball_optpar_1.root");
+   TFile * dbin = new TFile("dcball_optpar_3.root");
 
   TGraphErrors *dbfrac1;
   TGraphErrors *dbfrac2;
@@ -48,7 +48,7 @@ void dcball_paropt(TString signalfilename) {
   deteff = (TGraph *)genid_isr_w->Get("gr_det_isr");
 
   gr_mu = (TGraph*)br_fil->Get("gr_mu");
-  gr_isr_w = (TGraph*)genid_isr_w->Get("gr_w_isr");
+  gr_isr_w = (TGraph*)genid_isr_w->Get("gr_w");
 
   gStyle->SetOptFit(1);
   gStyle->SetOptStat(1);
@@ -123,7 +123,7 @@ void dcball_paropt(TString signalfilename) {
 
      for(int i = 0; i < 10; i++){
       double_crystalball->SetParameter(i,dbpar[i]);
-      double_crystalball->SetParLimits(i,dbpar[i]/10, dbpar[i]*10);
+      double_crystalball->SetParLimits(i,dbpar[i]/5, dbpar[i]*5);
     }
 
     double_crystalball->SetParName(0,"Constant_1");
@@ -139,21 +139,21 @@ void dcball_paropt(TString signalfilename) {
 
     double_crystalball->SetNpx(1000);
 
-    double_crystalball->SetParLimits(0,0.,entriesatmean - 100);
+    double_crystalball->SetParLimits(0,0.,entriesatmean );
     double_crystalball->FixParameter(1,hist_mean);
     double_crystalball->FixParameter(6,hist_mean);
-    double_crystalball->SetParLimits(2,rms,3*peakwidth);
-    double_crystalball->SetParLimits(3,-20,0.);
-    double_crystalball->SetParLimits(4,0.,10.);
-    double_crystalball->SetParLimits(5,0,entriesatmean - 100);
-    double_crystalball->SetParLimits(7,rms,3*peakwidth);
-    double_crystalball->SetParLimits(8,0.0,20);
-    double_crystalball->SetParLimits(9,1,10);
+    double_crystalball->SetParLimits(2,rms,peakwidth);
+    double_crystalball->SetParLimits(3,-5,0.);
+    double_crystalball->SetParLimits(4,0.,4.);
+    double_crystalball->SetParLimits(5,0,entriesatmean );
+    double_crystalball->SetParLimits(7,rms,peakwidth);
+    double_crystalball->SetParLimits(8,0.0,5);
+    double_crystalball->SetParLimits(9,1,4);
 
     
 
     double_crystalball->SetLineColor(4);
-    double_crystalball->SetRange(hist_mean - 2*peakwidth, hist_mean + 2*peakwidth);
+    double_crystalball->SetRange(hist_mean - 3*peakwidth, hist_mean + 3*peakwidth);
 
 
   Int_t nbinsdp;
@@ -236,11 +236,11 @@ TF1 * opt_dbcball = new TF1("optmized double_crystalball", "crystalball(0) + cry
                    2));
 
 
-      //cout << "frac2 " << dbfrac_2 << endl;
+      //      cout << "frac2 " << dbfrac_2 << endl;
 
       //    double dbfrac_2_er = double_crystalball->GetParError(5)/(double_crystalball->GetParameter(0) + double_crystalball->GetParameter(5)) - double_crystalball->GetParameter(5)*double_crystalball->GetParError(0)/(pow(double_crystalball->GetParameter(0) + double_crystalball->GetParameter(5),2));
 
-      // cout << "frac2 er " << dbfrac_2_er << endl;
+      //  cout << "frac2 er " << dbfrac_2_er << endl;
 
       double dbw = sqrt(dbfrac_1*pow(double_crystalball->GetParameter(2),2) + dbfrac_2*pow(double_crystalball->GetParameter(7),2) );
 
