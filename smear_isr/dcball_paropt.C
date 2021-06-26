@@ -21,7 +21,7 @@ void dcball_paropt(TString signalfilename) {
   TGraph *gr_isr_w = new TGraph();
 
   // TFile * dbin = new TFile("dcball_par.root");
-   TFile * dbin = new TFile("dcball_optpar_3.root");
+   TFile * dbin = new TFile("dcball_optpar_8.root");
 
   TGraphErrors *dbfrac1;
   TGraphErrors *dbfrac2;
@@ -84,7 +84,7 @@ void dcball_paropt(TString signalfilename) {
   double zpgenideff = genid_invmass->GetEntries();
 
   hist_mean = dpinvmasslm->GetBinCenter(dpinvmasslm->GetMaximumBin());
-  peakwidth = gr_isr_w->Eval(hist_mean);
+  // peakwidth = gr_isr_w->Eval(hist_mean);
   entriesatmean = dpinvmasslm->GetBinContent(dpinvmasslm->GetMaximumBin());
   rms = dpinvmasslm->GetBinWidth(1);
   std_dev = dpinvmasslm->GetStdDev(1);
@@ -99,6 +99,13 @@ void dcball_paropt(TString signalfilename) {
   dbpar[7] = db2w->Eval(hist_mean);
   dbpar[8] = db2al->Eval(hist_mean);
   dbpar[9] = db2n->Eval(hist_mean);
+
+  peakwidth = dbww->Eval(hist_mean);
+  double peakwidth_2 = dbpar[7];
+  double al_1 = dbpar[3];
+  double n_1 = dbpar[4];
+  double al_2 = dbpar[8];
+  double n_2 = dbpar[9];
 
 
   double lowerfit;
@@ -119,11 +126,11 @@ void dcball_paropt(TString signalfilename) {
   }
 
 
-    double_crystalball = new TF1("double_crystalball", "crystalball(0) + crystalball(5) ", hist_mean - 100*peakwidth , hist_mean + 100*peakwidth);
+    double_crystalball = new TF1("double_crystalball", "crystalball(0) + crystalball(5) ", hist_mean - 500*peakwidth , hist_mean + 500*peakwidth);
 
      for(int i = 0; i < 10; i++){
       double_crystalball->SetParameter(i,dbpar[i]);
-      double_crystalball->SetParLimits(i,dbpar[i]/5, dbpar[i]*5);
+      double_crystalball->SetParLimits(i,dbpar[i]/10, dbpar[i]*10);
     }
 
     double_crystalball->SetParName(0,"Constant_1");
@@ -139,21 +146,20 @@ void dcball_paropt(TString signalfilename) {
 
     double_crystalball->SetNpx(1000);
 
-    double_crystalball->SetParLimits(0,0.,entriesatmean );
+    double_crystalball->SetParLimits(0,entriesatmean*dbpar[0],entriesatmean*dbpar[0]+500 );
     double_crystalball->FixParameter(1,hist_mean);
     double_crystalball->FixParameter(6,hist_mean);
-    double_crystalball->SetParLimits(2,rms,peakwidth);
-    double_crystalball->SetParLimits(3,-5,0.);
-    double_crystalball->SetParLimits(4,0.,4.);
-    double_crystalball->SetParLimits(5,0,entriesatmean );
-    double_crystalball->SetParLimits(7,rms,peakwidth);
+    double_crystalball->SetParLimits(2,peakwidth/2,peakwidth*6);
+    double_crystalball->SetParLimits(3,-5.,0);
+    double_crystalball->SetParLimits(4,0.,8);
+    double_crystalball->SetParLimits(5,entriesatmean*dbpar[5],entriesatmean*dbpar[5]+500 );
+    double_crystalball->SetParLimits(7,peakwidth/2,peakwidth*6);
     double_crystalball->SetParLimits(8,0.0,5);
-    double_crystalball->SetParLimits(9,1,4);
+    double_crystalball->SetParLimits(9,-20.,20);
 
-    
 
     double_crystalball->SetLineColor(4);
-    double_crystalball->SetRange(hist_mean - 3*peakwidth, hist_mean + 3*peakwidth);
+    double_crystalball->SetRange(hist_mean - 25*peakwidth, hist_mean + 25*peakwidth);
 
 
   Int_t nbinsdp;
@@ -263,9 +269,9 @@ TF1 * opt_dbcball = new TF1("optmized double_crystalball", "crystalball(0) + cry
 
       TAxis *xaxis = dpinvmasslm->GetXaxis();
       TAxis *yaxis = dpinvmasslm->GetYaxis();
-      Int_t binxl =  xaxis->FindBin(double_crystalball->GetParameter(1) - 2 * peakwidth);
+      Int_t binxl =  xaxis->FindBin(double_crystalball->GetParameter(1) - 30 * peakwidth);
       Double_t binxlerror = dpinvmasslm->GetBinError(binxl);
-      Int_t binxh =  xaxis->FindBin(double_crystalball->GetParameter(1) + 2 * peakwidth);
+      Int_t binxh =  xaxis->FindBin(double_crystalball->GetParameter(1) + 30 * peakwidth);
 
       dpinvmasslm->GetXaxis()->SetRange(binxl, binxh);
 

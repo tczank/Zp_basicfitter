@@ -39,7 +39,7 @@ void rootgen_dcball_optpar() {
  double_t n2_er[54];
 
   Int_t nlines = 0;
-   TFile *f = new TFile("dcball_optpar_4.root","RECREATE");
+   TFile *f = new TFile("dcball_optpar_9.root","RECREATE");
 
    while (nlines < 52) {
      in >> x >> z >> ez >> f1 >> ef1 >> f2 >> ef2 >> fw >> fw_er >> fal >> fal_er >> fn >> fn_er >> sw >> sw_er >> sal >> sal_er >> sn >> sn_er;
